@@ -66,7 +66,31 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String COL_PROVINCE_STATE = "province_state ";
     private static final String COL_POSTAL_ZIP_CODE = "postal_zip_code ";
     private static final String COL_COUNTRY = "country ";
-//private static final String COL_ORG_ADDR_ID = "org_addr_id ";         --duplicate
+    //private static final String COL_ORG_ADDR_ID = "org_addr_id ";         --duplicate
+
+    // Table User Job and column names
+    private static final String TABLE_USER_JOB = "user_job";
+    private static final String COL_USER_JOB_ID = "user_job_id";
+    //private static final String COL_USER_ID = "user_id";             --duplicate
+    //private static final String COL_JOB_ID = "job_id";             --duplicate
+
+    // Table Notification and column names
+    private static final String TABLE_NOTIFICATION = "notification";
+    private static final String COL_NOTIFICATION_ID = "notification_id";
+    //private static final String COL_NAME = "name";                --duplicate
+    private static final String COL_START_DATE = "start_date";
+    private static final String COL_END_DATE = "end_date";
+    private static final String COL_START_TIME = "start_time";
+    private static final String COL_END_TIME = "end_time";
+    private static final String COL_ALL_DAY = "all_day";
+    //private static final String COL_NOTE = "note";                 --duplicate
+    //private static final String COL_COLOUR_ID = "colour_id";         --duplicate
+
+    // Table job notification and column names
+    private static final String TABLE_JOB_NOTIFICATION = "job_notification";
+    private static final String COL_JOB_NOTIFICATION_ID = "job_notification_id";
+    //private static final String COL_USER_JOB_ID = "user_job_id";         --duplicate
+    //private static final String COL_NOTIFICATION_ID = "notification_id";    --duplicate
 
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -81,9 +105,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_STATUS);
         db.execSQL(CREATE_TABLE_JOB);
         db.execSQL(CREATE_TABLE_ADDRESS);
-       // db.execSQL(CREATE_TABLE_USER_JOB);
-       // db.execSQL(CREATE_TABLE_NOTIFICATION);
-       // db.execSQL(CREATE_TABLE_JOB_NOTIFICATION);
+        db.execSQL(CREATE_TABLE_USER_JOB);
+        db.execSQL(CREATE_TABLE_NOTIFICATION);
+        db.execSQL(CREATE_TABLE_JOB_NOTIFICATION);
 
     }
 
@@ -454,10 +478,225 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return db.update(TABLE_ADDRESS, args, COL_ADDRESS_ID + "=" + ID, null) > 0;
     }
 
-
     // end address crud operation
+    // begin userjob crud operation
+
+    public String loadUserJobHandler() {
+        String result = "";
+        String query = "Select*FROM " + TABLE_USER_JOB;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            int result_0 = cursor.getInt(0);
+            String result_1 = cursor.getString(1);
+            result += String.valueOf(result_0) + " " + result_1 +
+                    System.getProperty("line.separator");
+        }
+        cursor.close();
+        db.close();
+        return result;
+
+    }
+    public void addUserJobHandler(UserJob userJob) {
+        ContentValues values = new ContentValues();
+        values.put(COL_USER_JOB_ID, userJob.getUser_job_id());
+        values.put(COL_USER_ID, userJob.getUser_id());
+        values.put(COL_JOB_ID, userJob.getJob_id());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_USER_JOB, null, values);
+        db.close();
+    }
+
+    public UserJob findUserJobHandler(String userjob) {
+        String query = "Select * FROM " + TABLE_USER_JOB + "WHERE" + COL_USER_JOB_ID + " = " + "'" + userjob+ "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        UserJob userJob= new UserJob();
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            userJob.setUser_job_id(Integer.parseInt(cursor.getString(0)));
+            userJob.setUserId(Integer.parseInt(cursor.getString(1)));
+            userJob.set_job_id(Integer.parseInt(cursor.getString(2)));
+            cursor.close();
+        } else {
+            userJob= null;
+        }
+        db.close();
+        return userJob;
+    }
+
+    public boolean deleteUserJobHandler(int ID) {
+        boolean result = false;
+        String query = "Select*FROM " + TABLE_USER_JOB + "WHERE" + COL_USER_JOB_ID + "= '" + String.valueOf(ID) + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        UserJob userJob= new UserJob();
+        if (cursor.moveToFirst()) {
+            userJob.setUser_job_id(Integer.parseInt(cursor.getString(0)));
+            db.delete(TABLE_USER_JOB, COL_USER_JOB_ID + "=?",
+                    new String[] {
+                            String.valueOf(userJob.getUser_job_id())
+                    });
+            cursor.close();
+            result = true;
+        }
+        db.close();
+        return result;
+    }
+
+    public boolean updateUserJobHandler(int ID, String userId, String jobId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues args = new ContentValues();
+        args.put(COL_USER_JOB_ID, ID);
+        args.put(COL_USER_ID, userId);
+        args.put(COL_JOB_ID, jobId);
+        return db.update(TABLE_USER_JOB, args, COL_USER_JOB_ID + "=" + ID, null) > 0;
+    }
+    // end userjob crud operation
+    // begin notification crud operation
+    public String loadNotificationHandler() {
+        String result = "";
+        String query = "Select*FROM " + TABLE_NOTIFICATION;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            int result_0 = cursor.getInt(0);
+            String result_1 = cursor.getString(1);
+            result += String.valueOf(result_0) + " " + result_1 +
+                    System.getProperty("line.separator");
+        }
+        cursor.close();
+        db.close();
+        return result;
+
+    }
+    public void addNotificationHandler(Notification notification) {
+        ContentValues values = new ContentValues();
+        values.put(COL_NOTIFICATION_ID, notification.getNotification_id());
+        values.put(COL_NAME, notification.getName());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_NOTIFICATION, null, values);
+        db.close();
+    }
+
+    public Notification findNotificationHandler(String name) {
+        String query = "Select * FROM " + TABLE_NOTIFICATION + "WHERE" + COL_NAME + " = " + "'" + name+ "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Notification notification= new Notification();
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            notification.setNotificationId(Integer.parseInt(cursor.getString(0)));
+            cursor.close();
+        } else {
+            notification= null;
+        }
+        db.close();
+        return notification;
+    }
+
+    public boolean deleteNotificationHandler(int ID) {
+        boolean result = false;
+        String query = "Select*FROM " + TABLE_NOTIFICATION + "WHERE" + COL_NOTIFICATION_ID + "= '" + String.valueOf(ID) + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Notification notification= new Notification();
+        if (cursor.moveToFirst()) {
+            notification.setNotificationId(Integer.parseInt(cursor.getString(0)));
+            db.delete(TABLE_NOTIFICATION, COL_NOTIFICATION_ID + "=?",
+                    new String[] {
+                            String.valueOf(notification.getNotification_id())
+                    });
+            cursor.close();
+            result = true;
+        }
+        db.close();
+        return result;
+    }
+
+    public boolean updateNotificationHandler(int ID, String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues args = new ContentValues();
+        args.put(COL_NOTIFICATION_ID, ID);
+        args.put(COL_NAME,name);
+        return db.update(TABLE_NOTIFICATION, args, COL_NOTIFICATION_ID + "=" + ID, null) > 0;
+    }
+
+    // end notification crud operation
+    // begin job notification crud operation
+    public String loadJobNotificationHandler() {
+        String result = "";
+        String query = "Select*FROM " + TABLE_JOB_NOTIFICATION;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            int result_0 = cursor.getInt(0);
+            String result_1 = cursor.getString(1);
+            result += String.valueOf(result_0) + " " + result_1 +
+                    System.getProperty("line.separator");
+        }
+        cursor.close();
+        db.close();
+        return result;
+
+    }
+    public void addJobNotificationHandler(JobNotification jobNotification) {
+        ContentValues values = new ContentValues();
+        values.put(COL_JOB_NOTIFICATION_ID, jobNotification.getJob_notification_id());
+        values.put(COL_NOTIFICATION_ID, jobNotification.getNotification_id());
+        values.put(COL_USER_JOB_ID, jobNotification.getUser_job_id());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_JOB_NOTIFICATION, null, values);
+        db.close();
+    }
+
+    public JobNotification  findJobNotificationHandler(String name) {
+        String query = "Select * FROM " + TABLE_JOB_NOTIFICATION + "WHERE" + COL_NAME + " = " + "'" + name+ "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        JobNotification jobNotification= new JobNotification();
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            jobNotification.setNotificationId(Integer.parseInt(cursor.getString(0)));
+            cursor.close();
+        } else {
+            jobNotification= null;
+        }
+        db.close();
+        return jobNotification;
+    }
+
+    public boolean deleteJobNotificationHandler(int ID) {
+        boolean result = false;
+        String query = "Select*FROM " + TABLE_JOB_NOTIFICATION + "WHERE" + COL_JOB_NOTIFICATION_ID + "= '" + String.valueOf(ID) + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        JobNotification jobNotification= new JobNotification();
+        if (cursor.moveToFirst()) {
+            jobNotification.setJobNotificationId(Integer.parseInt(cursor.getString(0)));
+            db.delete(TABLE_JOB_NOTIFICATION, COL_JOB_NOTIFICATION_ID + "=?",
+                    new String[] {
+                            String.valueOf(jobNotification.getJob_notification_id())
+                    });
+            cursor.close();
+            result = true;
+        }
+        db.close();
+        return result;
+    }
+
+    public boolean updateJobNotificationHandler(int ID, int userJobId, int notificationId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues args = new ContentValues();
+        args.put(COL_JOB_NOTIFICATION_ID, ID);
+        args.put(COL_USER_JOB_ID, userJobId);
+        args.put(COL_NOTIFICATION_ID,notificationId);
+        return db.update(TABLE_JOB_NOTIFICATION, args, COL_JOB_NOTIFICATION_ID + "=" + ID, null) > 0;
+    }
+    // end job notification crud operation
 
     // create table statments
+    // CREATE TABLE 1 -- USER
     private static final String CREATE_TABLE_USER =
             "CREATE TABLE IF NOT EXISTS " + TABLE_USER + "("
                     + COL_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -467,17 +706,20 @@ public class MyDBHandler extends SQLiteOpenHelper {
                     + COL_FIRSTNAME + " TEXT NOT NULL, "
                     + COL_LASTNAME + " TEXT NOT NULL)";
 
+    // CREATE TABLE 2 -- COLOUR
     private static final String CREATE_TABLE_COLOUR =
             "CREATE TABLE IF NOT EXISTS " + TABLE_COLOUR + "("
                     + COL_COLOUR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COL_NAME + " TEXT NOT NULL, "
                     + COL_HEXCODE + " TEXT NOT NULL)";
 
+    // CREATE TABLE 3 -- STATUS
     private static final String CREATE_TABLE_STATUS =
             "CREATE TABLE IF NOT EXISTS " + TABLE_STATUS + "("
             + COL_STATUS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COL_STATUS_NAME + " TEXT NOT NULL)";
 
+    // CREATE TABLE 4 -- JOB
     private static final String CREATE_TABLE_JOB = "CREATE TABLE IF NOT EXISTS " + TABLE_JOB + "("
             + COL_JOB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COL_TITLE + " TEXT NOT NULL, "
@@ -495,6 +737,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             + COL_ORG_ADDR_ID + " INTEGER NOT NULL, "
             + COL_STATUS_ID + " INTEGER NOT NULL, FOREIGN KEY(" + COL_ORG_ADDR_ID + ") REFERENCES " + TABLE_ADDRESS + "(" + COL_ORG_ADDR_ID + ") ON UPDATE CASCADE, " + "FOREIGN KEY(" + COL_STATUS_ID + ") REFERENCES " + TABLE_STATUS + "(" + COL_STATUS_ID + ") ON UPDATE CASCADE )";
 
+    // CREATE TABLE 5 -- ADDRESS
     private static final String CREATE_TABLE_ADDRESS = "CREATE TABLE IF NOT EXISTS " + TABLE_ADDRESS + "("
             + COL_ADDRESS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COL_STREET_NO + " TEXT, "
@@ -504,6 +747,32 @@ public class MyDBHandler extends SQLiteOpenHelper {
             + COL_POSTAL_ZIP_CODE + " TEXT, "
             + COL_COUNTRY + " TEXT, "
             + COL_ORG_ADDR_ID + " INTEGER NOT NULL, FOREIGN KEY(" + COL_ORG_ADDR_ID + ") REFERENCES " + TABLE_JOB + "(" + COL_ORG_ADDR_ID + ") ON UPDATE CASCADE )";
+
+    // CREATE TABLE 6 -- USER_JOBS
+    private static final String CREATE_TABLE_USER_JOB = "CREATE TABLE IF NOT EXISTS " + TABLE_USER_JOB + "("
+            + COL_USER_JOB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COL_USER_ID + " INTEGER NOT NULL, "
+            + COL_JOB_ID + " INTEGER NOT NULL, FOREIGN KEY(" + COL_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COL_USER_ID + ") ON UPDATE CASCADE, FOREIGN KEY(" + COL_JOB_ID + ") REFERENCES " + TABLE_JOB + "(" + COL_JOB_ID + ") ON UPDATE CASCADE )";
+
+    // CREATE TABLE 7 -- NOTIFICATION
+    private static final String CREATE_TABLE_NOTIFICATION = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_NOTIFICATION + "("
+            + COL_NOTIFICATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COL_NAME + " TEXT NOT NULL, "
+            + COL_START_DATE + " TEXT NOT NULL, "
+            + COL_END_DATE + " TEXT NOT NULL, "
+            + COL_START_TIME + " TEXT, "
+            + COL_END_TIME + " TEXT, "
+            + COL_ALL_DAY + " TEXT, "
+            + COL_NOTE + " TEXT, "
+            + COL_COLOUR_ID + " INTEGER, FOREIGN KEY(" + COL_COLOUR_ID + ") REFERENCES " + TABLE_COLOUR + "(" + COL_COLOUR_ID + ") ON UPDATE CASCADE )";
+
+    // CREATE TABLE 8 -- JOB_NOTIFICATION
+    private static final String CREATE_TABLE_JOB_NOTIFICATION = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_JOB_NOTIFICATION + "("
+            + COL_JOB_NOTIFICATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COL_USER_JOB_ID + " INTEGER NOT NULL, "
+            + COL_NOTIFICATION_ID + " INTEGER NOT NULL, FOREIGN KEY(" + COL_USER_JOB_ID + ") REFERENCES " + TABLE_USER_JOB + "(" + COL_USER_JOB_ID + ") ON UPDATE CASCADE, FOREIGN KEY(" + COL_NOTIFICATION_ID + ") REFERENCES " + TABLE_JOB + "(" + COL_NOTIFICATION_ID + ") ON UPDATE CASCADE )";
 
 
 }
