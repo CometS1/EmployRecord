@@ -3,17 +3,13 @@ package ca.senecacollege.employrecord.DatabaseHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.content.Context;
 import android.content.ContentValues;
 import android.database.Cursor;
 
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
-// Logcat tag -- not sure if we need this...but will leave it just in case
-// private static final String LOG = "DatabaseHelper";
+    private static final String TAG = "DatabaseHelper";
 
     // Database info
     private static final int DATABASE_VERSION = 1;
@@ -55,7 +51,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String COL_OFFER_DEADLINE = "offer_deadline";
     private static final String COL_NOTE = "note";
     private static final String COL_ORG_ADDR_ID = "org_addr_id";
-    //private static final String COL_STATUS_ID = "status_id";         --duplicate
 
     // Table address and column names
     private static final String TABLE_ADDRESS = "address";
@@ -66,36 +61,28 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String COL_PROVINCE_STATE = "province_state ";
     private static final String COL_POSTAL_ZIP_CODE = "postal_zip_code ";
     private static final String COL_COUNTRY = "country ";
-    //private static final String COL_ORG_ADDR_ID = "org_addr_id ";         --duplicate
 
     // Table User Job and column names
     private static final String TABLE_USER_JOB = "user_job";
     private static final String COL_USER_JOB_ID = "user_job_id";
-    //private static final String COL_USER_ID = "user_id";             --duplicate
-    //private static final String COL_JOB_ID = "job_id";             --duplicate
 
     // Table Notification and column names
     private static final String TABLE_NOTIFICATION = "notification";
     private static final String COL_NOTIFICATION_ID = "notification_id";
-    //private static final String COL_NAME = "name";                --duplicate
     private static final String COL_START_DATE = "start_date";
     private static final String COL_END_DATE = "end_date";
     private static final String COL_START_TIME = "start_time";
     private static final String COL_END_TIME = "end_time";
     private static final String COL_ALL_DAY = "all_day";
-    //private static final String COL_NOTE = "note";                 --duplicate
-    //private static final String COL_COLOUR_ID = "colour_id";         --duplicate
 
     // Table job notification and column names
     private static final String TABLE_JOB_NOTIFICATION = "job_notification";
     private static final String COL_JOB_NOTIFICATION_ID = "job_notification_id";
-    //private static final String COL_USER_JOB_ID = "user_job_id";         --duplicate
-    //private static final String COL_NOTIFICATION_ID = "notification_id";    --duplicate
-
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -108,7 +95,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_USER_JOB);
         db.execSQL(CREATE_TABLE_NOTIFICATION);
         db.execSQL(CREATE_TABLE_JOB_NOTIFICATION);
-
     }
 
     @Override
@@ -695,7 +681,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
     // end job notification crud operation
 
-    // create table statments
+    // create table statements
     // CREATE TABLE 1 -- USER
     private static final String CREATE_TABLE_USER =
             "CREATE TABLE IF NOT EXISTS " + TABLE_USER + "("
