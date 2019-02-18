@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 
 public class MyDBHandler extends SQLiteOpenHelper {
@@ -102,24 +103,45 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     // begin user crud operation
     public String loadUserHandler() {
+        Log.i(TAG, "--> Start loadUserHandler");
         String result = "";
         String query = "Select*FROM " + TABLE_USER;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
             int result_0 = cursor.getInt(0);
+
             String result_1 = cursor.getString(1);
-            result += String.valueOf(result_0) + " " + result_1 +
-                    System.getProperty("line.separator");
+            String result_2 = cursor.getString(2);
+            String result_3 = cursor.getString(3);
+            String result_4 = cursor.getString(4);
+            String result_5 = cursor.getString(5);
+
+            Log.i(TAG, "--> result_0 == " + result_0);
+            Log.i(TAG, "--> result_1 == " + result_1);
+            Log.i(TAG, "--> result_2 == " + result_2);
+            Log.i(TAG, "--> result_3 == " + result_3);
+            Log.i(TAG, "--> result_4 == " + result_4);
+            Log.i(TAG, "--> result_5 == " + result_5);
+
+            //result += String.valueOf(result_0) + " " + result_1 + System.getProperty("line.separator");
+
+            result += String.valueOf(result_0) + " " + result_1
+                    + " " + result_2 + " " + result_3
+                    + " " + result_4 + " " + result_5
+                    + System.getProperty("line.separator");
+
+            Log.i(TAG, "--> RESULT == " + result);
         }
         cursor.close();
         db.close();
         return result;
-
     }
+
     public void addUserHandler(User user) {
+        Log.i(TAG, "--> Start addUserHandler");
         ContentValues values = new ContentValues();
-        values.put(COL_USER_ID, user.getID());
+        //values.put(COL_USER_ID, user.getID());
         values.put(COL_EMAIL, user.getEmail());
         values.put(COL_USERNAME, user.getUsername());
         values.put(COL_PASSWORD, user.getPassword());
@@ -129,7 +151,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_USER, null, values);
         db.close();
     }
-
+/*
     public User findUserHandler(String username) {
         String query = "Select * FROM " + TABLE_USER + "WHERE" + COL_USERNAME + " = " + "'" + username+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -165,6 +187,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+    */
 
     public boolean updateUserHandler(int ID, String name) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -173,8 +196,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         args.put(COL_USERNAME, name);
         return db.update(TABLE_USER, args, COL_USER_ID + "=" + ID, null) > 0;
     }
-
     // end user crud operation
+
     // begin colour crud operation
     public String loadColourHandler() {
         String result = "";
@@ -486,13 +509,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public void addUserJobHandler(UserJob userJob) {
         ContentValues values = new ContentValues();
         values.put(COL_USER_JOB_ID, userJob.getUser_job_id());
-        values.put(COL_USER_ID, userJob.getUser_id());
+        //values.put(COL_USER_ID, userJob.getUser_id());
         values.put(COL_JOB_ID, userJob.getJob_id());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_USER_JOB, null, values);
         db.close();
     }
-
+/*
     public UserJob findUserJobHandler(String userjob) {
         String query = "Select * FROM " + TABLE_USER_JOB + "WHERE" + COL_USER_JOB_ID + " = " + "'" + userjob+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -538,7 +561,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
         args.put(COL_JOB_ID, jobId);
         return db.update(TABLE_USER_JOB, args, COL_USER_JOB_ID + "=" + ID, null) > 0;
     }
+    */
+
     // end userjob crud operation
+
+
+
     // begin notification crud operation
     public String loadNotificationHandler() {
         String result = "";
