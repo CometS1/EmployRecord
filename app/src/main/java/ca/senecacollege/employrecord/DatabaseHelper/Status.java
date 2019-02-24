@@ -6,8 +6,7 @@ public class Status{
 
         public Status(){}
 
-        public Status(int _status_id, String _status_name){
-            this.status_id = _status_id;
+        public Status(String _status_name){
             this.status_name = _status_name;
         }
 

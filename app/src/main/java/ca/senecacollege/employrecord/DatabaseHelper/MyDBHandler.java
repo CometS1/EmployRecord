@@ -290,7 +290,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
     public void addStatusHandler(Status status) {
         ContentValues values = new ContentValues();
-        values.put(COL_STATUS_ID, status.getStatusId());
         values.put(COL_STATUS_NAME, status.getSttusName());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_STATUS, null, values);
@@ -314,17 +313,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return status;
     }
 
-    public boolean deleteStatusHandler(int ID) {
+    public boolean deleteStatusHandler(String name) {
         boolean result = false;
-        String query = "Select*FROM " + TABLE_STATUS + "WHERE" + COL_STATUS_ID + "= '" + String.valueOf(ID) + "'";
+        String query = "Select*FROM " + TABLE_STATUS + "WHERE" + COL_STATUS_NAME + "= '" + String.valueOf(name) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Status status= new Status();
         if (cursor.moveToFirst()) {
-            status.setStatusId(Integer.parseInt(cursor.getString(0)));
-            db.delete(TABLE_STATUS, COL_STATUS_ID + "=?",
+            db.delete(TABLE_STATUS, COL_STATUS_NAME + "=?",
                     new String[] {
-                            String.valueOf(status.getStatusId())
+                            String.valueOf(status.getSttusName())
                     });
             cursor.close();
             result = true;
@@ -333,12 +331,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean updateStatusHandler(int ID, String name) {
+    public boolean updateStatusHandler(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(COL_STATUS_ID, ID);
         args.put(COL_STATUS_NAME, name);
-        return db.update(TABLE_STATUS, args, COL_STATUS_ID + "=" + ID, null) > 0;
+        return db.update(TABLE_STATUS, args, COL_STATUS_NAME + "=" + name, null) > 0;
     }
 
     //end status crud operation
