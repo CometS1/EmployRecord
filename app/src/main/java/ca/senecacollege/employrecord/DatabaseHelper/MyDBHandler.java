@@ -138,20 +138,21 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public void addUserHandler(User user) {
+    public long addUserHandler(User user) {
         Log.i(TAG, "--> Start addUserHandler");
         ContentValues values = new ContentValues();
-        //values.put(COL_USER_ID, user.getID());
         values.put(COL_EMAIL, user.getEmail());
         values.put(COL_USERNAME, user.getUsername());
         values.put(COL_PASSWORD, user.getPassword());
         values.put(COL_FIRSTNAME, user.getFirstName());
         values.put(COL_LASTNAME, user.getLastName());
         SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(TABLE_USER, null, values);
+        long id = db.insert(TABLE_USER, null, values);
         db.close();
+        return id;
     }
-/*
+
+
     public User findUserHandler(String username) {
         String query = "Select * FROM " + TABLE_USER + "WHERE" + COL_USERNAME + " = " + "'" + username+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -159,8 +160,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         User user= new User();
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
-            user.setId(Integer.parseInt(cursor.getString(0)));
-            user.setUsername(cursor.getString(1));
+            user.setUsername(cursor.getString(cursor.getColumnIndex(COL_USERNAME)));
             cursor.close();
         } else {
             user= null;
@@ -169,17 +169,17 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return user;
     }
 
-    public boolean deleteUserHandler(int ID) {
+
+    public boolean deleteUserHandler(String  userame) {
         boolean result = false;
-        String query = "Select*FROM " + TABLE_USER + "WHERE" + COL_USER_ID + "= '" + String.valueOf(ID) + "'";
+        String query = "Select*FROM " + TABLE_USER + "WHERE" + COL_USERNAME + "= '" + String.valueOf(userame) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         User user = new User();
         if (cursor.moveToFirst()) {
-            user.setId(Integer.parseInt(cursor.getString(0)));
-            db.delete(TABLE_USER, COL_USER_ID + "=?",
+            db.delete(TABLE_USER, COL_USERNAME + "=?",
                     new String[] {
-                String.valueOf(user.getID())
+                String.valueOf(user.getUsername())
             });
             cursor.close();
             result = true;
@@ -187,14 +187,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
         return result;
     }
-    */
 
-    public boolean updateUserHandler(int ID, String name) {
+
+    public boolean updateUserHandler(String userame) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(COL_USER_ID, ID);
-        args.put(COL_USERNAME, name);
-        return db.update(TABLE_USER, args, COL_USER_ID + "=" + ID, null) > 0;
+        args.put(COL_USERNAME, userame);
+        return db.update(TABLE_USER, args, COL_USERNAME + "=" + userame, null) > 0;
     }
     // end user crud operation
 
