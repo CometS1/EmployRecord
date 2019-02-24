@@ -359,21 +359,33 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
     public void addJobHandler(Jobs job) {
         ContentValues values = new ContentValues();
-        values.put(COL_STATUS_ID, job.getStatus_id());
         values.put(COL_TITLE,job.getTitle());
+        values.put(COL_DESCRIPTION,job.getDescription());
+        values.put(COL_ORGANIZATION,job.getOrganization());
+        values.put(COL_ORG_LOCATION,job.getOrg_location());
+        values.put(COL_ORG_EMAIL,job.getOrg_email());
+        values.put(COL_POST_ORIGIN,job.getPost_origin());
+        values.put(COL_POST_URL,job.getPost_url());
+        values.put(COL_POST_DEADLINE,job.getPost_deadline());
+        values.put(COL_APPLIED_DATE,job.getApplied_date());
+        values.put(COL_INTERVIEW_DATE,job.getInterview_date());
+        values.put(COL_OFFER_DEADLINE,job.getOffer_deadline());
+        values.put(COL_NOTE,job.getNote());
+        values.put(COL_ORG_ADDR_ID,job.getOrg_addr_id());
+        values.put(COL_STATUS_ID,job.getStatus_id());
+
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_JOB, null, values);
         db.close();
     }
 
     public Jobs findJobHandler(String title) {
-        String query = "Select * FROM " + TABLE_JOB + "WHERE" + COL_NAME + " = " + "'" + title+ "'";
+        String query = "Select * FROM " + TABLE_JOB + "WHERE" + COL_TITLE + " = " + "'" + title+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Jobs job= new Jobs();
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
-            job.setStatusId(Integer.parseInt(cursor.getString(0)));
             job.setTitle(cursor.getString(1));
             cursor.close();
         } else {
@@ -402,12 +414,25 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean updateJobHandler(int ID, String title) {
+    public boolean updateJobHandler(Jobs job) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues args = new ContentValues();
-        args.put(COL_JOB_ID, ID);
-        args.put(COL_TITLE, title);
-        return db.update(TABLE_STATUS, args, COL_STATUS_ID + "=" + ID, null) > 0;
+        ContentValues values = new ContentValues();
+        values.put(COL_TITLE,job.getTitle());
+        values.put(COL_DESCRIPTION,job.getDescription());
+        values.put(COL_ORGANIZATION,job.getOrganization());
+        values.put(COL_ORG_LOCATION,job.getOrg_location());
+        values.put(COL_ORG_EMAIL,job.getOrg_email());
+        values.put(COL_POST_ORIGIN,job.getPost_origin());
+        values.put(COL_POST_URL,job.getPost_url());
+        values.put(COL_POST_DEADLINE,job.getPost_deadline());
+        values.put(COL_APPLIED_DATE,job.getApplied_date());
+        values.put(COL_INTERVIEW_DATE,job.getInterview_date());
+        values.put(COL_OFFER_DEADLINE,job.getOffer_deadline());
+        values.put(COL_NOTE,job.getNote());
+        values.put(COL_ORG_ADDR_ID,job.getOrg_addr_id());
+        values.put(COL_STATUS_ID,job.getStatus_id());
+        values.put(COL_TITLE, job.getTitle());
+        return db.update(TABLE_STATUS, values, COL_TITLE + "=" + job.getTitle(), null) > 0;
     }
     // end job crud operation
     // begin address crud operation

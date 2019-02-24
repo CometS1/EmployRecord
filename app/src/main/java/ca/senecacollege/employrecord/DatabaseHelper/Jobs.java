@@ -19,8 +19,7 @@ public class Jobs{
 
         public Jobs(){}
 
-        public Jobs(int _job_id, String _title, String _description, String _organization, String _org_location, String _org_email, String _post_origin, String _post_url, String _post_deadline, String _applied_date, String _interview_date, String _offer_deadline, String _note, int _org_addr_id, int _status_id){
-            this.job_id  = _job_id;
+        public Jobs(String _title, String _description, String _organization, String _org_location, String _org_email, String _post_origin, String _post_url, String _post_deadline, String _applied_date, String _interview_date, String _offer_deadline, String _note, int _org_addr_id, int _status_id){
             this.title = _title;
             this.description = _description;
             this.organization  = _organization;
