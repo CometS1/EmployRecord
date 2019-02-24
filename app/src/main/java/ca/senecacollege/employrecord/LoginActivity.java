@@ -76,7 +76,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         sqlDatabase = openOrCreateDatabase("EmployRecordDatabase", Context.MODE_PRIVATE, null);
 
 
-        sqlDatabase.execSQL("CREATE TABLE IF NOT EXISTS Employee(CITY VARCHAR, NAME VARCHAR, SPORTS INTEGER, MVP VARCHAR, IMAGE BLOB, ID INTEGER, PRIMARY KEY(ID))");
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
