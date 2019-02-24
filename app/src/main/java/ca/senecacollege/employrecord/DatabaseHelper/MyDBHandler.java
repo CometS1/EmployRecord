@@ -216,7 +216,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
     public void addColourHandler(Colour colour) {
         ContentValues values = new ContentValues();
-        values.put(COL_COLOUR_ID, colour.getColourId());
         values.put(COL_NAME, colour.getName());
         values.put(COL_HEXCODE, colour.getHexcode());
         SQLiteDatabase db = this.getWritableDatabase();
@@ -244,17 +243,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return colour;
     }
 
-    public boolean deleteColourHandler(int ID) {
+    public boolean deleteColourHandler(String colourname) {
         boolean result = false;
-        String query = "Select*FROM " + TABLE_COLOUR + "WHERE" + COL_COLOUR_ID + "= '" + String.valueOf(ID) + "'";
+        String query = "Select*FROM " + TABLE_COLOUR + "WHERE" + COL_NAME + "= '" + String.valueOf(colourname) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Colour colour = new Colour();
         if (cursor.moveToFirst()) {
-            colour.setColourId(Integer.parseInt(cursor.getString(0)));
-            db.delete(TABLE_COLOUR, COL_COLOUR_ID + "=?",
+            db.delete(TABLE_COLOUR, COL_NAME + "=?",
                     new String[] {
-                            String.valueOf(colour.getColourId())
+                            String.valueOf(colour.getName())
                     });
             cursor.close();
             result = true;
@@ -263,13 +261,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean updateColourHandler(int ID, String name, String hexcode) {
+    public boolean updateColourHandler(String name, String hexcode) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(COL_COLOUR_ID, ID);
         args.put(COL_NAME, name);
         args.put(COL_HEXCODE,hexcode);
-        return db.update(TABLE_COLOUR, args, COL_COLOUR_ID + "=" + ID, null) > 0;
+        return db.update(TABLE_COLOUR, args, COL_NAME + "=" + name, null) > 0;
     }
 
     // end colour crud operation

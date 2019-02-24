@@ -8,9 +8,9 @@ public class Colour{
 
         public Colour(){}
 
-        public Colour(int _colour_id, String _hexcode){
-            this.colour_id = _colour_id;
+        public Colour(String _hexcode, String _name){
             this.hexcode = _hexcode;
+            this.name = _name;
         }
 
         public void setColourId(int _colour_id){
