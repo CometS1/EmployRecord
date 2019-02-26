@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
+//import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
 import ca.senecacollege.employrecord.DatabaseHelper.User;
 
 public class Registration extends AppCompatActivity {
@@ -50,6 +50,7 @@ public class Registration extends AppCompatActivity {
     }
 
     public void loadUser(View view) {
+        /*
         Log.i(TAG, "--> Start loadUser");
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
@@ -62,9 +63,11 @@ public class Registration extends AppCompatActivity {
         email.setText("");
         pwd.setText("");
         pwdConfirm.setText("");
+        */
     }
 
     public void addUser(View view) {
+        /*
         Log.i(TAG, "--> Start addUser");
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
@@ -79,6 +82,7 @@ public class Registration extends AppCompatActivity {
 
         dbHandler.addUserHandler(user);
         Toast.makeText(Registration.this, "Registered! Load user!", Toast.LENGTH_LONG).show();
+        */
     }
 
 

@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private Button m_registerBtn;
+    private Button m_loginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.login_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
+        //mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
         m_registerBtn = findViewById(R.id.register_button);
@@ -113,6 +114,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivityForResult(intent, 0);
             }
         });
+
+        m_loginBtn = findViewById(R.id.login_button);
+        m_loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = MainActivity.newIntent(LoginActivity.this);
+                startActivityForResult(intent, 0);
+            }
+        });
+
     }
 
     private void populateAutoComplete() {
