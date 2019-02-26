@@ -4,19 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 //import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
-import ca.senecacollege.employrecord.DatabaseHelper.User;
 
-public class Registration extends AppCompatActivity {
 
-    private static final String TAG = "Registration";
+public class RegistrationActivity extends AppCompatActivity {
+
+    private static final String TAG = "RegistrationActivity";
 
     EditText fname;
     EditText lname;
@@ -29,7 +27,7 @@ public class Registration extends AppCompatActivity {
     TextView resultView;
 
     public static Intent newIntent(Context packageContext) {
-        Intent intent = new Intent(packageContext, Registration.class);
+        Intent intent = new Intent(packageContext, RegistrationActivity.class);
         return intent;
     }
 
@@ -81,7 +79,7 @@ public class Registration extends AppCompatActivity {
         Log.i(TAG, "-->New user: " + user);
 
         dbHandler.addUserHandler(user);
-        Toast.makeText(Registration.this, "Registered! Load user!", Toast.LENGTH_LONG).show();
+        Toast.makeText(RegistrationActivity.this, "Registered! Load user!", Toast.LENGTH_LONG).show();
         */
     }
 
