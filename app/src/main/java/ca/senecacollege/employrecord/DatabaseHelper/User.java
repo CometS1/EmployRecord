@@ -1,7 +1,7 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
 public class User{
-        private int user_id;
+        //private int user_id;
         private String email;
         private String username;
         private String password;
@@ -17,15 +17,16 @@ public class User{
             this.first_name = _first_name;
             this.last_name = _last_name;
         }
-
+        /*
         public void setId(int _user_id){
             this.user_id = _user_id;
         }
 
+
         public int getID() {
             return this.user_id;
         }
-
+        */
         public void setEmail(String _email){
             this.email = _email;
         }

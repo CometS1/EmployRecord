@@ -151,4 +151,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_register"
         app:layout_constraintVertical_bias="0.057" />
+
+    <Button
+        android:id="@+id/Delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="deleteUser"
+        android:text="Delete"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="667dp" />
 </android.support.constraint.ConstraintLayout>

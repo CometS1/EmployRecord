@@ -88,5 +88,15 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
+    public void deleteUser (View view) {
+        Log.i(TAG, "--> delete User");
+        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+
+        String userName = "abcd";
+
+        dbHandler.deleteUserHandler(userName);
+        Toast.makeText(RegistrationActivity.this, "delete user test!", Toast.LENGTH_LONG).show();
+    }
+
 
 }

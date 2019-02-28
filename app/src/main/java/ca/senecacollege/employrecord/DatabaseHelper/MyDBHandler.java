@@ -172,14 +172,14 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public boolean deleteUserHandler(String  userame) {
         boolean result = false;
-        String query = "Select*FROM " + TABLE_USER + "WHERE" + COL_USERNAME + "= '" + String.valueOf(userame) + "'";
+        String query = "Select* FROM " + TABLE_USER + " WHERE " + COL_USERNAME + "= '" + String.valueOf(userame) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         User user = new User();
         if (cursor.moveToFirst()) {
             db.delete(TABLE_USER, COL_USERNAME + "=?",
                     new String[] {
-                String.valueOf(user.getUsername())
+                (userame)
             });
             cursor.close();
             result = true;
@@ -386,6 +386,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         Jobs job= new Jobs();
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
+            job.setJobId(Integer.parseInt(cursor.getString(0)));
             job.setTitle(cursor.getString(1));
             cursor.close();
         } else {
@@ -454,7 +455,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
     public void addAddressHandler(Address address) {
         ContentValues values = new ContentValues();
-        values.put(COL_ADDRESS_ID, address.getAddress_id());
         values.put(COL_STREET_NAME, address.getStreet_name());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_ADDRESS, null, values);
@@ -497,12 +497,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean updateAddressHandler(int ID, String name) {
+    public boolean updateAddressHandler(Address addr) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues args = new ContentValues();
-        args.put(COL_ADDRESS_ID, ID);
-        args.put(COL_STREET_NAME, name);
-        return db.update(TABLE_ADDRESS, args, COL_ADDRESS_ID + "=" + ID, null) > 0;
+        ContentValues values = new ContentValues();
+
+        values.put(COL_STREET_NO, addr.getStreet_no());
+        values.put(COL_STREET_NAME, addr.getStreet_name());
+        values.put(COL_CITY, addr.getCity());
+        values.put(COL_PROVINCE_STATE, addr.getProvince_state());
+        values.put(COL_POSTAL_ZIP_CODE, addr.getPostal_zip_code());
+        values.put(COL_COUNTRY, addr.getCountry());
+
+        return db.update(TABLE_ADDRESS, values, COL_STREET_NAME + "=" + addr.getStreet_name(), null) > 0;
     }
 
     // end address crud operation
@@ -526,8 +532,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
     public void addUserJobHandler(UserJob userJob) {
         ContentValues values = new ContentValues();
-        values.put(COL_USER_JOB_ID, userJob.getUser_job_id());
-        //values.put(COL_USER_ID, userJob.getUser_id());
+        //values.put(COL_USER_JOB_ID, userJob.getUser_job_id());
+        values.put(COL_USER_ID, userJob.getUser_id());
         values.put(COL_JOB_ID, userJob.getJob_id());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_USER_JOB, null, values);
@@ -731,7 +737,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     // CREATE TABLE 1 -- USER
     private static final String CREATE_TABLE_USER =
             "CREATE TABLE IF NOT EXISTS " + TABLE_USER + "("
-                    + COL_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    //+ COL_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COL_EMAIL + " TEXT NOT NULL, "
                     + COL_USERNAME + " TEXT NOT NULL, "
                     + COL_PASSWORD + " TEXT NOT NULL, "
