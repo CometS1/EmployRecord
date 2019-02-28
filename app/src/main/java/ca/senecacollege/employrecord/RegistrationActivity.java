@@ -62,8 +62,16 @@ public class RegistrationActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validateDataEntered();
-                addUser();
+                if (validateDataEntered()) {
+                    addUser();
+
+                    fname.setText("");
+                    lname.setText("");
+                    username.setText("");
+                    email.setText("");
+                    pwd.setText("");
+                    pwdConfirm.setText("");
+                }
             }
         });
 
@@ -142,38 +150,71 @@ public class RegistrationActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
-    private void validateDataEntered() {
+    private boolean validateDataEntered() {
+        boolean validFname = false;
+        boolean validLname = false;
+        boolean validUsername = false;
+        boolean validUser = false;
+        boolean validEmail = false;
+        boolean validPwd = false;
+        boolean validPwdFormat = false;
+        boolean validConfirmPwd = false;
+        boolean validPwdMatch = false;
+
         Log.e(TAG, "--> Start validateDataEntered");
+
         if (isEmpty(fname)) {
             fname.setError("First name is required");
+        } else {
+            validFname = true;
         }
+
         if (isEmpty(lname)) {
             lname.setError("Last name is required");
+        } else {
+            validLname = true;
         }
         if (isEmpty(username)) {
             username.setError("Username is required");
         } else {
+            validUsername = true;
             if (dbHandler().isUser(username.getText().toString())) {
                 username.setError("Username already exists!");
+            } else {
+                validUser = true;
             }
         }
+
         if (!isEmail(email) || isEmpty(email)) {
             email.setError("Valid email is required");
+        } else {
+            validEmail = true;
         }
+
         if (isEmpty(pwd)) {
             pwd.setError("Password is required");
         } else {
+            validPwd = true;
             if (!isValidPassword(pwd)) {
                 pwd.setError("Password must have minimum 5 characters, at least 1 letter, 1 number and 1 special character");
+            } else {
+                validPwdFormat = true;
             }
         }
+
         if (isEmpty(pwdConfirm)) {
             pwdConfirm.setError("Confirm password is required");
-        }
-        if (!isPasswordMatch(pwd, pwdConfirm)) {
-            pwdConfirm.setError("Your passwords must match");
+        } else {
+            validConfirmPwd = true;
         }
 
+        if (!isPasswordMatch(pwd, pwdConfirm)) {
+            pwdConfirm.setError("Your passwords must match");
+        } else {
+            validPwdMatch = true;
+        }
+
+        return (validFname && validLname && validUsername && validUser && validEmail && validPwd && validPwdFormat && validConfirmPwd && validPwdMatch);
     }
 
     private void addUser() {
@@ -219,7 +260,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.i(TAG, "--> delete User");
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
-        String userName = "del1user";
+        String userName = "";
 
         dbHandler.deleteUserHandler(userName);
         Toast.makeText(RegistrationActivity.this, "delete user test!", Toast.LENGTH_LONG).show();
