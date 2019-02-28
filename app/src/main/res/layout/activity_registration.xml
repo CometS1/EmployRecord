@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistrationActivity">
+    tools:context=".RegistrationActivity"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/register_title"
@@ -113,7 +115,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:onClick="addUser"
         android:text="@string/register"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -156,8 +157,13 @@
         android:id="@+id/Delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="deleteUser"
         android:text="Delete"
+
         tools:layout_editor_absoluteX="161dp"
         tools:layout_editor_absoluteY="667dp" />
 
@@ -169,4 +175,5 @@
         android:text="Update"
         tools:layout_editor_absoluteX="323dp"
         tools:layout_editor_absoluteY="466dp" />
+
 </android.support.constraint.ConstraintLayout>

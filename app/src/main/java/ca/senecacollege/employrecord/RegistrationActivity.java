@@ -1,21 +1,25 @@
 package ca.senecacollege.employrecord;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
 import ca.senecacollege.employrecord.DatabaseHelper.User;
-
-//import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
-
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -36,6 +40,10 @@ public class RegistrationActivity extends AppCompatActivity {
         return intent;
     }
 
+    private MyDBHandler dbHandler() {
+        return new MyDBHandler(this, null, null, 1);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,29 +58,126 @@ public class RegistrationActivity extends AppCompatActivity {
 
         btnRegister = findViewById(R.id.btn_register);
         resultView = findViewById(R.id.resultView);
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validateDataEntered();
+                addUser();
+            }
+        });
+
+        // TODO: below is temp fix for collapsing the keyboard, need to find another way
+        fname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        lname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        pwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        pwdConfirm.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        // TODO: above this line is temp fix
     }
 
-    public void loadUser(View view) {
+    private boolean isEmail(EditText text) {
+        CharSequence email = text.getText().toString();
+        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
+    }
 
-        Log.i(TAG, "--> Start loadUser");
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+    private boolean isEmpty(EditText text) {
+        CharSequence str = text.getText().toString();
+        return TextUtils.isEmpty(str);
+    }
 
-        // Display in result view is for testing purposes only -- will need to remove when profile works
-        resultView.setText(dbHandler.loadUserHandler());
+    private boolean isPasswordMatch(EditText password, EditText confirmPassword) {
+        return password.getText().toString().equals(confirmPassword.getText().toString());
+    }
 
-        fname.setText("");
-        lname.setText("");
-        username.setText("");
-        email.setText("");
-        pwd.setText("");
-        pwdConfirm.setText("");
+    private boolean isValidPassword(EditText password) {
+        Matcher matcher;
+        //Minimum five characters, at least one letter, one number and one special character
+        final String PASSWORD_PATTERN = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{5,}$";
+        matcher = Pattern.compile(PASSWORD_PATTERN).matcher(password.getText().toString());
+
+        return matcher.matches();
+    }
+
+    private void validateDataEntered() {
+        Log.e(TAG, "--> Start validateDataEntered");
+        if (isEmpty(fname)) {
+            fname.setError("First name is required");
+        }
+        if (isEmpty(lname)) {
+            lname.setError("Last name is required");
+        }
+        if (isEmpty(username)) {
+            username.setError("Username is required");
+        } else {
+            if (dbHandler().isUser(username.getText().toString())) {
+                username.setError("Username already exists!");
+            }
+        }
+        if (!isEmail(email) || isEmpty(email)) {
+            email.setError("Valid email is required");
+        }
+        if (isEmpty(pwd)) {
+            pwd.setError("Password is required");
+        } else {
+            if (!isValidPassword(pwd)) {
+                pwd.setError("Password must have minimum 5 characters, at least 1 letter, 1 number and 1 special character");
+            }
+        }
+        if (isEmpty(pwdConfirm)) {
+            pwdConfirm.setError("Confirm password is required");
+        }
+        if (!isPasswordMatch(pwd, pwdConfirm)) {
+            pwdConfirm.setError("Your passwords must match");
+        }
 
     }
 
-    public void addUser(View view) {
-
-        Log.i(TAG, "--> Start addUser");
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+    private void addUser() {
+        Log.e(TAG, "--> Start addUser");
 
         String fnameStr = fname.getText().toString();
         String lnameStr = lname.getText().toString();
@@ -81,18 +186,39 @@ public class RegistrationActivity extends AppCompatActivity {
         String pwdStr = pwdConfirm.getText().toString();
 
         User user = new User(emailStr, usernameStr, pwdStr, fnameStr, lnameStr);
-        Log.i(TAG, "-->New user: " + user);
+        Log.e(TAG, "-->New user: " + user);
 
-        dbHandler.addUserHandler(user);
-        Toast.makeText(RegistrationActivity.this, "Registered! Load user!", Toast.LENGTH_LONG).show();
+        dbHandler().addUserHandler(user);
+        Toast.makeText(RegistrationActivity.this, "Registered Successfully!", Toast.LENGTH_LONG).show();
+
+        //TODO: Redirect to login page
 
     }
 
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    // TODO: Will need to remove loadUser once testing is done
+    public void loadUser(View view) {
+        Log.i(TAG, "--> Start loadUser");
+        resultView.setText(dbHandler().loadUserHandler());
+
+        fname.setText("");
+        lname.setText("");
+        username.setText("");
+        email.setText("");
+        pwd.setText("");
+        pwdConfirm.setText("");
+    }
+
+    // TODO: Will need to remove deleteUser once testing is done
     public void deleteUser (View view) {
         Log.i(TAG, "--> delete User");
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
-        String userName = "abcd";
+        String userName = "del1user";
 
         dbHandler.deleteUserHandler(userName);
         Toast.makeText(RegistrationActivity.this, "delete user test!", Toast.LENGTH_LONG).show();
