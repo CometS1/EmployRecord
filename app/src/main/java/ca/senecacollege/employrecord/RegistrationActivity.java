@@ -33,6 +33,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText pwdConfirm;
 
     Button btnRegister;
+    Button btnCancel;
     TextView resultView;
 
     public static Intent newIntent(Context packageContext) {
@@ -57,6 +58,7 @@ public class RegistrationActivity extends AppCompatActivity {
         pwdConfirm = findViewById(R.id.register_pwd_confirm);
 
         btnRegister = findViewById(R.id.btn_register);
+        btnCancel = findViewById(R.id.btnCancel);
         resultView = findViewById(R.id.resultView);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +74,14 @@ public class RegistrationActivity extends AppCompatActivity {
                     pwd.setText("");
                     pwdConfirm.setText("");
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                RegistrationActivity.this.startActivity(intent);
             }
         });
 
