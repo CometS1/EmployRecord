@@ -152,9 +152,20 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return id;
     }
 
+    // Returns true if user already exists
+    public boolean isUser(String username) {
+        Log.e(TAG, "--> Start isUser");
+        User user = findUserHandler(username);
+        if (user != null) {
+            Log.e(TAG, "--> isUser: user already exists");
+            return true;
+        }
+        return false;
+    }
+
 
     public User findUserHandler(String username) {
-        String query = "Select * FROM " + TABLE_USER + "WHERE" + COL_USERNAME + " = " + "'" + username+ "'";
+        String query = "Select * FROM " + TABLE_USER + " WHERE " + COL_USERNAME + " = '" + username+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         User user= new User();
