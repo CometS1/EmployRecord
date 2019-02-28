@@ -189,11 +189,20 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateUserHandler(String userame) {
+    public boolean updateUserHandler(User user) {
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(COL_USERNAME, userame);
-        return db.update(TABLE_USER, args, COL_USERNAME + "=" + userame, null) > 0;
+        args.put(COL_EMAIL, user.getEmail());
+        args.put(COL_PASSWORD, user.getPassword());
+        args.put(COL_FIRSTNAME, user.getFirstName());
+        args.put(COL_LASTNAME, user.getLastName());
+        String[] userName = new String[]{user.getUsername()};
+        System.out.println(user.getUsername());
+
+        return db.update(TABLE_USER, args, COL_USERNAME + "=?", userName)  > 0;
+
+
     }
     // end user crud operation
 

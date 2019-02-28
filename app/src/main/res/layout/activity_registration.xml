@@ -160,4 +160,13 @@
         android:text="Delete"
         tools:layout_editor_absoluteX="161dp"
         tools:layout_editor_absoluteY="667dp" />
+
+    <Button
+        android:id="@+id/Update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="updateUser"
+        android:text="Update"
+        tools:layout_editor_absoluteX="323dp"
+        tools:layout_editor_absoluteY="466dp" />
 </android.support.constraint.ConstraintLayout>

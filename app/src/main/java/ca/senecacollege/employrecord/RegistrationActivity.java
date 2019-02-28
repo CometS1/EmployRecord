@@ -98,5 +98,20 @@ public class RegistrationActivity extends AppCompatActivity {
         Toast.makeText(RegistrationActivity.this, "delete user test!", Toast.LENGTH_LONG).show();
     }
 
+    public void updateUser (View view) {
+        Log.i(TAG, "--> update User");
+        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+
+        User user = new User();
+
+        user.setUsername("test");
+        user.setEmail("tester@gmail.com");
+        user.setPassword("tester");
+        user.setFirstName("te");
+        user.setLastName("st");
+
+        dbHandler.updateUserHandler(user);
+        Toast.makeText(RegistrationActivity.this, "update user test!", Toast.LENGTH_LONG).show();
+    }
 
 }
