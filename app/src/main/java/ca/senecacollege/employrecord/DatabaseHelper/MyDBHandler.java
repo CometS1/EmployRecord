@@ -371,17 +371,56 @@ public class MyDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
-            int result_0 = cursor.getInt(0);
-            String result_1 = cursor.getString(1);
-            result += String.valueOf(result_0) + " " + result_1 +
-                    System.getProperty("line.separator");
+            int result_0 = cursor.getInt(0);        // job id
+            String result_1 = cursor.getString(1);  // title
+            String result_2 = cursor.getString(2);  // description
+            String result_3 = cursor.getString(3);  // organization
+            String result_4 = cursor.getString(4);  // org_location
+            String result_5 = cursor.getString(5);  // org_email
+            String result_6 = cursor.getString(6);  // post_origin
+            String result_7 = cursor.getString(7);  // post_url
+            String result_8 = cursor.getString(8);  // post_deadline
+            String result_9 = cursor.getString(9);  // applied_date
+            String result_10 = cursor.getString(10);  // interview_date
+            String result_11 = cursor.getString(11);  // offer_deadline
+            String result_12 = cursor.getString(12);  // note
+            int result_13 = cursor.getInt(13); // org_addr_id
+            int result_14 = cursor.getInt(14); // status_id
+            //int result_0 = cursor.getInt(0);
+
+            Log.i(TAG, "--> result_0 == " + result_0);
+            Log.i(TAG, "--> result_1 == " + result_1);
+            Log.i(TAG, "--> result_2 == " + result_2);
+            Log.i(TAG, "--> result_3 == " + result_3);
+            Log.i(TAG, "--> result_4 == " + result_4);
+            Log.i(TAG, "--> result_5 == " + result_5);
+            Log.i(TAG, "--> result_6 == " + result_6);
+            Log.i(TAG, "--> result_7 == " + result_7);
+            Log.i(TAG, "--> result_8 == " + result_8);
+            Log.i(TAG, "--> result_9 == " + result_9);
+            Log.i(TAG, "--> result_10 == " + result_10);
+            Log.i(TAG, "--> result_11 == " + result_11);
+            Log.i(TAG, "--> result_12 == " + result_12);
+            Log.i(TAG, "--> result_13 == " + result_13);
+            Log.i(TAG, "--> result_14 == " + result_14);
+
+            //result += String.valueOf(result_0) + " " + result_1 + System.getProperty("line.separator");
+
+            result +=result_0 + " " + result_1 + " " + result_2 + " " + result_3 + " " + result_4 + " " + result_5 +
+                    result_6 + " " + result_7 + " " + result_8 + " " + result_9 + " " + result_10 +
+                    result_11 + " " + result_12 + " " + result_13 + " " + result_14
+                    + System.getProperty("line.separator");
+
+            Log.i(TAG, "--> RESULT == " + result);
+
+
         }
         cursor.close();
         db.close();
         return result;
 
     }
-    public void addJobHandler(Jobs job) {
+    public long addJobHandler(Jobs job) {
         ContentValues values = new ContentValues();
         values.put(COL_TITLE,job.getTitle());
         values.put(COL_DESCRIPTION,job.getDescription());
@@ -399,8 +438,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COL_STATUS_ID,job.getStatus_id());
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(TABLE_JOB, null, values);
+        long id = db.insert(TABLE_JOB, null, values);
         db.close();
+        return id;
     }
 
     public Jobs findJobHandler(String title) {
