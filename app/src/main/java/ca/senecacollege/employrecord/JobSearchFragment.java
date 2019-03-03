@@ -33,12 +33,14 @@ public class JobSearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        /*
         view.findViewById(R.id.buttonTmp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "You are inside Job Search Fragment", Toast.LENGTH_SHORT).show();
             }
         });
+        */
     }
 
 }
