@@ -214,6 +214,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         User checkAccount = dbHandler.findUserHandler(username);
 
         if (checkAccount != null){
+            boolean update = dbHandler.updateUserHandler(checkAccount);
             if (!((checkAccount.getPassword()).equals(password))){
                 cancel = true;
                 focusView = mPasswordView;
