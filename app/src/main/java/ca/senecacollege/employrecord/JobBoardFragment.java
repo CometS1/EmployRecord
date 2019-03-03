@@ -55,11 +55,32 @@ public class JobBoardFragment extends Fragment {
             public void onClick(View v)
             {
                 loadJob();
-                // do something
+            }
+        });
+
+        Button deleteJobButton = (Button) view.findViewById(R.id.deleteJob);
+        deleteJobButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                deleteJob();
+            }
+        });
+
+        Button updateJobButton = (Button) view.findViewById(R.id.updateJob);
+        updateJobButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                updateJob();
             }
         });
 
         return view;
+
+
     }
 
     @Override
@@ -144,6 +165,63 @@ public class JobBoardFragment extends Fragment {
         Log.i(TAG, "--> Start loadUser");
         String result = (dbHandler().loadJobHandler());
         System.out.println(result);
+
+    }
+
+    public void deleteJob() {
+        Log.i(TAG, "--> delete job");
+        String userName = "";
+
+        //TODO: need to update code below so that id delete is fetch from specific job when accessing list
+        dbHandler().deleteJobHandler(2);
+        Toast.makeText(getActivity().getApplicationContext(), "delete user by id 2!", Toast.LENGTH_LONG).show();
+    }
+
+    public void updateJob() {
+        Log.i(TAG, "--> update Job");
+
+        Jobs jobs = new Jobs();
+
+        String title ="Systems Architect";
+        jobs.setTitle(title);
+
+        String description = "senior?";
+        jobs.setDescription(description);
+
+        String organization = "Seneca";
+        jobs.setOrganization(organization);
+
+        String org_location = "Microsoft";
+        jobs.setOrgLocation(org_location);
+
+        String org_email = "microsoft@seneca.ca";
+        jobs.setOrgEmail(org_email);
+
+        String post_origin ="Linkedin";
+        jobs.setPostOrigin(post_origin);
+
+        String post_url ="microsoft.com";
+        jobs.setPostUrl(post_url);
+
+        String post_deadline= "2019-01-02";
+        jobs.setPostDeadline(post_deadline);
+
+        String applied_date ="2019-01-01";
+        jobs.setAppliedDate(applied_date);
+
+        String interview_date="2019-01-04";
+        jobs.setInterviewDate(interview_date);
+
+        String offer_deadline="2019-01-10";
+        jobs.setOfferDeadline(offer_deadline);
+
+        String note="pass";
+        jobs.setNote(note);
+
+        // Todo: when we have proper page, when accessing specific job, must fetch out jobid.
+        dbHandler().updateJobHandler(jobs,1);
+        Toast.makeText(getActivity().getApplicationContext(), "update Job test by id 1", Toast.LENGTH_LONG).show();
+
 
     }
 
