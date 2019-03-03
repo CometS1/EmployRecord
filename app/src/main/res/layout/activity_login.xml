@@ -32,6 +32,7 @@
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -79,6 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
         android:hint="@string/password"
+        android:autofillHints="@string/password"
         android:imeActionId="6"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionUnspecified"
