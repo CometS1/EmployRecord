@@ -443,7 +443,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return id;
     }
 
-    public Jobs findJobHandler(String title) {
+    //find job by title
+    public Jobs findJobByTitle(String title) {
         String query = "Select * FROM " + TABLE_JOB + "WHERE" + COL_TITLE + " = " + "'" + title+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -462,15 +463,15 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public boolean deleteJobHandler(int ID) {
         boolean result = false;
-        String query = "Select*FROM " + TABLE_JOB + "WHERE" + COL_STATUS_ID + "= '" + String.valueOf(ID) + "'";
+        String query = "Select * FROM " + TABLE_JOB + " WHERE " + COL_JOB_ID + "= '" + String.valueOf(ID) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Jobs job= new Jobs();
         if (cursor.moveToFirst()) {
             job.setStatusId(Integer.parseInt(cursor.getString(0)));
-            db.delete(TABLE_JOB, COL_STATUS_ID + "=?",
+            db.delete(TABLE_JOB, COL_JOB_ID + "=?",
                     new String[] {
-                            String.valueOf(job.getJobId())
+                            String.valueOf(ID)
                     });
             cursor.close();
             result = true;
@@ -479,7 +480,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean updateJobHandler(Jobs job) {
+    public boolean updateJobHandler(Jobs job, Integer jobId) {
+        System.out.println(jobId);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COL_TITLE,job.getTitle());
@@ -497,7 +499,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COL_ORG_ADDR_ID,job.getOrg_addr_id());
         values.put(COL_STATUS_ID,job.getStatus_id());
         values.put(COL_TITLE, job.getTitle());
-        return db.update(TABLE_STATUS, values, COL_TITLE + "=" + job.getTitle(), null) > 0;
+        return db.update(TABLE_JOB, values, COL_JOB_ID + "=" + jobId, null) > 0;
     }
     // end job crud operation
     // begin address crud operation
