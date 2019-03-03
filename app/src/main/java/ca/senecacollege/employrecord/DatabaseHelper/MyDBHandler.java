@@ -109,15 +109,15 @@ public class MyDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
-            int result_0 = cursor.getInt(0);
+            //int result_0 = cursor.getInt(0);
 
-            String result_1 = cursor.getString(1);
-            String result_2 = cursor.getString(2);
-            String result_3 = cursor.getString(3);
-            String result_4 = cursor.getString(4);
-            String result_5 = cursor.getString(5);
+            String result_1 = cursor.getString(0);
+            String result_2 = cursor.getString(1);
+            String result_3 = cursor.getString(2);
+            String result_4 = cursor.getString(3);
+            String result_5 = cursor.getString(4);
 
-            Log.i(TAG, "--> result_0 == " + result_0);
+            //Log.i(TAG, "--> result_0 == " + result_0);
             Log.i(TAG, "--> result_1 == " + result_1);
             Log.i(TAG, "--> result_2 == " + result_2);
             Log.i(TAG, "--> result_3 == " + result_3);
@@ -126,7 +126,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
             //result += String.valueOf(result_0) + " " + result_1 + System.getProperty("line.separator");
 
-            result += String.valueOf(result_0) + " " + result_1
+            result += result_1
                     + " " + result_2 + " " + result_3
                     + " " + result_4 + " " + result_5
                     + System.getProperty("line.separator");
@@ -154,13 +154,17 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
 
     public User findUserHandler(String username) {
-        String query = "Select * FROM " + TABLE_USER + "WHERE" + COL_USERNAME + " = " + "'" + username+ "'";
+        String query = "Select * FROM " + TABLE_USER + " WHERE " + COL_USERNAME + " = " + "'" + username+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         User user= new User();
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
+            user.setEmail(cursor.getString(cursor.getColumnIndex(COL_EMAIL)));
             user.setUsername(cursor.getString(cursor.getColumnIndex(COL_USERNAME)));
+            user.setPassword(cursor.getString(cursor.getColumnIndex(COL_PASSWORD)));
+            user.setFirstName(cursor.getString(cursor.getColumnIndex(COL_FIRSTNAME)));
+            user.setLastName(cursor.getString(cursor.getColumnIndex(COL_LASTNAME)));
             cursor.close();
         } else {
             user= null;
