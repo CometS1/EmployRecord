@@ -26,13 +26,25 @@ class CustomListAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.joblistlayout, null, true);
         StringTokenizer tokens = new StringTokenizer((String) this.itemname1.get(position), "@@");
 
+        String jobIdToken = tokens.nextToken();
+        TextView idInfo = (TextView) rowView.findViewById(R.id.jobURL);
+        idInfo.setText(jobIdToken);
+
+        String titleToken = "Title: " + tokens.nextToken();
+        TextView textInfo = (TextView) rowView.findViewById(R.id.textViewTitle);
+        textInfo.setText(titleToken);
+
+        String locationToken = "Location: " + tokens.nextToken();
+        TextView locationInfo = (TextView) rowView.findViewById(R.id.textViewLocation);
+        locationInfo.setText(locationToken);
+
         String fullTimeToken = tokens.nextToken();
-        TextView fullTimeInfo = (TextView) rowView.findViewById(R.id.textViewTitle);
+        TextView fullTimeInfo = (TextView) rowView.findViewById(R.id.textViewFullTime);
         fullTimeInfo.setText(fullTimeToken);
 
-        String titleToken = tokens.nextToken();
-        TextView textInfo = (TextView) rowView.findViewById(R.id.textViewFullTime);
-        textInfo.setText(titleToken);
+
+
+
         /*String titleToken = tokens.nextToken();
         String timeToken = tokens.nextToken();
         String urlToken = tokens.nextToken();

@@ -30,6 +30,16 @@ public final class Utils {
         return extractFeatureFromJson(jsonResponse);
     }
 
+    public static List<String> fetchSpecificJobData(String requestUrl) {
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(createUrl(requestUrl));
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error closing input stream", e);
+        }
+        return extractJobFeatureFromJson(jsonResponse);
+    }
+
     private static URL createUrl(String stringUrl) {
         try {
             return new URL(stringUrl);
@@ -88,22 +98,61 @@ public final class Utils {
         return output.toString();
     }
 
-    private static List<String> extractFeatureFromJson(String jobJSON) {
+    private static List<String> extractJobFeatureFromJson(String jobJSON) {
         JSONException e;
         if (TextUtils.isEmpty(jobJSON)) {
             return null;
         }
         ArrayList jobList = new ArrayList();
         try {
+            JSONObject currentJob = new JSONObject(jobJSON);
+                String jobTitle = currentJob.getString("title");
+                String jobLocation = currentJob.getString("location");
+                String jobDescription = currentJob.getString("description");
+                String jobFullTime = currentJob.getString("type");
+                String jobCreationDate = currentJob.getString("created_at");
+                String jobCompany = currentJob.getString("company");
+                String jobCompanyURL = currentJob.getString("company_url");
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(jobTitle);
+                stringBuilder.append("@@");
+                stringBuilder.append(jobLocation);
+                stringBuilder.append("@@");
+                stringBuilder.append(jobDescription);
+                stringBuilder.append("@@");
+                stringBuilder.append(jobFullTime);
+                stringBuilder.append("@@");
+                stringBuilder.append(jobCreationDate);
+                stringBuilder.append("@@");
+                stringBuilder.append(jobCompany);
+                stringBuilder.append("@@");
+                stringBuilder.append(jobCompanyURL);
+                jobList.add(stringBuilder.toString());
+            return jobList;
+        } catch (JSONException e2) {
+            e = e2;
+            Log.e(LOG_TAG, "Problem parsing the job JSON results", e);
+            return null;
+        }
+    }
+
+    private static List<String> extractFeatureFromJson(String jobJSON) {
+        JSONException e;
+        if (TextUtils.isEmpty(jobJSON)) {
+            return null;
+        }
+        ArrayList job = new ArrayList();
+        try {
             /*JSONObject baseJsonResponse = new JSONObject(jobJSON);
             JSONArray jobArray = baseJsonResponse.getJSONArray("features");*/
             JSONArray jobArray = new JSONArray(jobJSON);
-            int i = 0;
             int i2 = 0;
             while (i2 < jobArray.length()) {
                 //JSONObject currentJob = jobArray.getJSONObject(i2);
                 //JSONObject properties = currentJob.getJSONObject("properties");
                 JSONObject currentJob = jobArray.getJSONObject(i2);
+                String jobURL = currentJob.getString("url");
+                String jobLocation = currentJob.getString("location");
                 String jobTitle = currentJob.getString("title");
                 String jobFullTime = currentJob.getString("type");
                 /*String jobCreationDate = properties.getString("created_at");
@@ -112,8 +161,12 @@ public final class Utils {
                 String lat = coord.getString(i);
                 String lng = coord.getString(1);*/
                 StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(jobURL);
+                stringBuilder.append("@@");
                 stringBuilder.append(jobTitle);
-                JSONArray jobArray2 = jobArray;
+                stringBuilder.append("@@");
+                stringBuilder.append(jobLocation);
+                //JSONArray jobArray2 = jobArray;
                 stringBuilder.append("@@");
                 stringBuilder.append(jobFullTime);
                 /*stringBuilder.append("@@");
@@ -124,12 +177,11 @@ public final class Utils {
                 stringBuilder.append(lng);
                 stringBuilder.append("@@");
                 stringBuilder.append(quakeMag);*/
-                jobList.add(stringBuilder.toString());
+                job.add(stringBuilder.toString());
                 i2++;
-                jobArray = jobArray2;
-                i = 0;
+                //jobArray = jobArray2;
             }
-            return jobList;
+            return job;
         } catch (JSONException e2) {
             e = e2;
             Log.e(LOG_TAG, "Problem parsing the job JSON results", e);
