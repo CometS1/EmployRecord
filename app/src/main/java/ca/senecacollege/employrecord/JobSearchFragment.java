@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,27 +42,22 @@ public class JobSearchFragment extends Fragment {
 
     class JobAsyncTask extends AsyncTask<String, Void, List<String>> {
 
-        /* renamed from: com.example.noppa_000.myapplication.MainActivity$QuakeAsyncTask$1 */
         class openLink implements AdapterView.OnItemClickListener {
             openLink() {
             }
 
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                /*TextView currentLng = (TextView) view.findViewById(R.id.textViewLng);
-                String stringLat = ((TextView) view.findViewById(R.id.textViewLat)).getText().toString();
-                String stringLng = currentLng.getText().toString();
+                //startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://www.youtube.com/watch?v=bn21x4CtHcg".toString())));
+                String currentJobURL = ((TextView) view.findViewById(R.id.jobURL)).getText().toString();
                 StringBuilder URLstring = new StringBuilder();
-                URLstring.append("https://www.openstreetmap.org/?mlat=");
-                URLstring.append(stringLat);
-                URLstring.append("&mlon=");
-                URLstring.append(stringLng);
-                URLstring.append("#map=5/");
-                URLstring.append(stringLat);
-                URLstring.append("/");
-                URLstring.append(stringLng);*/
-                //MainActivity.this.startActivity(new Intent("android.intent.action.VIEW", Uri.parse(URLstring.toString())));
+                //URLstring.append("https://jobs.github.com/positions/");
+                URLstring.append(currentJobURL);
+                URLstring.append(".json");
                 //startActivity(new Intent("android.intent.action.VIEW", Uri.parse(URLstring.toString())));
-                startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://www.youtube.com/watch?v=bn21x4CtHcg".toString())));
+                //Toast.makeText(getActivity(), URLstring, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ViewJobActivity.class);
+                intent.putExtra("jobUrl", URLstring.toString());
+                startActivityForResult(intent, 0);
             }
         }
 
@@ -128,8 +125,6 @@ public class JobSearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
-
                 EditText title = (getActivity().findViewById(R.id.searchValue));
                 Spinner spinner1 = (Spinner) getActivity().findViewById(R.id.fullTimeSpinner);
                 EditText location = (getActivity().findViewById(R.id.locationValue));
@@ -146,7 +141,7 @@ public class JobSearchFragment extends Fragment {
                     stringBuilder.append(locationValue);
                     stringURL = stringBuilder.toString();
 
-                Toast.makeText(getActivity(), fullTime, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), fullTime, Toast.LENGTH_SHORT).show();
                     new JobAsyncTask().execute(new String[]{stringURL});
             }
         });
