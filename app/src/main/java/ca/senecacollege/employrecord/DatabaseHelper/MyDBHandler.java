@@ -184,6 +184,25 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return user;
     }
 
+    public User findUserHandlerByPassword(String password) {
+        String query = "Select * FROM " + TABLE_USER + " WHERE " + COL_PASSWORD + " = " + "'" + password+ "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        User user= new User();
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            user.setEmail(cursor.getString(cursor.getColumnIndex(COL_EMAIL)));
+            user.setUsername(cursor.getString(cursor.getColumnIndex(COL_USERNAME)));
+            user.setPassword(cursor.getString(cursor.getColumnIndex(COL_PASSWORD)));
+            user.setFirstName(cursor.getString(cursor.getColumnIndex(COL_FIRSTNAME)));
+            user.setLastName(cursor.getString(cursor.getColumnIndex(COL_LASTNAME)));
+            cursor.close();
+        } else {
+            user= null;
+        }
+        db.close();
+        return user;
+    }
 
     public boolean deleteUserHandler(String  userame) {
         boolean result = false;
