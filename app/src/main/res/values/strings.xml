@@ -36,6 +36,9 @@
     <string name="enter_old_password">Enter Old Password</string>
     <string name="enter_new_password">Enter New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
+    <string name="incorrect_orig_password">Wrong old password entered </string>
+    <string name="incorrect_new_password">Wrong new password entered </string>
+    <string name="incorrect_confirm_password">Wrong confirm password entered </string>
 
     <!-- TODO: Page Titles -->
     <string name="title_registration">Registration</string>

@@ -3,10 +3,23 @@ package ca.senecacollege.employrecord;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
+import ca.senecacollege.employrecord.DatabaseHelper.User;
 
 
 /**
@@ -16,6 +29,11 @@ import android.view.ViewGroup;
  * to handle interaction events.
  */
 public class ProfileFragmentChangePassword extends Fragment {
+
+    private EditText mOriginalPasswordView;
+    private EditText mNewPasswordView;
+    private EditText mConfirmPasswordView;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -48,6 +66,114 @@ public class ProfileFragmentChangePassword extends Fragment {
 //                    + " must implement OnFragmentInteractionListener");
 //        }
 //    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Button updatePassword = (Button)view.findViewById(R.id.ConfirmChangePass);
+        updatePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                updatePassword();
+                // Create new fragment and transaction
+                Fragment newFragment = new ProfileFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+                transaction.replace(R.id.main_screen_area, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+
+            }
+        });
+
+        Button changePasswordFragment = (Button)view.findViewById(R.id.CancelChangePass);
+        changePasswordFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Create new fragment and transaction
+                Fragment newFragment = new ProfileFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+                transaction.replace(R.id.main_screen_area, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+            }
+        });
+    }
+
+    private void updatePassword () {
+        mOriginalPasswordView = (EditText) getActivity().findViewById(R.id.enterOldPassword);
+        mNewPasswordView = (EditText) getActivity().findViewById(R.id.enterNewPassword);
+        mConfirmPasswordView = (EditText) getActivity().findViewById(R.id.confirmNewPassword);
+
+        boolean cancel = false;
+        View focusView = null;
+        String originPassword = mOriginalPasswordView.getText().toString();
+        String newPassword = mNewPasswordView.getText().toString();
+        String confirmPassword = mConfirmPasswordView.getText().toString();
+
+        System.out.println(originPassword);
+        if (TextUtils.isEmpty(originPassword)) {
+            mOriginalPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mOriginalPasswordView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(newPassword)) {
+            mNewPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mNewPasswordView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(confirmPassword)) {
+            mConfirmPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mConfirmPasswordView;
+            cancel = true;
+        }
+
+        MyDBHandler dbHandler = new MyDBHandler(this.getActivity(), null, null, 1);
+        User checkPassword = dbHandler.findUserHandlerByPassword(originPassword);
+
+        if (checkPassword != null){
+            boolean update = dbHandler.updateUserHandler(checkPassword);
+            if (!((checkPassword.getPassword()).equals(originPassword))){
+                cancel = true;
+                focusView = mOriginalPasswordView;
+                mOriginalPasswordView.setError(getString(R.string.incorrect_orig_password));
+
+            }
+
+            if (!((newPassword).equals(confirmPassword))){
+                cancel = true;
+                focusView = mNewPasswordView;
+                mNewPasswordView.setError(getString(R.string.incorrect_new_password));
+                focusView = mConfirmPasswordView;
+                mConfirmPasswordView.setError(getString(R.string.incorrect_confirm_password));
+            }
+            else {
+                System.out.println(originPassword);
+                System.out.println(newPassword);
+                System.out.println(confirmPassword);
+                System.out.println("correct on both");
+                checkPassword.setUsername(checkPassword.getUsername());
+                checkPassword.setPassword(newPassword);
+                dbHandler.updateUserHandler(checkPassword);
+
+                Toast.makeText(getActivity(), "Password update successful", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
+
 
     @Override
     public void onDetach() {
