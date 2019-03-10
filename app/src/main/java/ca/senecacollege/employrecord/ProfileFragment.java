@@ -36,9 +36,20 @@ public class ProfileFragment extends Fragment {
         changePasswordFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    FragmentTransaction fragmentTransaction =getChildFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_profile_change_password,new ProfileChangePasswordFragment());
-                    fragmentTransaction.commit();
+
+                // Create new fragment and transaction
+                Fragment newFragment = new ProfileFragmentChangePassword();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+                transaction.replace(R.id.main_screen_area, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+
+
             }
         });
     }
