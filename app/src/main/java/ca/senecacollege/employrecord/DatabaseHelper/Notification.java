@@ -13,10 +13,8 @@ public class Notification{
 
         public Notification(){}
 
-        public Notification(int _notification_id, String _name, String _start_date, String _end_date, String _start_time , String _end_time, String _all_day, String _note, int _colour_id){
-            this.notification_id  = _notification_id;
+        public Notification(String _name, String _start_date, String _end_date, String _start_time , String _end_time, String _all_day, String _note, int _colour_id){
             this.name = _name;
-            //this.job_id = _job_id;
             this.start_date = _start_date;
             this.end_date  = _end_date;
             this.start_time  = _start_time ;

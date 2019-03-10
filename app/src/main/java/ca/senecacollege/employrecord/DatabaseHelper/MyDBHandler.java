@@ -679,37 +679,74 @@ public class MyDBHandler extends SQLiteOpenHelper {
     // begin notification crud operation
     public String loadNotificationHandler() {
         String result = "";
-        String query = "Select*FROM " + TABLE_NOTIFICATION;
+        String query = "Select * FROM " + TABLE_NOTIFICATION;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
-            int result_0 = cursor.getInt(0);
-            String result_1 = cursor.getString(1);
-            result += String.valueOf(result_0) + " " + result_1 +
-                    System.getProperty("line.separator");
+            int result_0 = cursor.getInt(0);        // notification id
+            String result_1 = cursor.getString(1);  // name
+            String result_2 = cursor.getString(2);  // start_date
+            String result_3 = cursor.getString(3);  // end_date
+            String result_4 = cursor.getString(4);  // start_time
+            String result_5 = cursor.getString(5);  // end_time
+            String result_6 = cursor.getString(6);  // all_day
+            String result_7 = cursor.getString(7);  // note
+            int result_8 = cursor.getInt(8);    // colour_id
+
+            Log.i(TAG, "--> result_0 == " + result_0);
+            Log.i(TAG, "--> result_1 == " + result_1);
+            Log.i(TAG, "--> result_2 == " + result_2);
+            Log.i(TAG, "--> result_3 == " + result_3);
+            Log.i(TAG, "--> result_4 == " + result_4);
+            Log.i(TAG, "--> result_5 == " + result_5);
+            Log.i(TAG, "--> result_6 == " + result_6);
+            Log.i(TAG, "--> result_7 == " + result_7);
+            Log.i(TAG, "--> result_8 == " + result_8);
+
+            result +=result_0 + " " + result_1 + " " + result_2 + " " + result_3 + " " + result_4 + " " + result_5 +
+                    result_6 + " " + result_7 + " " + result_8 + " "
+                    + System.getProperty("line.separator");
+
+            Log.i(TAG, "--> RESULT == " + result);
         }
         cursor.close();
         db.close();
         return result;
 
     }
+
     public void addNotificationHandler(Notification notification) {
         ContentValues values = new ContentValues();
-        values.put(COL_NOTIFICATION_ID, notification.getNotification_id());
         values.put(COL_NAME, notification.getName());
+        values.put(COL_START_DATE, notification.getStart_date());
+        values.put(COL_END_DATE, notification.getEnd_date());
+        values.put(COL_START_TIME, notification.getStart_time());
+        values.put(COL_END_TIME, notification.getEnd_time());
+        values.put(COL_ALL_DAY, notification.getAll_day());
+        values.put(COL_NOTE, notification.getNote());
+        values.put(COL_COLOUR_ID, notification.getColour_id());
+
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_NOTIFICATION, null, values);
         db.close();
     }
 
-    public Notification findNotificationHandler(String name) {
-        String query = "Select * FROM " + TABLE_NOTIFICATION + "WHERE" + COL_NAME + " = " + "'" + name+ "'";
+    public Notification findNotificationHandler(int ID) {
+        String query = "Select * FROM " + TABLE_NOTIFICATION + " WHERE " + COL_NAME + " = " + "'" + ID + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Notification notification= new Notification();
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
             notification.setNotificationId(Integer.parseInt(cursor.getString(0)));
+            notification.setName(cursor.getString(cursor.getColumnIndex(COL_NAME)));
+            notification.setStartDate(cursor.getString(cursor.getColumnIndex(COL_START_DATE)));
+            notification.setEndDate(cursor.getString(cursor.getColumnIndex(COL_END_DATE)));
+            notification.setStartTime(cursor.getString(cursor.getColumnIndex(COL_START_TIME)));
+            notification.setEndTime(cursor.getString(cursor.getColumnIndex(COL_END_TIME)));
+            notification.setAllDay(cursor.getString(cursor.getColumnIndex(COL_ALL_DAY)));
+            notification.setNote(cursor.getString(cursor.getColumnIndex(COL_NOTE)));
+            notification.setColourId(Integer.parseInt(cursor.getString(8)));
             cursor.close();
         } else {
             notification= null;
@@ -720,7 +757,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public boolean deleteNotificationHandler(int ID) {
         boolean result = false;
-        String query = "Select*FROM " + TABLE_NOTIFICATION + "WHERE" + COL_NOTIFICATION_ID + "= '" + String.valueOf(ID) + "'";
+        String query = "Select * FROM " + TABLE_NOTIFICATION + " WHERE " + COL_NOTIFICATION_ID + "= '" + String.valueOf(ID) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Notification notification= new Notification();
@@ -737,12 +774,19 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean updateNotificationHandler(int ID, String name) {
+    public boolean updateNotificationHandler(Notification notification, Integer notificationId) {
+        System.out.println(notificationId);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(COL_NOTIFICATION_ID, ID);
-        args.put(COL_NAME,name);
-        return db.update(TABLE_NOTIFICATION, args, COL_NOTIFICATION_ID + "=" + ID, null) > 0;
+        args.put(COL_NAME, notification.getName());
+        args.put(COL_START_DATE, notification.getStart_date());
+        args.put(COL_END_DATE, notification.getEnd_date());
+        args.put(COL_START_TIME, notification.getStart_time());
+        args.put(COL_END_TIME, notification.getEnd_time());
+        args.put(COL_ALL_DAY, notification.getAll_day());
+        args.put(COL_NOTE, notification.getNote());
+
+        return db.update(TABLE_NOTIFICATION, args, COL_NOTIFICATION_ID + "=" + notificationId, null) > 0;
     }
 
     // end notification crud operation
