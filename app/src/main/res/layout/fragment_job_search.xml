@@ -8,58 +8,78 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/SearchText"
-        android:textSize="20.0sp"
-        android:textColor="@android:color/black"
+    <ProgressBar
+        android:id="@+id/search_progress"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone" />
+
+
+    <TextView
+        android:id="@+id/SearchText"
+        android:textColor="@android:color/black"
+        app:autoSizeTextType="uniform"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        android:layout_height="40dp"
+        android:layout_marginEnd="30dp"
         android:text="@string/search_text" />
 
     <EditText
         android:id="@+id/searchValue"
-        android:layout_width="match_parent"
+        app:autoSizeTextType="uniform"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="30dp"
         android:maxLines="1"
-        android:layout_height="50dp"
-        android:layout_toEndOf="@+id/fullTimeText"/>
+        android:inputType="text"
+        android:layout_toEndOf="@+id/SearchText" />
 
-        <TextView
-            android:id="@+id/fullTimeText"
-            android:textSize="20.0sp"
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="30dp"
-            android:layout_below="@+id/searchValue"
-            android:text="@string/full_time" />
-
+    <TextView
+        android:id="@+id/fullTimeText"
+        app:autoSizeTextType="uniform"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:maxLines="1"
+        android:layout_marginEnd="30dp"
+        android:layout_below="@+id/SearchText"
+        android:text="@string/full_time" />
 
     <Spinner
         android:id="@+id/fullTimeSpinner"
+        app:autoSizeTextType="uniform"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_below="@+id/searchValue"
-        android:layout_toEndOf="@+id/fullTimeText" />
+        android:layout_alignStart="@+id/searchValue"
+        android:layout_toEndOf="@+id/fullTimeText"/>
 
     <TextView
         android:id="@+id/locationText"
-        android:textSize="20.0sp"
+        app:autoSizeTextType="uniform"
         android:textColor="@android:color/black"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
+        android:layout_height="40dp"
+        android:maxLines="1"
+        android:layout_marginEnd="30dp"
         android:layout_below="@+id/fullTimeText"
         android:text="@string/location_text" />
 
     <EditText
         android:id="@+id/locationValue"
+        app:autoSizeTextType="uniform"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:maxLines="1"
-        android:textSize="20.0sp"
+        android:inputType="text"
         android:layout_toEndOf="@+id/locationText"
-        android:layout_below="@+id/fullTimeSpinner"/>
+        android:layout_below="@+id/fullTimeSpinner"
+        android:layout_alignStart="@+id/fullTimeSpinner"/>
 
     <Button
         android:id="@+id/searchButton"
@@ -69,11 +89,13 @@
         android:text="@string/search_text"
         android:gravity="center"/>
 
+
     <ListView
         android:id="@+id/searchResultsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/searchButton"/>
+
 
 
 </RelativeLayout>

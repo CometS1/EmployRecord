@@ -42,30 +42,6 @@ class CustomListAdapter extends ArrayAdapter<String> {
         TextView fullTimeInfo = (TextView) rowView.findViewById(R.id.textViewFullTime);
         fullTimeInfo.setText(fullTimeToken);
 
-
-
-
-        /*String titleToken = tokens.nextToken();
-        String timeToken = tokens.nextToken();
-        String urlToken = tokens.nextToken();
-        String latToken = tokens.nextToken();
-        String lngToken = tokens.nextToken();
-        String magToken = tokens.nextToken();
-        TextView textInfo = (TextView) rowView.findViewById(R.id.textViewTitle);
-        textInfo.setText(titleToken);
-        Double magDouble = Double.valueOf(Double.parseDouble(magToken));
-        if (magDouble.doubleValue() >= 7.5d) {
-            textInfo.setBackgroundColor(this.context.getResources().getColor(17170454));
-        }
-        textInfo = (TextView) rowView.findViewById(R.id.textViewDate);
-        textInfo.setText(new Date(Long.parseLong(timeToken)).toString());
-        if (magDouble.doubleValue() >= 7.5d) {
-            textInfo.setBackgroundColor(this.context.getResources().getColor(17170454));
-        }
-        ((TextView) rowView.findViewById(R.id.textViewURL)).setText(urlToken);
-        ((TextView) rowView.findViewById(R.id.textViewLat)).setText(latToken);
-        ((TextView) rowView.findViewById(R.id.textViewLng)).setText(lngToken);
-        ((TextView) rowView.findViewById(R.id.textViewMag)).setText(magToken);*/
         return rowView;
     }
 }

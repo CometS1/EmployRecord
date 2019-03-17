@@ -125,6 +125,7 @@ public class JobSearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+
                 EditText title = (getActivity().findViewById(R.id.searchValue));
                 Spinner spinner1 = (Spinner) getActivity().findViewById(R.id.fullTimeSpinner);
                 EditText location = (getActivity().findViewById(R.id.locationValue));
@@ -133,16 +134,19 @@ public class JobSearchFragment extends Fragment {
                 String fullTime = (spinner1.getSelectedItem()).toString();
                 String locationValue = location.getText().toString();
                     StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.setLength(0);
                     stringBuilder.append(stringURL);
                     stringBuilder.append(titleValue);
                     stringBuilder.append("&full_time=");
                     stringBuilder.append(fullTime);
                     stringBuilder.append("&location=");
                     stringBuilder.append(locationValue);
-                    stringURL = stringBuilder.toString();
+                    String URL = stringBuilder.toString();
 
-                //Toast.makeText(getActivity(), fullTime, Toast.LENGTH_SHORT).show();
-                    new JobAsyncTask().execute(new String[]{stringURL});
+
+                //Toast.makeText(getActivity(), URL, Toast.LENGTH_SHORT).show();
+
+                    new JobAsyncTask().execute(new String[]{URL});
             }
         });
 
