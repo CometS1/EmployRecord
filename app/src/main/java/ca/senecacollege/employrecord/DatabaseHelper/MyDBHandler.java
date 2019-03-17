@@ -235,8 +235,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
         System.out.println(user.getUsername());
 
         return db.update(TABLE_USER, args, COL_USERNAME + "=?", userName)  > 0;
-
-
     }
     // end user crud operation
 
@@ -601,40 +599,54 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public String loadUserJobHandler() {
         String result = "";
-        String query = "Select*FROM " + TABLE_USER_JOB;
+        String query = "Select * FROM " + TABLE_USER_JOB;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
             int result_0 = cursor.getInt(0);
-            String result_1 = cursor.getString(1);
+            int result_1 = cursor.getInt(1);
+            int result_2 = cursor.getInt(2);
             result += String.valueOf(result_0) + " " + result_1 +
                     System.getProperty("line.separator");
+
+            Log.i(TAG, "--> result_0 == " + result_0);
+            Log.i(TAG, "--> result_1 == " + result_1);
+            Log.i(TAG, "--> result_2 == " + result_2);
+
+            //result += String.valueOf(result_0) + " " + result_1 + System.getProperty("line.separator");
+
+            result +=result_0 + " " + result_1 + " " + result_2
+                    + System.getProperty("line.separator");
+
+            Log.i(TAG, "--> RESULT == " + result);
         }
         cursor.close();
         db.close();
         return result;
 
     }
-    public void addUserJobHandler(UserJob userJob) {
+    public long addUserJobHandler(UserJob userJob) {
         ContentValues values = new ContentValues();
-        //values.put(COL_USER_JOB_ID, userJob.getUser_job_id());
+        values.put(COL_USER_JOB_ID, userJob.getUser_job_id());
         values.put(COL_USER_ID, userJob.getUser_id());
         values.put(COL_JOB_ID, userJob.getJob_id());
         SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(TABLE_USER_JOB, null, values);
+        long id = db.insert(TABLE_USER_JOB, null, values);
         db.close();
+        return id;
     }
-/*
-    public UserJob findUserJobHandler(String userjob) {
-        String query = "Select * FROM " + TABLE_USER_JOB + "WHERE" + COL_USER_JOB_ID + " = " + "'" + userjob+ "'";
+
+    public UserJob findUserJObHandler(int ID) {
+        String query = "Select * FROM " + TABLE_USER_JOB + " WHERE " + COL_NAME + " = " + "'" + ID + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        UserJob userJob= new UserJob();
+        UserJob userJob = new UserJob();
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
             userJob.setUser_job_id(Integer.parseInt(cursor.getString(0)));
-            userJob.setUserId(Integer.parseInt(cursor.getString(1)));
-            userJob.set_job_id(Integer.parseInt(cursor.getString(2)));
+            userJob.set_job_id(Integer.parseInt(cursor.getString(1)));
+            userJob.setUserId(Integer.parseInt(cursor.getString(2)));
+
             cursor.close();
         } else {
             userJob= null;
@@ -645,15 +657,15 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public boolean deleteUserJobHandler(int ID) {
         boolean result = false;
-        String query = "Select*FROM " + TABLE_USER_JOB + "WHERE" + COL_USER_JOB_ID + "= '" + String.valueOf(ID) + "'";
+        String query = "Select * FROM " + TABLE_USER_JOB + " WHERE " + COL_JOB_ID + "= '" + String.valueOf(ID) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        UserJob userJob= new UserJob();
+        UserJob userJob = new UserJob();
         if (cursor.moveToFirst()) {
             userJob.setUser_job_id(Integer.parseInt(cursor.getString(0)));
             db.delete(TABLE_USER_JOB, COL_USER_JOB_ID + "=?",
                     new String[] {
-                            String.valueOf(userJob.getUser_job_id())
+                            String.valueOf(ID)
                     });
             cursor.close();
             result = true;
@@ -662,15 +674,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean updateUserJobHandler(int ID, String userId, String jobId) {
+    public boolean updateUserJobHandler(UserJob userJob) {
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(COL_USER_JOB_ID, ID);
-        args.put(COL_USER_ID, userId);
-        args.put(COL_JOB_ID, jobId);
-        return db.update(TABLE_USER_JOB, args, COL_USER_JOB_ID + "=" + ID, null) > 0;
+        args.put(COL_USER_JOB_ID, userJob.getUser_job_id());
+        args.put(COL_USER_ID, userJob.getUser_id());
+        args.put(COL_JOB_ID, userJob.getUser_job_id());
+
+        return db.update(TABLE_USER, args, COL_USER_JOB_ID + "=" + userJob.getUser_job_id(), null)  > 0;
     }
-    */
+
+
 
     // end userjob crud operation
 
