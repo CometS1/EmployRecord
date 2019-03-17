@@ -53,6 +53,10 @@
     <string name="full_time">Full Time</string>
     <string name="location_text">Location</string>
     <string name="search_text">Search</string>
+    <string name="add_job">Add job</string>
+    <string name="load_job">Load job</string>
+    <string name="delete_job">Delete Job</string>
+    <string name="update_job">Update Job</string>
 
     <string-array name="fulltime_array">
         <item>true</item>
