@@ -16,6 +16,7 @@ import android.widget.Toast;
 import ca.senecacollege.employrecord.DatabaseHelper.Jobs;
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
 import ca.senecacollege.employrecord.DatabaseHelper.User;
+import ca.senecacollege.employrecord.DatabaseHelper.UserJob;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -44,7 +45,6 @@ public class JobBoardFragment extends Fragment {
             public void onClick(View v)
             {
                 addJob();
-                // do something
             }
         });
 
@@ -75,6 +75,46 @@ public class JobBoardFragment extends Fragment {
             public void onClick(View v)
             {
                 updateJob();
+            }
+        });
+
+        Button addUserJobButton = (Button) view.findViewById(R.id.addUserJob);
+        addUserJobButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                addUserJob();
+            }
+        });
+
+        Button loadUserJobButton = (Button) view.findViewById(R.id.loadUserJob);
+        loadUserJobButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                loadUserJob();
+            }
+        });
+
+        Button deleteUserJobButton = (Button) view.findViewById(R.id.deleteUserJob);
+        deleteUserJobButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                deleteUserJob();
+            }
+        });
+
+        Button updateUserJobButton = (Button) view.findViewById(R.id.updateUserJob);
+        updateUserJobButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                updateUserJob();
             }
         });
 
@@ -225,8 +265,64 @@ public class JobBoardFragment extends Fragment {
 
     }
 
+    private void addUserJob() {
+        Log.e(TAG, "--> Start addJob");
+
+        //TODO: need to link below with job json and automate process
+
+        UserJob userJob = new UserJob();
+
+        int user_id =1;
+        userJob.setUserId(user_id);
+
+        int job_id =1;
+        userJob.set_job_id(job_id);
+
+        Log.e(TAG, "-->New user: " + userJob);
+
+        dbHandler().addUserJobHandler(userJob);
+        Toast.makeText(getActivity().getApplicationContext(), "User Job Add Test", Toast.LENGTH_LONG).show();
+
+    }
+
+    public void loadUserJob() {
+        Log.i(TAG, "--> Start loadUser");
+        String result = (dbHandler().loadUserJobHandler());
+        System.out.println(result);
+
+    }
+
+    public void deleteUserJob() {
+        Log.i(TAG, "--> delete User job");
+        String userName = "";
+
+        //TODO: need to update code below so that id delete is fetch from specific job when accessing list
+        dbHandler().deleteUserJobHandler(1);
+        Toast.makeText(getActivity().getApplicationContext(), "delete user by id 1!", Toast.LENGTH_LONG).show();
+    }
+
+    public void updateUserJob() {
+        Log.i(TAG, "--> update User Job");
+
+        UserJob userJob = new UserJob();
+
+        int job_id = 2;
+        userJob.set_job_id(job_id);
+
+        int user_id = 2;
+        userJob.setUserId(user_id);
+
+        // Todo: when we have proper page, when accessing specific job, must fetch out jobid.
+        dbHandler().updateUserJobHandler(userJob);
+        Toast.makeText(getActivity().getApplicationContext(), "update Job test by id 1", Toast.LENGTH_LONG).show();
+
+
+    }
+
     private MyDBHandler dbHandler() {
         return new MyDBHandler(getActivity().getApplicationContext(), null, null, 1);
     }
+
+
 
 }
