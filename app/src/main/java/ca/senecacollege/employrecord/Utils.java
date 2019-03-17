@@ -150,18 +150,11 @@ public final class Utils {
             JSONArray jobArray = new JSONArray(jobJSON);
             int i2 = 0;
             while (i2 < jobArray.length()) {
-                //JSONObject currentJob = jobArray.getJSONObject(i2);
-                //JSONObject properties = currentJob.getJSONObject("properties");
                 JSONObject currentJob = jobArray.getJSONObject(i2);
                 String jobURL = currentJob.getString("url");
                 String jobLocation = currentJob.getString("location");
                 String jobTitle = currentJob.getString("title");
-                String jobFullTime = currentJob.getString("type");
-                /*String jobCreationDate = properties.getString("created_at");
-                String jobURL = properties.getString("url");
-                JSONArray coord = currentJob.getJSONObject("geometry").getJSONArray("coordinates");
-                String lat = coord.getString(i);
-                String lng = coord.getString(1);*/
+                String jobFullTime = currentJob.getString("company");
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append(jobURL);
                 stringBuilder.append("@@");
@@ -171,14 +164,6 @@ public final class Utils {
                 //JSONArray jobArray2 = jobArray;
                 stringBuilder.append("@@");
                 stringBuilder.append(jobFullTime);
-                /*stringBuilder.append("@@");
-                stringBuilder.append(jobFullTime);
-                stringBuilder.append("@@");
-                stringBuilder.append(lat);
-                stringBuilder.append("@@");
-                stringBuilder.append(lng);
-                stringBuilder.append("@@");
-                stringBuilder.append(quakeMag);*/
                 job.add(stringBuilder.toString());
                 i2++;
                 //jobArray = jobArray2;

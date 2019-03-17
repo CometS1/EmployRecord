@@ -57,6 +57,10 @@
     <string name="load_job">Load job</string>
     <string name="delete_job">Delete Job</string>
     <string name="update_job">Update Job</string>
+    <string name="add_user_job">Add User Job</string>
+    <string name="load_user_job">Load User Job</string>
+    <string name="delete_user_job">Delete User Job</string>
+    <string name="update_user_job">Update User Job</string>
 
     <string-array name="fulltime_array">
         <item>true</item>

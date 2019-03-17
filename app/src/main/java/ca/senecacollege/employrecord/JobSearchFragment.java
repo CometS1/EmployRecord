@@ -47,14 +47,11 @@ public class JobSearchFragment extends Fragment {
             }
 
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://www.youtube.com/watch?v=bn21x4CtHcg".toString())));
                 String currentJobURL = ((TextView) view.findViewById(R.id.jobURL)).getText().toString();
                 StringBuilder URLstring = new StringBuilder();
                 //URLstring.append("https://jobs.github.com/positions/");
                 URLstring.append(currentJobURL);
                 URLstring.append(".json");
-                //startActivity(new Intent("android.intent.action.VIEW", Uri.parse(URLstring.toString())));
-                //Toast.makeText(getActivity(), URLstring, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), ViewJobActivity.class);
                 intent.putExtra("jobUrl", URLstring.toString());
                 startActivityForResult(intent, 0);
@@ -67,7 +64,6 @@ public class JobSearchFragment extends Fragment {
         protected List<String> doInBackground(String... stringurl) {
             returnArray = Utils.fetchJobData(stringurl[0]);
             return returnArray;
-            //return Utils.fetchEarthquakeData(stringurl[0]);
         }
 
         public void onPostExecute(List<String> postExecuteResult) {

@@ -38,9 +38,9 @@ class CustomListAdapter extends ArrayAdapter<String> {
         TextView locationInfo = (TextView) rowView.findViewById(R.id.textViewLocation);
         locationInfo.setText(locationToken);
 
-        String fullTimeToken = tokens.nextToken();
-        TextView fullTimeInfo = (TextView) rowView.findViewById(R.id.textViewFullTime);
-        fullTimeInfo.setText(fullTimeToken);
+        String companyToken = "Company: " + tokens.nextToken();
+        TextView companyInfo = (TextView) rowView.findViewById(R.id.textViewCompany);
+        companyInfo.setText(companyToken);
 
         return rowView;
     }
