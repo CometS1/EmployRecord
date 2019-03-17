@@ -98,6 +98,7 @@ public final class Utils {
         return output.toString();
     }
 
+    //Gets all json data for specific job, used in View job
     private static List<String> extractJobFeatureFromJson(String jobJSON) {
         JSONException e;
         if (TextUtils.isEmpty(jobJSON)) {
@@ -136,6 +137,7 @@ public final class Utils {
         }
     }
 
+    //Gets some json data for multiple jobs, used in Search
     private static List<String> extractFeatureFromJson(String jobJSON) {
         JSONException e;
         if (TextUtils.isEmpty(jobJSON)) {
