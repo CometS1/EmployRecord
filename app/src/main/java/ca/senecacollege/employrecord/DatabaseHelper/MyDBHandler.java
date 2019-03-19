@@ -462,10 +462,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     //find job by title
     public Jobs findJobByTitle(String title) {
-        String query = "Select * FROM " + TABLE_JOB + "WHERE" + COL_TITLE + " = " + "'" + title+ "'";
+        //Add error checking later
+        String query = "Select * FROM " + TABLE_JOB + " WHERE " + COL_TITLE + " LIKE " + "'" + title+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        Jobs job= new Jobs();
+        Jobs job = new Jobs();
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
             job.setJobId(Integer.parseInt(cursor.getString(0)));

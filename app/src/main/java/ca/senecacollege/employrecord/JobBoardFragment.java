@@ -68,7 +68,44 @@ public class JobBoardFragment extends Fragment {
             TextView companyInfo = (TextView) rowView.findViewById(R.id.textViewCompany);
             companyInfo.setText(companyToken);
 
+            /*Button deleteJobButton = (Button) rowView.findViewById(R.id.deleteButton);
+            deleteJobButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    //dbHandler().deleteJobHandler();
+                    Toast.makeText(getActivity().getApplicationContext(), "Delete Job", Toast.LENGTH_LONG).show();
+                }
+            });*/
+
             return rowView;
+        }
+    }
+
+    class openLink implements AdapterView.OnItemClickListener {
+        openLink() {
+        }
+
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            //Add information on click for jobs later
+
+            Toast.makeText(getActivity().getApplicationContext(), "open job description", Toast.LENGTH_LONG).show();
+
+            /*String currentJobURL = ((TextView) view.findViewById(R.id.jobURL)).getText().toString();
+            StringBuilder URLstring = new StringBuilder();
+            //URLstring.append("https://jobs.github.com/positions/");
+            URLstring.append(currentJobURL);
+            URLstring.append(".json");
+            Intent intent = new Intent(getActivity(), ViewJobActivity.class);
+            intent.putExtra("jobUrl", URLstring.toString());
+            startActivityForResult(intent, 0);*/
+            Intent intent = new Intent(getActivity(), ViewJobActivity.class);
+            String jobTitle = ((TextView) view.findViewById(R.id.textViewTitle)).getText().toString();
+            String tempWord = "Title: ";
+            jobTitle = jobTitle.replaceAll(tempWord, "");
+            intent.putExtra("jobTitle", jobTitle);
+            startActivityForResult(intent, 0);
         }
     }
 
@@ -263,24 +300,6 @@ public class JobBoardFragment extends Fragment {
         linearLayoutListView.setAdapter(arrayAdapter);
         linearLayoutListView.setOnItemClickListener(new JobBoardFragment.openLink());
 
-    }
-
-    class openLink implements AdapterView.OnItemClickListener {
-        openLink() {
-        }
-
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            //Add information on click for jobs later
-
-            /*String currentJobURL = ((TextView) view.findViewById(R.id.jobURL)).getText().toString();
-            StringBuilder URLstring = new StringBuilder();
-            //URLstring.append("https://jobs.github.com/positions/");
-            URLstring.append(currentJobURL);
-            URLstring.append(".json");
-            Intent intent = new Intent(getActivity(), ViewJobActivity.class);
-            intent.putExtra("jobUrl", URLstring.toString());
-            startActivityForResult(intent, 0);*/
-        }
     }
 
     public void deleteJob() {
