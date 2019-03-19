@@ -2,6 +2,7 @@ package ca.senecacollege.employrecord;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -44,14 +46,14 @@ public class JobBoardFragment extends Fragment {
         List<String> itemname1;
 
         public JobBoardAdapter(Activity activity, List<String> itemnameA) {
-            super(activity, R.layout.joblistlayout, itemnameA);
+            super(activity, R.layout.job_board_layout, itemnameA);
             this.context = activity;
             this.itemname1 = itemnameA;
         }
 
         public View getView(int position, View view, ViewGroup parent) {
             LayoutInflater inflater = this.context.getLayoutInflater();
-            View rowView = inflater.inflate(R.layout.joblistlayout, null, true);
+            View rowView = inflater.inflate(R.layout.job_board_layout, null, true);
             StringTokenizer tokens = new StringTokenizer((String) this.itemname1.get(position), "@@");
 
             String titleToken = "Title: " + tokens.nextToken();
@@ -244,8 +246,6 @@ public class JobBoardFragment extends Fragment {
         Log.i(TAG, "--> Start loadUser");
         String result = (dbHandler().loadJobHandler());
         String[] splited = result.split("@@");
-        //String[] splited2 = result.split("@@");
-        //System.out.println(result);
         List<String> list = new ArrayList<String>();
         String jobData = "";
         int jobNumber = 1;
@@ -256,16 +256,31 @@ public class JobBoardFragment extends Fragment {
             jobData = "";
             jobNumber += 13;
         }
-        /*list.add(splited[1]);
-        list.add(splited[14]);
-        list.add(splited[27]);*/
 
         JobBoardAdapter arrayAdapter = new JobBoardAdapter(getActivity(), list);
 
         ListView linearLayoutListView = (ListView) getActivity().findViewById(R.id.jobResultsList);
         linearLayoutListView.setAdapter(arrayAdapter);
-        //linearLayoutListView.setOnItemClickListener(new JobSearchFragment.JobAsyncTask.openLink());
+        linearLayoutListView.setOnItemClickListener(new JobBoardFragment.openLink());
 
+    }
+
+    class openLink implements AdapterView.OnItemClickListener {
+        openLink() {
+        }
+
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            //Add information on click for jobs later
+
+            /*String currentJobURL = ((TextView) view.findViewById(R.id.jobURL)).getText().toString();
+            StringBuilder URLstring = new StringBuilder();
+            //URLstring.append("https://jobs.github.com/positions/");
+            URLstring.append(currentJobURL);
+            URLstring.append(".json");
+            Intent intent = new Intent(getActivity(), ViewJobActivity.class);
+            intent.putExtra("jobUrl", URLstring.toString());
+            startActivityForResult(intent, 0);*/
+        }
     }
 
     public void deleteJob() {
