@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
 
 import ca.senecacollege.employrecord.DatabaseHelper.Jobs;
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
+import ca.senecacollege.employrecord.DatabaseHelper.UserJob;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -144,11 +145,9 @@ public class ViewJobActivity extends AppCompatActivity {
         int status_id = 1;
         jobs.setStatusId(status_id);
 
-//        String fnameStr = fname.getText().toString();
-//        String lnameStr = lname.getText().toString();
-//        String usernameStr = username.getText().toString();
-//        String emailStr = email.getText().toString();
-//        String pwdStr = pwdConfirm.getText().toString();
+        UserJob userJob = new UserJob();
+        //Figure out how to add job to user job table with user info
+        //userJob.addUserJobHandler();
 
 
         Log.e(TAG, "-->New user: " + jobs);
@@ -185,7 +184,7 @@ public class ViewJobActivity extends AppCompatActivity {
         }
         //If job is a user job
         else{
-            String jobTitle = intent.getStringExtra("jobTitle");
+            /*String jobTitle = intent.getStringExtra("jobTitle");
             Jobs job = dbHandler().findJobByTitle(jobTitle);
 
             String titleToken = job.getTitle();
@@ -201,11 +200,6 @@ public class ViewJobActivity extends AppCompatActivity {
             TextView descriptionInfo = (TextView) findViewById(R.id.textViewDescription);
             descriptionInfo.setText(descriptionToken);
 
-            //May modify later if full time is added
-            /*String fullTimeToken = job.get();
-            TextView fullTimeInfo = (TextView) findViewById(R.id.textViewFullTime);
-            fullTimeInfo.setText(fullTimeToken);*/
-
             String creationDateToken = job.getPost_deadline();
             TextView creationDateInfo = (TextView) findViewById(R.id.textViewCreationDate);
             creationDateInfo.setText(creationDateToken);
@@ -217,7 +211,7 @@ public class ViewJobActivity extends AppCompatActivity {
             //Change to company URL later
             String companyURLToken = job.getPost_url();
             TextView companyURLInfo = (TextView) findViewById(R.id.textViewCompanyUrl);
-            companyURLInfo.setText(companyURLToken);
+            companyURLInfo.setText(companyURLToken);*/
         }
     }
 }

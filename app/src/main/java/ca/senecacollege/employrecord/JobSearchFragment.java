@@ -25,6 +25,8 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
+import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,7 +97,6 @@ public class JobSearchFragment extends Fragment {
         public void onNothingSelected(AdapterView<?> adapterView) {
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

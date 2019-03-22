@@ -241,7 +241,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     // begin colour crud operation
     public String loadColourHandler() {
         String result = "";
-        String query = "Select*FROM " + TABLE_COLOUR;
+        String query = "Select * FROM " + TABLE_COLOUR;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
@@ -315,7 +315,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public String loadStatusHandler() {
         String result = "";
-        String query = "Select*FROM " + TABLE_STATUS;
+        String query = "Select * FROM " + TABLE_STATUS;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
@@ -338,7 +338,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     public Status findStatusHandler(String statusname) {
-        String query = "Select * FROM " + TABLE_STATUS + "WHERE" + COL_NAME + " = " + "'" + statusname+ "'";
+        String query = "Select * FROM " + TABLE_STATUS + " WHERE " + COL_NAME + " = " + "'" + statusname+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Status status= new Status();
@@ -356,7 +356,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public boolean deleteStatusHandler(String name) {
         boolean result = false;
-        String query = "Select*FROM " + TABLE_STATUS + "WHERE" + COL_STATUS_NAME + "= '" + String.valueOf(name) + "'";
+        String query = "Select * FROM " + TABLE_STATUS + " WHERE " + COL_STATUS_NAME + "= '" + String.valueOf(name) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Status status= new Status();
@@ -471,6 +471,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
             job.setJobId(Integer.parseInt(cursor.getString(0)));
             job.setTitle(cursor.getString(1));
+            job.setDescription(cursor.getString(2));
+            job.setOrganization(cursor.getString(3));
+            job.setOrgLocation(cursor.getString(4));
+            job.setOrgEmail(cursor.getString(5));
+            job.setPostOrigin(cursor.getString(6));
+            job.setPostUrl(cursor.getString(7));
+            job.setAppliedDate(cursor.getString(8));
+            job.setInterviewDate(cursor.getString(9));
+            job.setOfferDeadline(cursor.getString(10));
+            job.setNote(cursor.getString(11));
+            job.setOrgAddrId(cursor.getInt(12));
+            job.setStatusId(cursor.getInt(13));
             cursor.close();
         } else {
             job= null;
@@ -545,7 +557,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Address findAdderssHandler(String addr) {
+    public Address findAddressHandler(String addr) {
         String query = "Select * FROM " + TABLE_ADDRESS + "WHERE" + COL_NAME + " = " + "'" + addr+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -637,7 +649,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return id;
     }
 
-    public UserJob findUserJObHandler(int ID) {
+    public UserJob findUserJobHandler(int ID) {
         String query = "Select * FROM " + TABLE_USER_JOB + " WHERE " + COL_NAME + " = " + "'" + ID + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);

@@ -100,7 +100,7 @@ public class JobBoardFragment extends Fragment {
             Intent intent = new Intent(getActivity(), ViewJobActivity.class);
             intent.putExtra("jobUrl", URLstring.toString());
             startActivityForResult(intent, 0);*/
-            Intent intent = new Intent(getActivity(), ViewJobActivity.class);
+            Intent intent = new Intent(getActivity(), ViewUserJobActivity.class);
             String jobTitle = ((TextView) view.findViewById(R.id.textViewTitle)).getText().toString();
             String tempWord = "Title: ";
             jobTitle = jobTitle.replaceAll(tempWord, "");
