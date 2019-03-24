@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import ca.senecacollege.employrecord.DatabaseHelper.JobNotification;
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
 import ca.senecacollege.employrecord.DatabaseHelper.Notification;
 
@@ -35,6 +36,7 @@ public class NotificationsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
+        //Todo: these 4 button is here for db testing purposes
         Button addNotificationButton = (Button) view.findViewById(R.id.addNotification);
         addNotificationButton.setOnClickListener(new View.OnClickListener()
         {
@@ -75,47 +77,49 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        Button addJobNotificationButton = (Button) view.findViewById(R.id.addNotification);
+
+        //Todo: these 4 button is here for db testing purposes
+        Button addJobNotificationButton = (Button) view.findViewById(R.id.addJobNotification);
         addJobNotificationButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                addNotification();
+                addJobNotification();
             }
         });
 
-        Button loadJobNotificationButton = (Button) view.findViewById(R.id.loadNotification);
+        Button loadJobNotificationButton = (Button) view.findViewById(R.id.loadJobNotification);
         loadJobNotificationButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                loadNotification();
+                loadJobNotification();
             }
         });
 
-        Button deleteJobButton = (Button) view.findViewById(R.id.deleteNotification);
+        Button deleteJobButton = (Button) view.findViewById(R.id.deleteJobNotification);
         deleteJobButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                deleteNotification();
+                deleteJobNotification();
             }
         });
 
-        Button updateJobButton = (Button) view.findViewById(R.id.updateNotification);
+        Button updateJobButton = (Button) view.findViewById(R.id.updateJobNotification);
         updateJobButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                updateNotification();
+                updateJobNotification();
             }
         });
 
-        //Todo: these 4 user_notification button is here for db testing purposes
+
 
         return view;
     }
@@ -212,6 +216,60 @@ public class NotificationsFragment extends Fragment {
 
         // Todo: when we have proper page, when accessing specific job, must fetch out jobid.
         dbHandler().updateNotificationHandler(notification,2);
+        Toast.makeText(getActivity().getApplicationContext(), "notification test by id 2", Toast.LENGTH_LONG).show();
+
+    }
+
+    private void addJobNotification() {
+        Log.e(TAG, "--> Start add notification");
+
+        JobNotification  jobNotification = new JobNotification();
+
+        int user_id = 1;
+        jobNotification.setUserJobId(user_id);
+
+        int notification_id = 1;
+        jobNotification.setNotificationId(notification_id);
+
+        Log.e(TAG, "-->New user: " + jobNotification);
+
+        dbHandler().addJobNotificationHandler(jobNotification);
+        Toast.makeText(getActivity().getApplicationContext(), "Notification Added Successfully!", Toast.LENGTH_LONG).show();
+    }
+
+    public void loadJobNotification() {
+        Log.i(TAG, "--> Start load job notification");
+        String result = (dbHandler().loadJobNotificationHandler());
+        System.out.println(result);
+
+    }
+
+    public void deleteJobNotification() {
+        Log.i(TAG, "--> delete notification");
+        String userName = "";
+
+        //TODO: need to update code below so that id delete is fetch from specific job when accessing list
+        dbHandler().deleteJobNotificationHandler(1);
+        Toast.makeText(getActivity().getApplicationContext(), "delete user by id 1!", Toast.LENGTH_LONG).show();
+    }
+
+    public void updateJobNotification() {
+        Log.i(TAG, "--> update notification");
+
+        JobNotification jobNotification = new JobNotification();
+
+        int user_id = 2;
+        jobNotification.setUserJobId(user_id);
+
+        int notification_id = 2;
+        jobNotification.setNotificationId(notification_id);
+
+
+
+        Log.e(TAG, "-->Update Notification: " + jobNotification);
+
+        // Todo: when we have proper page, when accessing specific job, must fetch out jobid.
+        dbHandler().updateJobNotificationHandler(jobNotification,1);
         Toast.makeText(getActivity().getApplicationContext(), "notification test by id 2", Toast.LENGTH_LONG).show();
 
     }
