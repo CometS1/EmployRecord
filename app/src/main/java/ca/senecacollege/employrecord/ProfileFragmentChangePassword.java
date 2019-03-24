@@ -71,14 +71,16 @@ public class ProfileFragmentChangePassword extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        User currentUser = User.getInstance();
-
         Button updatePassword = (Button)view.findViewById(R.id.ConfirmChangePass);
         updatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Boolean updatePassword;
 
-                updatePassword();
+
+                updatePassword = updatePassword();
+                if (updatePassword) {
+
                 // Create new fragment and transaction
                 Fragment newFragment = new ProfileFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -91,6 +93,7 @@ public class ProfileFragmentChangePassword extends Fragment {
                 // Commit the transaction
                 transaction.commit();
 
+                }
             }
         });
 
@@ -114,12 +117,15 @@ public class ProfileFragmentChangePassword extends Fragment {
         });
     }
 
-    private void updatePassword () {
+    private Boolean updatePassword () {
+        User currentUser = User.getInstance();
+
         mOriginalPasswordView = (EditText) getActivity().findViewById(R.id.enterOldPassword);
         mNewPasswordView = (EditText) getActivity().findViewById(R.id.enterNewPassword);
         mConfirmPasswordView = (EditText) getActivity().findViewById(R.id.confirmNewPassword);
 
         boolean cancel = false;
+        boolean valid = true;
         View focusView = null;
         String originPassword = mOriginalPasswordView.getText().toString();
         String newPassword = mNewPasswordView.getText().toString();
@@ -143,15 +149,13 @@ public class ProfileFragmentChangePassword extends Fragment {
         }
 
         MyDBHandler dbHandler = new MyDBHandler(this.getActivity(), null, null, 1);
-        User checkPassword = dbHandler.findUserHandler(originPassword);
+        String originPasswordDb = currentUser.getPassword();
 
-        if (checkPassword != null){
-            boolean update = dbHandler.updateUserHandler(checkPassword);
-            if (!((checkPassword.getPassword()).equals(originPassword))){
+            if (!((originPasswordDb.equals(originPassword)))){
                 cancel = true;
                 focusView = mOriginalPasswordView;
                 mOriginalPasswordView.setError(getString(R.string.incorrect_orig_password));
-
+                valid = false;
             }
 
             if (!((newPassword).equals(confirmPassword))){
@@ -160,20 +164,19 @@ public class ProfileFragmentChangePassword extends Fragment {
                 mNewPasswordView.setError(getString(R.string.incorrect_new_password));
                 focusView = mConfirmPasswordView;
                 mConfirmPasswordView.setError(getString(R.string.incorrect_confirm_password));
+                valid = false;
             }
-            else {
-                System.out.println(originPassword);
-                System.out.println(newPassword);
-                System.out.println(confirmPassword);
-                System.out.println("correct on both");
-                checkPassword.setUsername(checkPassword.getUsername());
-                checkPassword.setPassword(newPassword);
-                dbHandler.updateUserHandler(checkPassword);
+
+            if (valid){
+                currentUser.setPassword(newPassword);
+                dbHandler.updateUserHandler(currentUser);
 
                 Toast.makeText(getActivity(), "Password update successful", Toast.LENGTH_SHORT).show();
-
+                return true;
+            } else {
+                return false;
             }
-        }
+
     }
 
 
