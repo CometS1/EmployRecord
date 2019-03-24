@@ -23,8 +23,7 @@ public class User{
         public void setId(int _user_id){
             this.user_id = _user_id;
         }
-
-
+        
         public int getID() {
             return this.user_id;
         }
