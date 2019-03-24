@@ -114,15 +114,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        /*m_loginBtn = findViewById(R.id.login_button);
-        m_loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = MainActivity.newIntent(LoginActivity.this);
-                startActivityForResult(intent, 0);
-            }
-        });*/
-
     }
 
     private void populateAutoComplete() {
@@ -190,24 +181,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-        // Check for if user entered a password
-        /*if (!TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }*/
-
         // Check for a valid username address.
         if (TextUtils.isEmpty(username)) {
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
-        } /*else if (!isAccountValid(username, password)) {
-
-            mUsernameView.setError(getString(R.string.error_invalid_username));
-            focusView = mUsernameView;
-            cancel = true;
-        }*/
+        }
 
         //Validate Account
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
@@ -235,28 +214,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+            User.setUser(checkAccount);
             Intent intent = MainActivity.newIntent(LoginActivity.this);
             startActivityForResult(intent, 0);
             /*mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);*/
         }
     }
-
-    /*private boolean isAccountValid(String username, String password) {
-        //TODO: Replace this with your own logic
-        boolean accountValid = false;
-
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
-        User checkAccount = dbHandler.findUserHandler(username);
-
-        if (checkAccount != null){
-            if ((checkAccount.getPassword()).equals(password)){
-                accountValid = true;
-            }
-        }
-
-        return accountValid;
-    }*/
 
     /**
      * Shows the progress UI and hides the login form.

@@ -10,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import ca.senecacollege.employrecord.DatabaseHelper.User;
 
 
 public class ProfileFragment extends Fragment {
@@ -31,6 +34,24 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        User currentUser = User.getInstance();
+
+        String usernameToken = currentUser.getUsername();
+        TextView usernameInfo = (TextView) getActivity().findViewById(R.id.username);
+        usernameInfo.setText(usernameToken);
+
+        String firstNameToken = currentUser.getFirstName();
+        TextView firstNameInfo = (TextView) getActivity().findViewById(R.id.firstname);
+        firstNameInfo.setText(firstNameToken);
+
+        String lastNameToken = currentUser.getLastName();
+        TextView lastNameInfo = (TextView) getActivity().findViewById(R.id.lastname);
+        lastNameInfo.setText(lastNameToken);
+
+        String emailToken = currentUser.getEmail();
+        TextView emailInfo = (TextView) getActivity().findViewById(R.id.email);
+        emailInfo.setText(emailToken);
 
         Button changePasswordFragment = (Button)view.findViewById(R.id.btn_change_pwd);
         changePasswordFragment.setOnClickListener(new View.OnClickListener() {

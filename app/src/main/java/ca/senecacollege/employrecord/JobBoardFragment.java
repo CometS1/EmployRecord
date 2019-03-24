@@ -281,6 +281,11 @@ public class JobBoardFragment extends Fragment {
 
     public void loadJob() {
         Log.i(TAG, "--> Start loadUser");
+
+        //Get current User data
+        User currentUser = User.getInstance();
+        Toast.makeText(getActivity().getApplicationContext(), currentUser.getFirstName(), Toast.LENGTH_LONG).show();
+
         String result = (dbHandler().loadJobHandler());
         String[] splited = result.split("@@");
         List<String> list = new ArrayList<String>();

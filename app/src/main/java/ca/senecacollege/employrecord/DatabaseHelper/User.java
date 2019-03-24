@@ -8,6 +8,8 @@ public class User{
         private String first_name;
         private String last_name;
 
+        private static User currentUser = new User();
+
         public User(){}
 
         public User( String _email, String _username, String _password, String _first_name, String _last_name){
@@ -66,5 +68,11 @@ public class User{
         public String getLastName(){
             return  this.last_name;
         }
+
+        public static void setUser(User _currentUser){
+            currentUser = _currentUser;
+        }
+
+        public static User getInstance() {return currentUser;}
 }
 
