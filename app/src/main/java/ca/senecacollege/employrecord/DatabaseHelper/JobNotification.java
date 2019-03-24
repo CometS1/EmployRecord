@@ -7,8 +7,7 @@ public class JobNotification{
 
         public JobNotification(){}
 
-        public JobNotification(int _job_notification_id, int _user_job_id, int _notification_id){
-            this.job_notification_id  = _job_notification_id;
+        public JobNotification(int _user_job_id, int _notification_id){
             this.user_job_id = _user_job_id;
             this.notification_id = _notification_id;
         }

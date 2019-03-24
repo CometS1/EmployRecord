@@ -35,19 +35,58 @@ public class NotificationsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        Button addJobButton = (Button) view.findViewById(R.id.addNotification);
-        addJobButton.setOnClickListener(new View.OnClickListener()
+        Button addNotificationButton = (Button) view.findViewById(R.id.addNotification);
+        addNotificationButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 addNotification();
-                // do something
             }
         });
 
-        Button loadJobButton = (Button) view.findViewById(R.id.loadNotification);
-        loadJobButton.setOnClickListener(new View.OnClickListener()
+        Button loadNotificationButton = (Button) view.findViewById(R.id.loadNotification);
+        loadNotificationButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                loadNotification();
+            }
+        });
+
+        Button deleteNotificationButton = (Button) view.findViewById(R.id.deleteNotification);
+        deleteNotificationButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                deleteNotification();
+            }
+        });
+
+        Button updateNotificationButton = (Button) view.findViewById(R.id.updateNotification);
+        updateNotificationButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                updateNotification();
+            }
+        });
+
+        Button addJobNotificationButton = (Button) view.findViewById(R.id.addNotification);
+        addJobNotificationButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                addNotification();
+            }
+        });
+
+        Button loadJobNotificationButton = (Button) view.findViewById(R.id.loadNotification);
+        loadJobNotificationButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -76,10 +115,10 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+        //Todo: these 4 user_notification button is here for db testing purposes
+
         return view;
     }
-
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

@@ -760,7 +760,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     public Notification findNotificationHandler(int ID) {
-        String query = "Select * FROM " + TABLE_NOTIFICATION + " WHERE " + COL_NAME + " = " + "'" + ID + "'";
+        String query = "Select * FROM " + TABLE_NOTIFICATION + " WHERE " + COL_NOTIFICATION_ID + " = " + "'" + ID + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Notification notification= new Notification();
@@ -821,14 +821,22 @@ public class MyDBHandler extends SQLiteOpenHelper {
     // begin job notification crud operation
     public String loadJobNotificationHandler() {
         String result = "";
-        String query = "Select*FROM " + TABLE_JOB_NOTIFICATION;
+        String query = "Select * FROM " + TABLE_JOB_NOTIFICATION;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
-            int result_0 = cursor.getInt(0);
-            String result_1 = cursor.getString(1);
-            result += String.valueOf(result_0) + " " + result_1 +
-                    System.getProperty("line.separator");
+            int result_0 = cursor.getInt(0);        // notification id
+            String result_1 = cursor.getString(1);  // name
+            String result_2 = cursor.getString(2);  // start_date
+
+            Log.i(TAG, "--> result_0 == " + result_0);
+            Log.i(TAG, "--> result_1 == " + result_1);
+            Log.i(TAG, "--> result_2 == " + result_2);
+
+            result +=result_0 + " " + result_1 + " " + result_2 + " "
+                    + System.getProperty("line.separator");
+
+            Log.i(TAG, "--> RESULT == " + result);
         }
         cursor.close();
         db.close();
@@ -837,7 +845,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
     public void addJobNotificationHandler(JobNotification jobNotification) {
         ContentValues values = new ContentValues();
-        values.put(COL_JOB_NOTIFICATION_ID, jobNotification.getJob_notification_id());
         values.put(COL_NOTIFICATION_ID, jobNotification.getNotification_id());
         values.put(COL_USER_JOB_ID, jobNotification.getUser_job_id());
         SQLiteDatabase db = this.getWritableDatabase();
@@ -845,14 +852,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public JobNotification  findJobNotificationHandler(String name) {
-        String query = "Select * FROM " + TABLE_JOB_NOTIFICATION + "WHERE" + COL_NAME + " = " + "'" + name+ "'";
+    public JobNotification  findJobNotificationHandler(int ID) {
+        String query = "Select * FROM " + TABLE_JOB_NOTIFICATION + " WHERE " + COL_JOB_NOTIFICATION_ID + " = " + "'" + ID+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         JobNotification jobNotification= new JobNotification();
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
-            jobNotification.setNotificationId(Integer.parseInt(cursor.getString(0)));
+            jobNotification.setJobNotificationId(Integer.parseInt(cursor.getString(0)));
+            jobNotification.setUserJobId(Integer.parseInt(cursor.getString(1)));
+            jobNotification.setNotificationId(Integer.parseInt(cursor.getString(2)));
             cursor.close();
         } else {
             jobNotification= null;
@@ -863,7 +872,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public boolean deleteJobNotificationHandler(int ID) {
         boolean result = false;
-        String query = "Select*FROM " + TABLE_JOB_NOTIFICATION + "WHERE" + COL_JOB_NOTIFICATION_ID + "= '" + String.valueOf(ID) + "'";
+        String query = "Select * FROM " + TABLE_JOB_NOTIFICATION + " WHERE " + COL_JOB_NOTIFICATION_ID + "= '" + String.valueOf(ID) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         JobNotification jobNotification= new JobNotification();
@@ -871,7 +880,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             jobNotification.setJobNotificationId(Integer.parseInt(cursor.getString(0)));
             db.delete(TABLE_JOB_NOTIFICATION, COL_JOB_NOTIFICATION_ID + "=?",
                     new String[] {
-                            String.valueOf(jobNotification.getJob_notification_id())
+                            String.valueOf(ID)
                     });
             cursor.close();
             result = true;
@@ -880,13 +889,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean updateJobNotificationHandler(int ID, int userJobId, int notificationId) {
+    public boolean updateJobNotificationHandler(JobNotification notification, Integer jobNotificationId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(COL_JOB_NOTIFICATION_ID, ID);
-        args.put(COL_USER_JOB_ID, userJobId);
-        args.put(COL_NOTIFICATION_ID,notificationId);
-        return db.update(TABLE_JOB_NOTIFICATION, args, COL_JOB_NOTIFICATION_ID + "=" + ID, null) > 0;
+        args.put(COL_USER_JOB_ID, notification.getUser_job_id());
+        args.put(COL_NOTIFICATION_ID, notification.getNotification_id());
+        return db.update(TABLE_JOB_NOTIFICATION, args, COL_JOB_NOTIFICATION_ID + "=" + jobNotificationId, null) > 0;
     }
     // end job notification crud operation
 
@@ -968,6 +976,4 @@ public class MyDBHandler extends SQLiteOpenHelper {
             + COL_JOB_NOTIFICATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COL_USER_JOB_ID + " INTEGER NOT NULL, "
             + COL_NOTIFICATION_ID + " INTEGER NOT NULL, FOREIGN KEY(" + COL_USER_JOB_ID + ") REFERENCES " + TABLE_USER_JOB + "(" + COL_USER_JOB_ID + ") ON UPDATE CASCADE, FOREIGN KEY(" + COL_NOTIFICATION_ID + ") REFERENCES " + TABLE_JOB + "(" + COL_NOTIFICATION_ID + ") ON UPDATE CASCADE )";
-
-
 }
