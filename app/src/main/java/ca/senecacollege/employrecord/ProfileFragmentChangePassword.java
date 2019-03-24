@@ -71,6 +71,8 @@ public class ProfileFragmentChangePassword extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        User currentUser = User.getInstance();
+
         Button updatePassword = (Button)view.findViewById(R.id.ConfirmChangePass);
         updatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +143,7 @@ public class ProfileFragmentChangePassword extends Fragment {
         }
 
         MyDBHandler dbHandler = new MyDBHandler(this.getActivity(), null, null, 1);
-        User checkPassword = dbHandler.findUserHandlerByPassword(originPassword);
+        User checkPassword = dbHandler.findUserHandler(originPassword);
 
         if (checkPassword != null){
             boolean update = dbHandler.updateUserHandler(checkPassword);
