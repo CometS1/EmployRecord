@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,8 +20,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import ca.senecacollege.employrecord.DatabaseHelper.User;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "MainActivity";
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, MainActivity.class);
@@ -106,6 +111,15 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void logout() {
+        Log.e(TAG, "--> Start logout");
+        User.setUser(null);
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -126,11 +140,7 @@ public class MainActivity extends AppCompatActivity
             fragment = new NotificationsFragment();
         } else if (id == R.id.nav_logout) {
             // Log out will log the user out and return the user to the Login screen
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-
-            //TODO: clear temp user
+            logout();
         }
 
         // The specified fragment is placed into the main screen area (content_main.xml page)
