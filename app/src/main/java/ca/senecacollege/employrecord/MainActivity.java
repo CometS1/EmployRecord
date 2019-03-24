@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,7 +69,18 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            FragmentManager mFragmentManager = getSupportFragmentManager();
+            if (mFragmentManager.getBackStackEntryCount() > 0) {
+                mFragmentManager.popBackStack();
+            } else {
+                //super.onBackPressed();
+                /* 1. Implementing super.onBackPressed() will exit & logout of the app when pressing the back button on the last stack entry
+                 * --> this works because finish() is added to LoginActivity under startActivityForResult(intent, 0);
+                 * --> If finish() is NOT added to LoginActivity, pressing the back button does NOT exit the app and user is stuck on the showProgress() screen
+                 * 2. Not implementing super.onBackPressed() means pressing the back button will do nothing on the last stack entry (stays on the last screen)
+                 */
+            }
+
         }
     }
 
@@ -116,14 +128,15 @@ public class MainActivity extends AppCompatActivity
             // Log out will log the user out and return the user to the Login screen
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            finish();
 
-            // TODO: need log out function
+            //TODO: clear temp user
         }
 
         // The specified fragment is placed into the main screen area (content_main.xml page)
         if (fragment != null) {
-            //getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, fragment).addToBackStack(null).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, fragment).addToBackStack(null).commit();
+            //getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, fragment).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

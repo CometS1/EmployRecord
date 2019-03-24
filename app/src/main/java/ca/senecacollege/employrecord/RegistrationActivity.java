@@ -84,6 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                 RegistrationActivity.this.startActivity(intent);
+                finish();
             }
         });
 
@@ -255,6 +256,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 finish();
                 Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         }, timeout);
 

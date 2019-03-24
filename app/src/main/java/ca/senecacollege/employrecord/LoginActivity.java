@@ -217,6 +217,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             User.setUser(checkAccount);
             Intent intent = MainActivity.newIntent(LoginActivity.this);
             startActivityForResult(intent, 0);
+            finish();
+
             /*mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);*/
         }
