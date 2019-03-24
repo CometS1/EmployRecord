@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,7 +67,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateDataEntered()) {
-                    addUser();
+                    addUserAndRedirect();
 
                     fname.setText("");
                     lname.setText("");
@@ -227,8 +229,8 @@ public class RegistrationActivity extends AppCompatActivity {
         return (validFname && validLname && validUsername && validUser && validEmail && validPwd && validPwdFormat && validConfirmPwd && validPwdMatch);
     }
 
-    private void addUser() {
-        Log.e(TAG, "--> Start addUser");
+    private void addUserAndRedirect() {
+        Log.e(TAG, "--> Start addUserAndRedirect");
 
         String fnameStr = fname.getText().toString();
         String lnameStr = lname.getText().toString();
@@ -242,7 +244,19 @@ public class RegistrationActivity extends AppCompatActivity {
         dbHandler().addUserHandler(user);
         Toast.makeText(RegistrationActivity.this, "Registered Successfully!", Toast.LENGTH_LONG).show();
 
-        //TODO: Redirect to login page
+        //Redirect to login page
+        int timeout = 1500; // make the activity visible for 1.5 seconds
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                finish();
+                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        }, timeout);
 
     }
 
@@ -251,7 +265,7 @@ public class RegistrationActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    // TODO: Will need to remove loadUser once testing is done
+    // TODO: REMOVE THIS TESTER - Loads list of registered users
     public void loadUser(View view) {
         Log.i(TAG, "--> Start loadUser");
         resultView.setText(dbHandler().loadUserHandler());
@@ -264,7 +278,7 @@ public class RegistrationActivity extends AppCompatActivity {
         pwdConfirm.setText("");
     }
 
-    // TODO: Will need to remove deleteUser once testing is done
+    // TODO: REMOVE THIS TESTER - Manually remove user
     public void deleteUser (View view) {
         Log.i(TAG, "--> delete User");
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
@@ -272,9 +286,10 @@ public class RegistrationActivity extends AppCompatActivity {
         String userName = "";
 
         dbHandler.deleteUserHandler(userName);
-        Toast.makeText(RegistrationActivity.this, "delete user test!", Toast.LENGTH_LONG).show();
+        Toast.makeText(RegistrationActivity.this, "deleted user!", Toast.LENGTH_LONG).show();
     }
 
+    // TODO: REMOVE THIS TESTER - updates user manually
     public void updateUser (View view) {
         Log.i(TAG, "--> update User");
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);

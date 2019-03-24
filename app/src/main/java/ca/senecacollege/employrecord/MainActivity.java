@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity
 
         // The specified fragment is placed into the main screen area (content_main.xml page)
         if (fragment != null) {
+            //getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, fragment).addToBackStack(null).commit();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, fragment).commit();
         }
 
