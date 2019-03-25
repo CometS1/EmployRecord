@@ -1,7 +1,7 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
 public class UserJob{
-        private int user_job_id ;
+        private int user_job_id;
         private int user_id;
         private int job_id;
 
@@ -13,8 +13,8 @@ public class UserJob{
             this.job_id = _job_id;
         }
 
-        public void setUser_job_id(int _profile_id){
-            this.user_job_id  = _profile_id;
+        public void setUser_job_id(int _user_job_id){
+            this.user_job_id  = _user_job_id;
         }
 
         public int getUser_job_id() {

@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
 
 import ca.senecacollege.employrecord.DatabaseHelper.Jobs;
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
+import ca.senecacollege.employrecord.DatabaseHelper.User;
 import ca.senecacollege.employrecord.DatabaseHelper.UserJob;
 
 import static android.support.constraint.Constraints.TAG;
@@ -145,16 +146,31 @@ public class ViewJobActivity extends AppCompatActivity {
         int status_id = 1;
         jobs.setStatusId(status_id);
 
-        UserJob userJob = new UserJob();
-        //Figure out how to add job to user job table with user info
-        //userJob.addUserJobHandler();
+        //set job to User
+        dbHandler().addJobHandler(jobs);
+
+        Jobs currentJob = dbHandler().findJobByTitle(title);
+
+        User currentUser = User.getInstance();
+        UserJob currentUserJob = new UserJob();
+
+        /*String userJobResult = dbHandler().loadUserJobHandler();
+        String[] splitedUserJob = userJobResult.split("@@");
+
+        if (splitedUserJob.length > 3){
+            currentUserJob.setUser_job_id(Integer.parseInt(splitedUserJob[splitedUserJob.length - 3]));
+        }*/
+
+        currentUserJob.setUserId(currentUser.getID());
+        currentUserJob.set_job_id(currentJob.getJobId());
 
 
         Log.e(TAG, "-->New user: " + jobs);
 
+        dbHandler().addUserJobHandler(currentUserJob);
 
-        dbHandler().addJobHandler(jobs);
         Toast.makeText(getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), Integer.toString(currentJob.getJobId()), Toast.LENGTH_LONG).show();
 
         //TODO: Redirect to login page
 
@@ -184,34 +200,7 @@ public class ViewJobActivity extends AppCompatActivity {
         }
         //If job is a user job
         else{
-            /*String jobTitle = intent.getStringExtra("jobTitle");
-            Jobs job = dbHandler().findJobByTitle(jobTitle);
 
-            String titleToken = job.getTitle();
-            TextView textInfo = (TextView) findViewById(R.id.textViewTitle);
-            textInfo.setText(titleToken);
-
-            String locationToken = job.getOrg_location();
-            TextView locationInfo = (TextView) findViewById(R.id.textViewLocation);
-            locationInfo.setText(locationToken);
-
-            String descriptionToken = job.getDescription();
-            //descriptionToken = removeHtml(descriptionToken);
-            TextView descriptionInfo = (TextView) findViewById(R.id.textViewDescription);
-            descriptionInfo.setText(descriptionToken);
-
-            String creationDateToken = job.getPost_deadline();
-            TextView creationDateInfo = (TextView) findViewById(R.id.textViewCreationDate);
-            creationDateInfo.setText(creationDateToken);
-
-            String companyToken = job.getOrganization();
-            TextView companyInfo = (TextView) findViewById(R.id.textViewCompany);
-            companyInfo.setText(companyToken);
-
-            //Change to company URL later
-            String companyURLToken = job.getPost_url();
-            TextView companyURLInfo = (TextView) findViewById(R.id.textViewCompanyUrl);
-            companyURLInfo.setText(companyURLToken);*/
         }
     }
 }

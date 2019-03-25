@@ -262,17 +262,7 @@ public class JobBoardFragment extends Fragment {
         int status_id = 1;
         jobs.setStatusId(status_id);
 
-//        String fnameStr = fname.getText().toString();
-//        String lnameStr = lname.getText().toString();
-//        String usernameStr = username.getText().toString();
-//        String emailStr = email.getText().toString();
-//        String pwdStr = pwdConfirm.getText().toString();
-
-
         Log.e(TAG, "-->New user: " + jobs);
-
-
-        dbHandler().addJobHandler(jobs);
         Toast.makeText(getActivity().getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
 
         //TODO: Redirect to login page
@@ -284,19 +274,27 @@ public class JobBoardFragment extends Fragment {
 
         //Get current User data
         User currentUser = User.getInstance();
-        Toast.makeText(getActivity().getApplicationContext(), currentUser.getFirstName(), Toast.LENGTH_LONG).show();
 
-        String result = (dbHandler().loadJobHandler());
-        String[] splited = result.split("@@");
+        String userJobResult = dbHandler().loadUserJobHandler();
+        String[] splitedUserJob = userJobResult.split("@@");
+
         List<String> list = new ArrayList<String>();
         String jobData = "";
-        int jobNumber = 1;
-        //loops through each job to select data from them
-        while(jobNumber < splited.length) {
-            jobData += splited[jobNumber] + "@@" + splited[jobNumber + 3] + "@@" + splited[jobNumber + 2];
-            list.add(jobData);
-            jobData = "";
-            jobNumber += 13;
+        int userJobNumber = 0;
+        Jobs job;
+
+        while(userJobNumber < splitedUserJob.length) {
+            if (currentUser.getID() == Integer.parseInt(splitedUserJob[userJobNumber + 1])) {
+               job = dbHandler().findJobById(Integer.parseInt(splitedUserJob[userJobNumber + 2]));
+               if (job == null){
+                   Toast.makeText(getActivity().getApplicationContext(), "Error, Job not found", Toast.LENGTH_LONG).show();
+               }
+               else {
+                   jobData = job.getTitle() + "@@" + job.getOrg_location() + "@@" + job.getOrganization();
+                   list.add(jobData);
+               }
+            }
+            userJobNumber += 3;
         }
 
         JobBoardAdapter arrayAdapter = new JobBoardAdapter(getActivity(), list);
