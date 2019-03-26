@@ -72,6 +72,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:paddingTop="5dp"/>
+
+            <Button
+                android:id="@+id/deleteJob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_job" />
+
         </LinearLayout>
 
     </ScrollView>

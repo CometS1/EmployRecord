@@ -524,7 +524,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public boolean deleteJobHandler(int ID) {
         boolean result = false;
-        String query = "Select * FROM " + TABLE_JOB + " WHERE " + COL_JOB_ID + "= '" + String.valueOf(ID) + "'";
+        String query = "Select * FROM " + TABLE_JOB + " WHERE " + COL_JOB_ID + " = '" + String.valueOf(ID) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Jobs job= new Jobs();
@@ -697,7 +697,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public boolean deleteUserJobHandler(int ID) {
         boolean result = false;
-        String query = "Select * FROM " + TABLE_USER_JOB + " WHERE " + COL_JOB_ID + "= '" + String.valueOf(ID) + "'";
+        String query = "Select * FROM " + TABLE_USER_JOB + " WHERE " + COL_JOB_ID + " = '" + String.valueOf(ID) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         UserJob userJob = new UserJob();

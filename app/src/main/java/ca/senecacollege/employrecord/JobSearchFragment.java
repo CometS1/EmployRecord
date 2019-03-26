@@ -51,7 +51,6 @@ public class JobSearchFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String currentJobURL = ((TextView) view.findViewById(R.id.jobURL)).getText().toString();
                 StringBuilder URLstring = new StringBuilder();
-                //URLstring.append("https://jobs.github.com/positions/");
                 URLstring.append(currentJobURL);
                 URLstring.append(".json");
                 Intent intent = new Intent(getActivity(), ViewJobActivity.class);
@@ -110,7 +109,6 @@ public class JobSearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        //ArrayAdapter adaptor = new ArrayAdapter(getActivity(), 17367057, Arrays.asList(new String[]{"Yes", "No"}));
         ArrayAdapter adaptor = ArrayAdapter.createFromResource(getActivity(),
                 R.array.fulltime_array, android.R.layout.simple_spinner_item);
         Spinner spinner1 = (Spinner) view.findViewById(R.id.fullTimeSpinner);

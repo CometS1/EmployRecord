@@ -92,14 +92,6 @@ public class JobBoardFragment extends Fragment {
 
             Toast.makeText(getActivity().getApplicationContext(), "open job description", Toast.LENGTH_LONG).show();
 
-            /*String currentJobURL = ((TextView) view.findViewById(R.id.jobURL)).getText().toString();
-            StringBuilder URLstring = new StringBuilder();
-            //URLstring.append("https://jobs.github.com/positions/");
-            URLstring.append(currentJobURL);
-            URLstring.append(".json");
-            Intent intent = new Intent(getActivity(), ViewJobActivity.class);
-            intent.putExtra("jobUrl", URLstring.toString());
-            startActivityForResult(intent, 0);*/
             Intent intent = new Intent(getActivity(), ViewUserJobActivity.class);
             String jobTitle = ((TextView) view.findViewById(R.id.textViewTitle)).getText().toString();
             String tempWord = "Title: ";
@@ -116,7 +108,7 @@ public class JobBoardFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_job_board, container, false);
 
-        Button addJobButton = (Button) view.findViewById(R.id.addJob);
+        /*Button addJobButton = (Button) view.findViewById(R.id.addJob);
         addJobButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -124,7 +116,7 @@ public class JobBoardFragment extends Fragment {
             {
                 addJob();
             }
-        });
+        });*/
 
         Button loadJobButton = (Button) view.findViewById(R.id.loadJob);
         loadJobButton.setOnClickListener(new View.OnClickListener()
@@ -136,7 +128,7 @@ public class JobBoardFragment extends Fragment {
             }
         });
 
-        Button deleteJobButton = (Button) view.findViewById(R.id.deleteJob);
+        /*Button deleteJobButton = (Button) view.findViewById(R.id.deleteJob);
         deleteJobButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -194,7 +186,7 @@ public class JobBoardFragment extends Fragment {
             {
                 updateUserJob();
             }
-        });
+        });*/
 
         return view;
 
@@ -213,7 +205,7 @@ public class JobBoardFragment extends Fragment {
         });*/
     }
 
-    private void addJob() {
+    /*private void addJob() {
         Log.e(TAG, "--> Start addJob");
 
         //TODO: need to link below with job json and automate process
@@ -267,7 +259,7 @@ public class JobBoardFragment extends Fragment {
 
         //TODO: Redirect to login page
 
-    }
+    }*/
 
     public void loadJob() {
         Log.i(TAG, "--> Start loadUser");
@@ -283,7 +275,7 @@ public class JobBoardFragment extends Fragment {
         int userJobNumber = 0;
         Jobs job;
 
-        while(userJobNumber < splitedUserJob.length) {
+        while(userJobNumber < splitedUserJob.length && splitedUserJob.length > 1) {
             if (currentUser.getID() == Integer.parseInt(splitedUserJob[userJobNumber + 1])) {
                job = dbHandler().findJobById(Integer.parseInt(splitedUserJob[userJobNumber + 2]));
                if (job == null){
@@ -305,7 +297,7 @@ public class JobBoardFragment extends Fragment {
 
     }
 
-    public void deleteJob() {
+    /*public void deleteJob() {
         Log.i(TAG, "--> delete job");
         String userName = "";
 
@@ -414,7 +406,7 @@ public class JobBoardFragment extends Fragment {
         Toast.makeText(getActivity().getApplicationContext(), "update Job test by id 1", Toast.LENGTH_LONG).show();
 
 
-    }
+    }*/
 
     private MyDBHandler dbHandler() {
         return new MyDBHandler(getActivity().getApplicationContext(), null, null, 1);
