@@ -145,8 +145,6 @@ public final class Utils {
         }
         ArrayList job = new ArrayList();
         try {
-            /*JSONObject baseJsonResponse = new JSONObject(jobJSON);
-            JSONArray jobArray = baseJsonResponse.getJSONArray("features");*/
             JSONArray jobArray = new JSONArray(jobJSON);
             int i2 = 0;
             while (i2 < jobArray.length()) {
@@ -161,12 +159,10 @@ public final class Utils {
                 stringBuilder.append(jobTitle);
                 stringBuilder.append("@@");
                 stringBuilder.append(jobLocation);
-                //JSONArray jobArray2 = jobArray;
                 stringBuilder.append("@@");
                 stringBuilder.append(jobFullTime);
                 job.add(stringBuilder.toString());
                 i2++;
-                //jobArray = jobArray2;
             }
             return job;
         } catch (JSONException e2) {

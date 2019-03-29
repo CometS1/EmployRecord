@@ -32,7 +32,7 @@ public class ViewJobActivity extends AppCompatActivity {
         ChosenJobAsyncTask() {
         }
 
-
+        //Removes HTML tags from description
         private String removeHtml(String html) {
             html = html.replaceAll("<(.*?)\\>"," ");
             html = html.replaceAll("<(.*?)\\\n"," ");
@@ -42,11 +42,13 @@ public class ViewJobActivity extends AppCompatActivity {
             return html;
         }
 
+        //Fetches specific job data in background
         protected List<String> doInBackground(String... stringurl) {
             returnArray = Utils.fetchSpecificJobData(stringurl[0]);
             return returnArray;
         }
 
+        //Loads job description onto page after receiving json data
         public void onPostExecute(List<String> postExecuteResult) {
             if(postExecuteResult == null){
                 Toast.makeText(ViewJobActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
@@ -86,10 +88,12 @@ public class ViewJobActivity extends AppCompatActivity {
         }
     }
 
+    //Allows activity to access database
     private MyDBHandler dbHandler() {
         return new MyDBHandler(getApplicationContext(), null, null, 1);
     }
 
+    //Adds job to job and userJob table
     private void addJob() {
         Log.e(TAG, "--> Start addJob");
 
@@ -176,6 +180,7 @@ public class ViewJobActivity extends AppCompatActivity {
 
     }
 
+    //Adds Job description on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,11 +188,11 @@ public class ViewJobActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String jobUrl = intent.getStringExtra("jobUrl");
+
         //If job is a job posting
         if (jobUrl != null) {
             TextView textInfo = (TextView) findViewById(R.id.textViewJobURL);
             textInfo.setText(jobUrl);
-            //Toast.makeText(this, "Working", Toast.LENGTH_SHORT).show();
             new ChosenJobAsyncTask().execute(new String[]{jobUrl});
 
             Button addJobButton = (Button) findViewById(R.id.addJob);
@@ -198,9 +203,9 @@ public class ViewJobActivity extends AppCompatActivity {
                 }
             });
         }
-        //If job is a user job
+        //If job is not found
         else{
-
+            Toast.makeText(getApplicationContext(), "Error, job not found", Toast.LENGTH_LONG).show();
         }
     }
 }

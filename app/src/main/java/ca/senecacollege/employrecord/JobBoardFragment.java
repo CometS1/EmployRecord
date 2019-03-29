@@ -41,6 +41,7 @@ public class JobBoardFragment extends Fragment {
 
     }
 
+    //Adaptor created for list of user jobs that add info to list
     class JobBoardAdapter extends ArrayAdapter<String> {
         Activity context;
         List<String> itemname1;
@@ -68,21 +69,12 @@ public class JobBoardFragment extends Fragment {
             TextView companyInfo = (TextView) rowView.findViewById(R.id.textViewCompany);
             companyInfo.setText(companyToken);
 
-            /*Button deleteJobButton = (Button) rowView.findViewById(R.id.deleteButton);
-            deleteJobButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    //dbHandler().deleteJobHandler();
-                    Toast.makeText(getActivity().getApplicationContext(), "Delete Job", Toast.LENGTH_LONG).show();
-                }
-            });*/
 
             return rowView;
         }
     }
 
+    //Opens ViewUserJobActivity to show job description
     class openLink implements AdapterView.OnItemClickListener {
         openLink() {
         }
@@ -101,22 +93,13 @@ public class JobBoardFragment extends Fragment {
         }
     }
 
+    //Adds clickability to load job button
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_job_board, container, false);
-
-        /*Button addJobButton = (Button) view.findViewById(R.id.addJob);
-        addJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                addJob();
-            }
-        });*/
 
         Button loadJobButton = (Button) view.findViewById(R.id.loadJob);
         loadJobButton.setOnClickListener(new View.OnClickListener()
@@ -127,66 +110,6 @@ public class JobBoardFragment extends Fragment {
                 loadJob();
             }
         });
-
-        /*Button deleteJobButton = (Button) view.findViewById(R.id.deleteJob);
-        deleteJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                deleteJob();
-            }
-        });
-
-        Button updateJobButton = (Button) view.findViewById(R.id.updateJob);
-        updateJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                updateJob();
-            }
-        });
-
-        Button addUserJobButton = (Button) view.findViewById(R.id.addUserJob);
-        addUserJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                addUserJob();
-            }
-        });
-
-        Button loadUserJobButton = (Button) view.findViewById(R.id.loadUserJob);
-        loadUserJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                loadUserJob();
-            }
-        });
-
-        Button deleteUserJobButton = (Button) view.findViewById(R.id.deleteUserJob);
-        deleteUserJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                deleteUserJob();
-            }
-        });
-
-        Button updateUserJobButton = (Button) view.findViewById(R.id.updateUserJob);
-        updateUserJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                updateUserJob();
-            }
-        });*/
 
         return view;
 
@@ -205,62 +128,8 @@ public class JobBoardFragment extends Fragment {
         });*/
     }
 
-    /*private void addJob() {
-        Log.e(TAG, "--> Start addJob");
 
-        //TODO: need to link below with job json and automate process
-
-        Jobs jobs = new Jobs();
-
-        String title ="systems developer";
-        jobs.setTitle(title);
-
-        String description = "what do you do";
-        jobs.setDescription(description);
-
-        String organization = "Seneca";
-        jobs.setOrganization(organization);
-
-        String org_location = "York";
-        jobs.setOrgLocation(org_location);
-
-        String org_email = "senca@seneca.ca";
-        jobs.setOrgEmail(org_email);
-
-        String post_origin ="Linkedin";
-        jobs.setPostOrigin(post_origin);
-
-        String post_url ="tester.com";
-        jobs.setPostUrl(post_url);
-
-        String post_deadline= "2019-01-02";
-        jobs.setPostDeadline(post_deadline);
-
-        String applied_date ="2019-01-01";
-        jobs.setAppliedDate(applied_date);
-
-        String interview_date="2019-01-04";
-        jobs.setInterviewDate(interview_date);
-
-        String offer_deadline="2019-01-10";
-        jobs.setOfferDeadline(offer_deadline);
-
-        String note="pass";
-        jobs.setNote(note);
-
-        int org_addr_id = 1;
-        jobs.setOrgAddrId(org_addr_id);
-
-        int status_id = 1;
-        jobs.setStatusId(status_id);
-
-        Log.e(TAG, "-->New user: " + jobs);
-        Toast.makeText(getActivity().getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
-
-        //TODO: Redirect to login page
-
-    }*/
-
+    //Loads job into listview
     public void loadJob() {
         Log.i(TAG, "--> Start loadUser");
 
@@ -297,15 +166,7 @@ public class JobBoardFragment extends Fragment {
 
     }
 
-    /*public void deleteJob() {
-        Log.i(TAG, "--> delete job");
-        String userName = "";
-
-        //TODO: need to update code below so that id delete is fetch from specific job when accessing list
-        dbHandler().deleteJobHandler(2);
-        Toast.makeText(getActivity().getApplicationContext(), "delete user by id 2!", Toast.LENGTH_LONG).show();
-    }
-
+    /*
     public void updateJob() {
         Log.i(TAG, "--> update Job");
 
@@ -354,42 +215,6 @@ public class JobBoardFragment extends Fragment {
 
     }
 
-    private void addUserJob() {
-        Log.e(TAG, "--> Start addJob");
-
-        //TODO: need to link below with job json and automate process
-
-        UserJob userJob = new UserJob();
-
-        int user_id = 1;
-        userJob.setUserId(user_id);
-
-        int job_id = 1;
-        userJob.set_job_id(job_id);
-
-        Log.e(TAG, "-->New user: " + userJob);
-
-        dbHandler().addUserJobHandler(userJob);
-        Toast.makeText(getActivity().getApplicationContext(), "User Job Add Test", Toast.LENGTH_LONG).show();
-
-    }
-
-    public void loadUserJob() {
-        Log.i(TAG, "--> Start loadUser");
-        String result = (dbHandler().loadUserJobHandler());
-        System.out.println(result);
-
-    }
-
-    public void deleteUserJob() {
-        Log.i(TAG, "--> delete User job");
-        String userName = "";
-
-        //TODO: need to update code below so that id delete is fetch from specific job when accessing list
-        dbHandler().deleteUserJobHandler(1);
-        Toast.makeText(getActivity().getApplicationContext(), "delete user by id 1!", Toast.LENGTH_LONG).show();
-    }
-
     public void updateUserJob() {
         Log.i(TAG, "--> update User Job");
 
@@ -408,6 +233,7 @@ public class JobBoardFragment extends Fragment {
 
     }*/
 
+    //Allows fragment to access database
     private MyDBHandler dbHandler() {
         return new MyDBHandler(getActivity().getApplicationContext(), null, null, 1);
     }

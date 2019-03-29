@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,10 +17,12 @@ import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
 
 public class ViewUserJobActivity extends AppCompatActivity {
 
+    //Allows activity to access database
     private MyDBHandler dbHandler() {
         return new MyDBHandler(getApplicationContext(), null, null, 1);
     }
 
+    //Deletes job data in both userJob and Job table
     private void deleteJob(String title) {
         Jobs job = dbHandler().findJobByTitle(title);
 
@@ -40,6 +44,13 @@ public class ViewUserJobActivity extends AppCompatActivity {
         }, timeout);
     }
 
+    private void updateJob(Jobs job) {
+        dbHandler().updateJobHandler(job, job.getJobId());
+
+
+    }
+
+    //Adds Job description on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +59,7 @@ public class ViewUserJobActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         String jobTitle = intent.getStringExtra("jobTitle");
-        Jobs job = dbHandler().findJobByTitle(jobTitle);
+        final Jobs job = dbHandler().findJobByTitle(jobTitle);
 
         final String titleToken = job.getTitle();
         TextView titleInfo = (TextView) findViewById(R.id.textViewTitle);
@@ -76,11 +87,26 @@ public class ViewUserJobActivity extends AppCompatActivity {
         TextView companyURLInfo = (TextView) findViewById(R.id.textViewCompanyUrl);
         companyURLInfo.setText(companyURLToken);
 
+        String notesToken = job.getNote();
+        final EditText notesInfo = findViewById(R.id.notesView);
+        notesInfo.setText(notesToken);
+
         Button deleteJobButton = (Button) findViewById(R.id.deleteJob);
         deleteJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteJob(titleToken);
+            }
+        });
+
+        Button updateJobButton = (Button) findViewById(R.id.updateJob);
+        updateJobButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String post_url = notesInfo.getText().toString();
+                job.setPostUrl(post_url);
+                updateJob(job);
+                Toast.makeText(getApplicationContext(), "Job Updated", Toast.LENGTH_LONG).show();
             }
         });
     }

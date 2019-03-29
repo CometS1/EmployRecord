@@ -42,12 +42,14 @@ public class JobSearchFragment extends Fragment {
     List<String> returnArray;
     ListView linearLayoutListView;
 
+    //Uses Utils class to access json data for job and open ViewJobActivity with job data
     class JobAsyncTask extends AsyncTask<String, Void, List<String>> {
 
         class openLink implements AdapterView.OnItemClickListener {
             openLink() {
             }
 
+            //Runs ViewJobActivity with job data using job URL
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String currentJobURL = ((TextView) view.findViewById(R.id.jobURL)).getText().toString();
                 StringBuilder URLstring = new StringBuilder();
@@ -62,11 +64,13 @@ public class JobSearchFragment extends Fragment {
         JobAsyncTask() {
         }
 
+        //Fetches the job data from search in the background
         protected List<String> doInBackground(String... stringurl) {
             returnArray = Utils.fetchJobData(stringurl[0]);
             return returnArray;
         }
 
+        //After receiving data, puts data in Listview
         public void onPostExecute(List<String> postExecuteResult) {
             if(postExecuteResult == null){
                 Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
@@ -81,6 +85,7 @@ public class JobSearchFragment extends Fragment {
         }
     }
 
+    //Fills fulltime spinner with options
     class fillSpinner implements AdapterView.OnItemSelectedListener {
         fillSpinner() {
         }
@@ -116,10 +121,10 @@ public class JobSearchFragment extends Fragment {
         spinner1.setAdapter(adaptor);
         spinner1.setOnItemSelectedListener(new fillSpinner());
 
+        //Add search button click functionality to search on click and fill Listview
         view.findViewById(R.id.searchButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 EditText title = (getActivity().findViewById(R.id.searchValue));
                 Spinner spinner1 = (Spinner) getActivity().findViewById(R.id.fullTimeSpinner);
@@ -138,21 +143,10 @@ public class JobSearchFragment extends Fragment {
                     stringBuilder.append(locationValue);
                     String URL = stringBuilder.toString();
 
-
-                //Toast.makeText(getActivity(), URL, Toast.LENGTH_SHORT).show();
-
                     new JobAsyncTask().execute(new String[]{URL});
             }
         });
 
-        /*
-        view.findViewById(R.id.buttonTmp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "You are inside Job Search Fragment", Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
 
     }
 
