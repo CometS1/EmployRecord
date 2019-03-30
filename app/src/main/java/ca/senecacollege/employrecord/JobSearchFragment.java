@@ -91,11 +91,12 @@ public class JobSearchFragment extends Fragment {
         }
 
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            if (i == 0) {
+            if (i <= 1) {
                 JobSearchFragment.this.spinnerSelected = "Yes";
-                return;
             }
-            JobSearchFragment.this.spinnerSelected = "No";
+            else {
+                JobSearchFragment.this.spinnerSelected = "No";
+            }
         }
 
         public void onNothingSelected(AdapterView<?> adapterView) {
