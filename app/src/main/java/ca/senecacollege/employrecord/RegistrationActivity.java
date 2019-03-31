@@ -1,6 +1,7 @@
 package ca.senecacollege.employrecord;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,13 @@ public class RegistrationActivity extends AppCompatActivity {
     Button btnRegister;
     Button btnCancel;
     TextView resultView;
+
+    // method that returns a new messaging object to request an action from another app component
+    // mainly for the LoginActivity to reach RegistrationActivity
+    public static Intent newIntent(Context packageContext) {
+        Intent intent = new Intent(packageContext, RegistrationActivity.class);
+        return intent;
+    }
 
     // Returns a new Database Handler
     private MyDBHandler dbHandler() {
