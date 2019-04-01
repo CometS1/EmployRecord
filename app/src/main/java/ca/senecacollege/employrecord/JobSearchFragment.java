@@ -91,7 +91,7 @@ public class JobSearchFragment extends Fragment {
         }
 
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            if (i <= 0) {
+            if (i == 0) {
                 JobSearchFragment.this.spinnerSelected = "Yes";
             }
             else {
@@ -136,6 +136,12 @@ public class JobSearchFragment extends Fragment {
 
                 String titleValue = title.getText().toString();
                 String fullTime = (spinner1.getSelectedItem()).toString();
+                if (fullTime.equals("Full Time")){
+                    fullTime = "true";
+                }
+                else{
+                    fullTime = "false";
+                }
                 String locationValue = location.getText().toString();
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.setLength(0);
@@ -146,7 +152,7 @@ public class JobSearchFragment extends Fragment {
                     stringBuilder.append("&location=");
                     stringBuilder.append(locationValue);
                     String URL = stringBuilder.toString();
-
+                    //Toast.makeText(getActivity(), URL, Toast.LENGTH_SHORT).show();
                     new JobAsyncTask().execute(new String[]{URL});
             }
         });

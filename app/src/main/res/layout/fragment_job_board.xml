@@ -49,6 +49,7 @@
             app:layout_constraintTop_toBottomOf="@+id/title_profile"
             app:layout_constraintLeft_toRightOf="@+id/addUserJob" />
 -->
+        <!--
         <Button
             android:id="@+id/loadJob"
             android:layout_width="wrap_content"
@@ -60,7 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-<!--
+
         <Button
             android:id="@+id/deleteJob"
             android:layout_width="wrap_content"
@@ -80,8 +81,7 @@
         <ListView
             android:id="@+id/jobResultsList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/loadJob"/>
+            android:layout_height="wrap_content"/>
 
     </android.support.constraint.ConstraintLayout>
 

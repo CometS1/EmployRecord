@@ -82,7 +82,7 @@ public class JobBoardFragment extends Fragment {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             //Add information on click for jobs later
 
-            Toast.makeText(getActivity().getApplicationContext(), "open job description", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity().getApplicationContext(), "open job description", Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(getActivity(), ViewUserJobActivity.class);
             String jobTitle = ((TextView) view.findViewById(R.id.textViewTitle)).getText().toString();
@@ -104,7 +104,7 @@ public class JobBoardFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_job_board, container, false);
 
-        Button loadJobButton = (Button) view.findViewById(R.id.loadJob);
+        /*Button loadJobButton = (Button) view.findViewById(R.id.loadJob);
         loadJobButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -113,7 +113,7 @@ public class JobBoardFragment extends Fragment {
                 loadJob();
             }
         });
-
+        */
         return view;
 
 
@@ -129,6 +129,7 @@ public class JobBoardFragment extends Fragment {
                 Toast.makeText(getActivity(), "You are inside Job Board Fragment", Toast.LENGTH_SHORT).show();
             }
         });*/
+        loadJob();
     }
 
 

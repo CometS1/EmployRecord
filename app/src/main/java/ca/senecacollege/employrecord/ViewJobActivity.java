@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ca.senecacollege.employrecord.DatabaseHelper.Jobs;
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
@@ -177,6 +179,18 @@ public class ViewJobActivity extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(), Integer.toString(currentJob.getJobId()), Toast.LENGTH_LONG).show();
 
         //TODO: Redirect to login page
+        int timeout = 1500;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                finish();
+                Intent intent = new Intent(ViewJobActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, timeout);
 
     }
 

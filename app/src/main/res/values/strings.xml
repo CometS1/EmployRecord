@@ -65,7 +65,6 @@
 
     <string-array name="fulltime_array">
         <item>Full Time</item>
-        <item>true</item>
-        <item>false</item>
+        <item>Part Time</item>
     </string-array>
 </resources>
