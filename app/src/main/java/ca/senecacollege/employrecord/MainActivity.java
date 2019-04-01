@@ -105,6 +105,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    // Method to change title of action bar
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
     // Method to log the user out
     public void logout() {
         Log.e(TAG, "--> Start logout");

@@ -51,6 +51,9 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        // Set action bar title to specified string
+        this.getSupportActionBar().setTitle("Registration");
+
         firstName = findViewById(R.id.register_fname);
         lastName = findViewById(R.id.register_lname);
         username = findViewById(R.id.register_username);

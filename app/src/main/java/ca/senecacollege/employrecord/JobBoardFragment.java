@@ -97,8 +97,11 @@ public class JobBoardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Set action bar title to specified string
+        ((MainActivity)getActivity()).setActionBarTitle("Job Board");
+
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_job_board, container, false);
 
         Button loadJobButton = (Button) view.findViewById(R.id.loadJob);
