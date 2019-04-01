@@ -91,7 +91,7 @@ public class JobSearchFragment extends Fragment {
         }
 
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            if (i <= 1) {
+            if (i <= 0) {
                 JobSearchFragment.this.spinnerSelected = "Yes";
             }
             else {
