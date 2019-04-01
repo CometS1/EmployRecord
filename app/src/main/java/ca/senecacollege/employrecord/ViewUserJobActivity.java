@@ -90,7 +90,6 @@ public class ViewUserJobActivity extends AppCompatActivity {
         TextView companyURLInfo = (TextView) findViewById(R.id.textViewCompanyUrl);
         companyURLInfo.setText(companyURLToken);
 
-        /*
         String notesToken = job.getNote();
         final EditText notesInfo = findViewById(R.id.notesView);
         notesInfo.setText(notesToken);
@@ -110,10 +109,10 @@ public class ViewUserJobActivity extends AppCompatActivity {
                 String post_url = notesInfo.getText().toString();
                 job.setPostUrl(post_url);
                 updateJob(job);
-                Toast.makeText(getApplicationContext(), "Job Updated", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Job Notes Updated", Toast.LENGTH_LONG).show();
             }
         });
 
-        */
+
     }
 }

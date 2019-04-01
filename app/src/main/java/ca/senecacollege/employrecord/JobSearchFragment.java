@@ -72,16 +72,15 @@ public class JobSearchFragment extends Fragment {
 
         //After receiving data, puts data in Listview
         public void onPostExecute(List<String> postExecuteResult) {
-            if(postExecuteResult == null){
+
+            CustomListAdapter arrayAdapter = new CustomListAdapter(getActivity(), postExecuteResult);
+            if (arrayAdapter.getCount() == 0){
                 Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
             }
-            else{
+            linearLayoutListView = (ListView) getActivity().findViewById(R.id.searchResultsList);
+            linearLayoutListView.setAdapter(arrayAdapter);
+            linearLayoutListView.setOnItemClickListener(new openLink());
 
-                CustomListAdapter arrayAdapter = new CustomListAdapter(getActivity(), postExecuteResult);
-                linearLayoutListView = (ListView) getActivity().findViewById(R.id.searchResultsList);
-                linearLayoutListView.setAdapter(arrayAdapter);
-                linearLayoutListView.setOnItemClickListener(new openLink());
-            }
         }
     }
 

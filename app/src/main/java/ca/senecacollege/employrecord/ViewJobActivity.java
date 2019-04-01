@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,15 +35,15 @@ public class ViewJobActivity extends AppCompatActivity {
         ChosenJobAsyncTask() {
         }
 
-        //Removes HTML tags from description
-        private String removeHtml(String html) {
+        //Removes HTML tags from description, Not needed
+        /*private String removeHtml(String html) {
             html = html.replaceAll("<(.*?)\\>"," ");
             html = html.replaceAll("<(.*?)\\\n"," ");
-            html = html.replaceFirst("(.*?)\\>", " ");
+            //html = html.replaceFirst("(.*?)\\>", " ");
             html = html.replaceAll("&nbsp;"," ");
             html = html.replaceAll("&amp;"," ");
             return html;
-        }
+        }*/
 
         //Fetches specific job data in background
         protected List<String> doInBackground(String... stringurl) {
@@ -67,9 +68,9 @@ public class ViewJobActivity extends AppCompatActivity {
                 locationInfo.setText(locationToken);
 
                 String descriptionToken = tokens.nextToken();
-                descriptionToken = removeHtml(descriptionToken);
+                //descriptionToken = removeHtml(descriptionToken);
                 TextView descriptionInfo = (TextView) findViewById(R.id.textViewDescription);
-                descriptionInfo.setText(descriptionToken);
+                descriptionInfo.setText(Html.fromHtml(descriptionToken));
 
                 String fullTimeToken = tokens.nextToken();
                 TextView fullTimeInfo = (TextView) findViewById(R.id.textViewFullTime);
@@ -178,8 +179,8 @@ public class ViewJobActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
         //Toast.makeText(getApplicationContext(), Integer.toString(currentJob.getJobId()), Toast.LENGTH_LONG).show();
 
-        //TODO: Redirect to login page
-        int timeout = 1500;
+        //Redirect to login page
+        int timeout = 1200;
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
