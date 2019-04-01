@@ -1,5 +1,13 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
+/*
+ * This is jobs class used by MyDBHandler class to process job json object that is fetched out from the
+ * git hub json. it takes following parameters: title, description, organization, org_location, org_email
+ * post_origin, post_url, post_deadline, applied_date, interview_date, offer_deadline, note, status_id
+ * and org_addr_id which is a foreign key relationship to the address table: org_addr_id column
+ *
+ */
+
 public class Jobs{
         private int job_id;
         private String title;

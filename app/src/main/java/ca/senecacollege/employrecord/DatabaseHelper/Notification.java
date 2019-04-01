@@ -1,5 +1,12 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
+/*
+ * This is Notification class used by MyDBHandler class that will generate notification for users based
+ * on jobs and user setted notification settings. it takes following parameter: name, start_date, end_date,
+ * start_time, end_time, all_day, note and colour_id which has a foreign key relation to the colour class.
+ *
+ */
+
 public class Notification{
         private int notification_id;
         private String name;

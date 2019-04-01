@@ -1,5 +1,11 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
+/*
+ * this is a Userjob link table class where it will take following parameters: user_id and job_id.
+ * this table will maintain a one to many relation where one user will have many job applied.
+ *
+ */
+
 public class UserJob{
         private int user_job_id ;
         private int user_id;

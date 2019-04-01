@@ -1,5 +1,11 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
+/*
+ * this is a status class which is used by MyDBHandler to keep a track of status for job application process
+ * it takes one variable which is status_name which will act in jobs table as a look up table.
+ *
+ */
+
 public class Status{
         private int status_id;
         private String status_name;

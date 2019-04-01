@@ -1,5 +1,13 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
+/*
+ *
+ * This is Address class used by MyDBHandler class to structure getter / setter for following parameters:
+ * address_id, street_no, street_name, city, province_state, postal_zip_code, country and org_addr_id.
+ * Note that org_addr_id is a primary key relationship to Jobs class
+ *
+ */
+
 public class Address{
         private int address_id;
         private String street_no;

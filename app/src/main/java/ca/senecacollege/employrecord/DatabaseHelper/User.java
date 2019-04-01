@@ -1,5 +1,11 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
+/*
+ * this is a User class where it keeps an track of user data within employ record app. This class takes following
+ * parameters: email, username, password, firstname and last name.
+ *
+ */
+
 public class User{
         private int user_id;
         private String email;

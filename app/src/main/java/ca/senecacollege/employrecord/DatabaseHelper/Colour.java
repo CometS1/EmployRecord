@@ -1,5 +1,12 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
+/*
+ * This is colour class used by MyDBHandler helper class for generating getter and setter. it takes following
+ * paratmeters: colour_id, hexcode and name. this class is used by the notification class to set colour of
+ * the notification
+ *
+ */
+
 public class Colour{
 
         private int colour_id;

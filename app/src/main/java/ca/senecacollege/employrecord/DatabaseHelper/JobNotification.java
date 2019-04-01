@@ -1,5 +1,12 @@
 package ca.senecacollege.employrecord.DatabaseHelper;
 
+/*
+ * This is jobNotification linking table class used by MyDBHandler class for generating getter and setter.
+  * it takes following paratmeters: job_notification_id, user_job_id and notification_id.
+  * this linking class is necessary for linkking job and notification for many to many relationship.
+ *
+ */
+
 public class JobNotification{
         private int job_notification_id;
         private int user_job_id;

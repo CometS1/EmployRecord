@@ -7,6 +7,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+/*
+ * This is MyDBHandler class that will create the sqllite tables to be used by application.
+ * the classes are following: Address, Colour, JobNotification, Jobs, Notification, Stuatus
+ * User and UserJob. All mentioned classes has its own CRUD operation to the sqllite tables.
+ *
+ */
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
