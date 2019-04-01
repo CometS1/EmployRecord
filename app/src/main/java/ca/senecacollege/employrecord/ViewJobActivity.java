@@ -186,6 +186,9 @@ public class ViewJobActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_job);
 
+        // Set action bar title to specified string
+        getSupportActionBar().setTitle("Job Description");
+
         Intent intent = getIntent();
         String jobUrl = intent.getStringExtra("jobUrl");
 

@@ -56,6 +56,9 @@ public class ViewUserJobActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_user_job);
 
+        // Set action bar title to specified string
+        getSupportActionBar().setTitle("Job Description");
+
         Intent intent = getIntent();
 
         String jobTitle = intent.getStringExtra("jobTitle");
@@ -87,6 +90,7 @@ public class ViewUserJobActivity extends AppCompatActivity {
         TextView companyURLInfo = (TextView) findViewById(R.id.textViewCompanyUrl);
         companyURLInfo.setText(companyURLToken);
 
+        /*
         String notesToken = job.getNote();
         final EditText notesInfo = findViewById(R.id.notesView);
         notesInfo.setText(notesToken);
@@ -109,5 +113,7 @@ public class ViewUserJobActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Job Updated", Toast.LENGTH_LONG).show();
             }
         });
+
+        */
     }
 }

@@ -45,6 +45,9 @@ public class ProfileFragmentChangePassword extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Set action bar title to specified string
+        ((MainActivity)getActivity()).setActionBarTitle("Update Password");
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile_fragment_change_password, container, false);
     }
