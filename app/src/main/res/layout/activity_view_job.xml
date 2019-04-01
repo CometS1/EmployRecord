@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/TextTheme"
     tools:context=".ViewJobActivity">
     <ScrollView
         android:id="@+id/job_form"
@@ -49,7 +50,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:lineSpacingExtra="5dp"/>
 
             <TextView
                 android:id="@+id/textViewFullTime"

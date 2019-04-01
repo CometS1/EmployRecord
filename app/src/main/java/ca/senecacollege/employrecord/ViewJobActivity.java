@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,9 +15,12 @@ import android.widget.Toast;
 
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ca.senecacollege.employrecord.DatabaseHelper.Jobs;
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
+import ca.senecacollege.employrecord.DatabaseHelper.User;
 import ca.senecacollege.employrecord.DatabaseHelper.UserJob;
 
 import static android.support.constraint.Constraints.TAG;
@@ -31,21 +35,23 @@ public class ViewJobActivity extends AppCompatActivity {
         ChosenJobAsyncTask() {
         }
 
-
-        private String removeHtml(String html) {
+        //Removes HTML tags from description, Not needed
+        /*private String removeHtml(String html) {
             html = html.replaceAll("<(.*?)\\>"," ");
             html = html.replaceAll("<(.*?)\\\n"," ");
-            html = html.replaceFirst("(.*?)\\>", " ");
+            //html = html.replaceFirst("(.*?)\\>", " ");
             html = html.replaceAll("&nbsp;"," ");
             html = html.replaceAll("&amp;"," ");
             return html;
-        }
+        }*/
 
+        //Fetches specific job data in background
         protected List<String> doInBackground(String... stringurl) {
             returnArray = Utils.fetchSpecificJobData(stringurl[0]);
             return returnArray;
         }
 
+        //Loads job description onto page after receiving json data
         public void onPostExecute(List<String> postExecuteResult) {
             if(postExecuteResult == null){
                 Toast.makeText(ViewJobActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
@@ -62,9 +68,9 @@ public class ViewJobActivity extends AppCompatActivity {
                 locationInfo.setText(locationToken);
 
                 String descriptionToken = tokens.nextToken();
-                descriptionToken = removeHtml(descriptionToken);
+                //descriptionToken = removeHtml(descriptionToken);
                 TextView descriptionInfo = (TextView) findViewById(R.id.textViewDescription);
-                descriptionInfo.setText(descriptionToken);
+                descriptionInfo.setText(Html.fromHtml(descriptionToken));
 
                 String fullTimeToken = tokens.nextToken();
                 TextView fullTimeInfo = (TextView) findViewById(R.id.textViewFullTime);
@@ -85,10 +91,12 @@ public class ViewJobActivity extends AppCompatActivity {
         }
     }
 
+    //Allows activity to access database
     private MyDBHandler dbHandler() {
         return new MyDBHandler(getApplicationContext(), null, null, 1);
     }
 
+    //Adds job to job and userJob table
     private void addJob() {
         Log.e(TAG, "--> Start addJob");
 
@@ -145,33 +153,64 @@ public class ViewJobActivity extends AppCompatActivity {
         int status_id = 1;
         jobs.setStatusId(status_id);
 
-        UserJob userJob = new UserJob();
-        //Figure out how to add job to user job table with user info
-        //userJob.addUserJobHandler();
+        //set job to User
+        dbHandler().addJobHandler(jobs);
+
+        Jobs currentJob = dbHandler().findJobByTitle(title);
+
+        User currentUser = User.getInstance();
+        UserJob currentUserJob = new UserJob();
+
+        /*String userJobResult = dbHandler().loadUserJobHandler();
+        String[] splitedUserJob = userJobResult.split("@@");
+
+        if (splitedUserJob.length > 3){
+            currentUserJob.setUser_job_id(Integer.parseInt(splitedUserJob[splitedUserJob.length - 3]));
+        }*/
+
+        currentUserJob.setUserId(currentUser.getID());
+        currentUserJob.set_job_id(currentJob.getJobId());
 
 
         Log.e(TAG, "-->New user: " + jobs);
 
+        dbHandler().addUserJobHandler(currentUserJob);
 
-        dbHandler().addJobHandler(jobs);
         Toast.makeText(getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), Integer.toString(currentJob.getJobId()), Toast.LENGTH_LONG).show();
 
-        //TODO: Redirect to login page
+        //Redirect to login page
+        int timeout = 1200;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                finish();
+                Intent intent = new Intent(ViewJobActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, timeout);
 
     }
 
+    //Adds Job description on activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_job);
 
+        // Set action bar title to specified string
+        getSupportActionBar().setTitle("Job Description");
+
         Intent intent = getIntent();
         String jobUrl = intent.getStringExtra("jobUrl");
+
         //If job is a job posting
         if (jobUrl != null) {
             TextView textInfo = (TextView) findViewById(R.id.textViewJobURL);
             textInfo.setText(jobUrl);
-            //Toast.makeText(this, "Working", Toast.LENGTH_SHORT).show();
             new ChosenJobAsyncTask().execute(new String[]{jobUrl});
 
             Button addJobButton = (Button) findViewById(R.id.addJob);
@@ -182,36 +221,9 @@ public class ViewJobActivity extends AppCompatActivity {
                 }
             });
         }
-        //If job is a user job
+        //If job is not found
         else{
-            /*String jobTitle = intent.getStringExtra("jobTitle");
-            Jobs job = dbHandler().findJobByTitle(jobTitle);
-
-            String titleToken = job.getTitle();
-            TextView textInfo = (TextView) findViewById(R.id.textViewTitle);
-            textInfo.setText(titleToken);
-
-            String locationToken = job.getOrg_location();
-            TextView locationInfo = (TextView) findViewById(R.id.textViewLocation);
-            locationInfo.setText(locationToken);
-
-            String descriptionToken = job.getDescription();
-            //descriptionToken = removeHtml(descriptionToken);
-            TextView descriptionInfo = (TextView) findViewById(R.id.textViewDescription);
-            descriptionInfo.setText(descriptionToken);
-
-            String creationDateToken = job.getPost_deadline();
-            TextView creationDateInfo = (TextView) findViewById(R.id.textViewCreationDate);
-            creationDateInfo.setText(creationDateToken);
-
-            String companyToken = job.getOrganization();
-            TextView companyInfo = (TextView) findViewById(R.id.textViewCompany);
-            companyInfo.setText(companyToken);
-
-            //Change to company URL later
-            String companyURLToken = job.getPost_url();
-            TextView companyURLInfo = (TextView) findViewById(R.id.textViewCompanyUrl);
-            companyURLInfo.setText(companyURLToken);*/
+            Toast.makeText(getApplicationContext(), "Error, job not found", Toast.LENGTH_LONG).show();
         }
     }
 }

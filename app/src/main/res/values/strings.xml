@@ -61,9 +61,10 @@
     <string name="load_user_job">Load User Job</string>
     <string name="delete_user_job">Delete User Job</string>
     <string name="update_user_job">Update User Job</string>
+    <string name="notes_text">Place your notes here</string>
 
     <string-array name="fulltime_array">
-        <item>true</item>
-        <item>false</item>
+        <item>Full Time</item>
+        <item>Part Time</item>
     </string-array>
 </resources>

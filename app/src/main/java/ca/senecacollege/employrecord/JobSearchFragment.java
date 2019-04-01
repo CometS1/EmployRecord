@@ -42,16 +42,17 @@ public class JobSearchFragment extends Fragment {
     List<String> returnArray;
     ListView linearLayoutListView;
 
+    //Uses Utils class to access json data for job and open ViewJobActivity with job data
     class JobAsyncTask extends AsyncTask<String, Void, List<String>> {
 
         class openLink implements AdapterView.OnItemClickListener {
             openLink() {
             }
 
+            //Runs ViewJobActivity with job data using job URL
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String currentJobURL = ((TextView) view.findViewById(R.id.jobURL)).getText().toString();
                 StringBuilder URLstring = new StringBuilder();
-                //URLstring.append("https://jobs.github.com/positions/");
                 URLstring.append(currentJobURL);
                 URLstring.append(".json");
                 Intent intent = new Intent(getActivity(), ViewJobActivity.class);
@@ -63,25 +64,27 @@ public class JobSearchFragment extends Fragment {
         JobAsyncTask() {
         }
 
+        //Fetches the job data from search in the background
         protected List<String> doInBackground(String... stringurl) {
             returnArray = Utils.fetchJobData(stringurl[0]);
             return returnArray;
         }
 
+        //After receiving data, puts data in Listview
         public void onPostExecute(List<String> postExecuteResult) {
-            if(postExecuteResult == null){
+
+            CustomListAdapter arrayAdapter = new CustomListAdapter(getActivity(), postExecuteResult);
+            if (arrayAdapter.getCount() == 0){
                 Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
             }
-            else{
+            linearLayoutListView = (ListView) getActivity().findViewById(R.id.searchResultsList);
+            linearLayoutListView.setAdapter(arrayAdapter);
+            linearLayoutListView.setOnItemClickListener(new openLink());
 
-                CustomListAdapter arrayAdapter = new CustomListAdapter(getActivity(), postExecuteResult);
-                linearLayoutListView = (ListView) getActivity().findViewById(R.id.searchResultsList);
-                linearLayoutListView.setAdapter(arrayAdapter);
-                linearLayoutListView.setOnItemClickListener(new openLink());
-            }
         }
     }
 
+    //Fills fulltime spinner with options
     class fillSpinner implements AdapterView.OnItemSelectedListener {
         fillSpinner() {
         }
@@ -89,9 +92,10 @@ public class JobSearchFragment extends Fragment {
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             if (i == 0) {
                 JobSearchFragment.this.spinnerSelected = "Yes";
-                return;
             }
-            JobSearchFragment.this.spinnerSelected = "No";
+            else {
+                JobSearchFragment.this.spinnerSelected = "No";
+            }
         }
 
         public void onNothingSelected(AdapterView<?> adapterView) {
@@ -101,6 +105,9 @@ public class JobSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Set action bar title to specified string
+        ((MainActivity)getActivity()).setActionBarTitle("Job Search");
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_job_search, container, false);
     }
@@ -110,7 +117,6 @@ public class JobSearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        //ArrayAdapter adaptor = new ArrayAdapter(getActivity(), 17367057, Arrays.asList(new String[]{"Yes", "No"}));
         ArrayAdapter adaptor = ArrayAdapter.createFromResource(getActivity(),
                 R.array.fulltime_array, android.R.layout.simple_spinner_item);
         Spinner spinner1 = (Spinner) view.findViewById(R.id.fullTimeSpinner);
@@ -118,10 +124,10 @@ public class JobSearchFragment extends Fragment {
         spinner1.setAdapter(adaptor);
         spinner1.setOnItemSelectedListener(new fillSpinner());
 
+        //Add search button click functionality to search on click and fill Listview
         view.findViewById(R.id.searchButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 EditText title = (getActivity().findViewById(R.id.searchValue));
                 Spinner spinner1 = (Spinner) getActivity().findViewById(R.id.fullTimeSpinner);
@@ -129,6 +135,12 @@ public class JobSearchFragment extends Fragment {
 
                 String titleValue = title.getText().toString();
                 String fullTime = (spinner1.getSelectedItem()).toString();
+                if (fullTime.equals("Full Time")){
+                    fullTime = "true";
+                }
+                else{
+                    fullTime = "false";
+                }
                 String locationValue = location.getText().toString();
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.setLength(0);
@@ -139,22 +151,11 @@ public class JobSearchFragment extends Fragment {
                     stringBuilder.append("&location=");
                     stringBuilder.append(locationValue);
                     String URL = stringBuilder.toString();
-
-
-                //Toast.makeText(getActivity(), URL, Toast.LENGTH_SHORT).show();
-
+                    //Toast.makeText(getActivity(), URL, Toast.LENGTH_SHORT).show();
                     new JobAsyncTask().execute(new String[]{URL});
             }
         });
 
-        /*
-        view.findViewById(R.id.buttonTmp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "You are inside Job Search Fragment", Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
 
     }
 

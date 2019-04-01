@@ -12,20 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/title_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_job_board"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.05" />
-
+        <!--
         <Button
             android:id="@+id/addUserJob"
             android:layout_width="wrap_content"
@@ -61,14 +48,19 @@
             android:text="@string/add_job"
             app:layout_constraintTop_toBottomOf="@+id/title_profile"
             app:layout_constraintLeft_toRightOf="@+id/addUserJob" />
-
+-->
+        <!--
         <Button
             android:id="@+id/loadJob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/load_job"
-            app:layout_constraintTop_toBottomOf="@+id/addJob"
-            app:layout_constraintLeft_toRightOf="@+id/loadUserJob"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/deleteJob"
@@ -85,12 +77,11 @@
             android:text="@string/update_job"
             app:layout_constraintTop_toBottomOf="@+id/deleteUserJob"
             app:layout_constraintLeft_toRightOf="@+id/updateUserJob"/>
-
+-->
         <ListView
             android:id="@+id/jobResultsList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/updateUserJob"/>
+            android:layout_height="wrap_content"/>
 
     </android.support.constraint.ConstraintLayout>
 

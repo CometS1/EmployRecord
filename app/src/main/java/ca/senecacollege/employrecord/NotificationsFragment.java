@@ -33,100 +33,18 @@ public class NotificationsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Set action bar title to specified string
+        ((MainActivity)getActivity()).setActionBarTitle("Notifications");
+
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_notifications, container, false);
-
-        //Todo: these 4 button is here for db testing purposes
-        Button addNotificationButton = (Button) view.findViewById(R.id.addNotification);
-        addNotificationButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                addNotification();
-            }
-        });
-
-        Button loadNotificationButton = (Button) view.findViewById(R.id.loadNotification);
-        loadNotificationButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                loadNotification();
-            }
-        });
-
-        Button deleteNotificationButton = (Button) view.findViewById(R.id.deleteNotification);
-        deleteNotificationButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                deleteNotification();
-            }
-        });
-
-        Button updateNotificationButton = (Button) view.findViewById(R.id.updateNotification);
-        updateNotificationButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                updateNotification();
-            }
-        });
-
-
-        //Todo: these 4 button is here for db testing purposes
-        Button addJobNotificationButton = (Button) view.findViewById(R.id.addJobNotification);
-        addJobNotificationButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                addJobNotification();
-            }
-        });
-
-        Button loadJobNotificationButton = (Button) view.findViewById(R.id.loadJobNotification);
-        loadJobNotificationButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                loadJobNotification();
-            }
-        });
-
-        Button deleteJobButton = (Button) view.findViewById(R.id.deleteJobNotification);
-        deleteJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                deleteJobNotification();
-            }
-        });
-
-        Button updateJobButton = (Button) view.findViewById(R.id.updateJobNotification);
-        updateJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                updateJobNotification();
-            }
-        });
-
-
-
-        return view;
+        return inflater.inflate(R.layout.fragment_notifications, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
     }
 
     private void addNotification() {

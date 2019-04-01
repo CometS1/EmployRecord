@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/TextTheme"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:descendantFocusability="blocksDescendants">
 
         <TextView
             android:id="@+id/jobId"
@@ -40,7 +43,7 @@
             android:paddingTop="5dp"
             android:layout_below="@id/textViewLocation"/>
 
-        <!--
+<!--
         <Button
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
@@ -49,6 +52,7 @@
             android:layout_gravity="end"
             android:layout_alignRight="@id/textViewTitle"/>
             -->
+
 
     </RelativeLayout>
 

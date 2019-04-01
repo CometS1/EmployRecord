@@ -5,8 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,7 +32,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,11 @@ import ca.senecacollege.employrecord.DatabaseHelper.User;
  * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+    public static final String MyPREFERENCES = "myPref" ;
+    public static final String USERNAME = "usernameKey";
+
+    private static final String TAG = "LoginActivity";
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -72,16 +77,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     MyDBHandler helper;
 
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.lbl_username);
+        mUsernameView = findViewById(R.id.lbl_username);
+        mPasswordView = findViewById(R.id.password);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
+        m_loginBtn = findViewById(R.id.login_button);
+        m_registerBtn = findViewById(R.id.register_button);
+
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        // Shared Preferences - Retrieve saved usernameKey's value
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String savedUsername = sharedpreferences.getString("usernameKey","");
+
+        // If usernameKey's value is not empty, user is still logged in
+        // Go directly to MainActivity
+        if (savedUsername != null && !savedUsername.isEmpty()) {
+            Log.e(TAG, "--> savedUsername = " + savedUsername);
+            Intent intent = MainActivity.newIntent(LoginActivity.this);
+            startActivityForResult(intent, 0);
+        }
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -93,18 +117,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        m_loginBtn = (Button) findViewById(R.id.login_button);
         m_loginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
-        m_registerBtn = findViewById(R.id.register_button);
 
         m_registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +131,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivityForResult(intent, 0);
             }
         });
-
     }
 
     private void populateAutoComplete() {
@@ -211,13 +228,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // form field with an error.
             focusView.requestFocus();
         } else {
+            // Username and Password is correct
+            // Set Shared Preferences
+            //TODO: shared preferences ****************************************************************************
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString(USERNAME, username);
+            editor.commit();
+
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
             User.setUser(checkAccount);
             Intent intent = MainActivity.newIntent(LoginActivity.this);
             startActivityForResult(intent, 0);
-            finish();
+            //finish(); // TODO: remove this if navigation is working
 
             /*mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);*/

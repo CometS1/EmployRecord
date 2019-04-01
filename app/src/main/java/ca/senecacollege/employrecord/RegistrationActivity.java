@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Timer;
@@ -23,37 +22,40 @@ import java.util.regex.Pattern;
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
 import ca.senecacollege.employrecord.DatabaseHelper.User;
 
+// RegistrationActivity will allow the user to register an account and add them to the database
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrationActivity";
 
-    EditText fname;
-    EditText lname;
-    EditText username;
-    EditText email;
-    EditText pwd;
-    EditText pwdConfirm;
+    private MyDBHandler db;
 
-    Button btnRegister;
-    Button btnCancel;
-    TextView resultView;
+    private EditText firstName;
+    private EditText lastName;
+    private EditText username;
+    private EditText email;
+    private EditText pwd;
+    private EditText pwdConfirm;
 
+    private Button btnRegister;
+    private Button btnCancel;
+
+    // Returns a new messaging object to request an action from another app component
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, RegistrationActivity.class);
         return intent;
     }
 
-    private MyDBHandler dbHandler() {
-        return new MyDBHandler(this, null, null, 1);
-    }
-
+    // When the Registration Activity is opened/started, these actions are executed
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        fname = findViewById(R.id.register_fname);
-        lname = findViewById(R.id.register_lname);
+        // Set action bar title to specified string
+        this.getSupportActionBar().setTitle("Registration");
+
+        firstName = findViewById(R.id.register_fname);
+        lastName = findViewById(R.id.register_lname);
         username = findViewById(R.id.register_username);
         email = findViewById(R.id.register_email);
         pwd = findViewById(R.id.register_pwd);
@@ -61,16 +63,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
         btnRegister = findViewById(R.id.btn_register);
         btnCancel = findViewById(R.id.btnCancel);
-        resultView = findViewById(R.id.resultView);
 
+        // When clicking Register button, these actions execute
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validateDataEntered()) {
                     addUserAndRedirect();
 
-                    fname.setText("");
-                    lname.setText("");
+                    firstName.setText("");
+                    lastName.setText("");
                     username.setText("");
                     email.setText("");
                     pwd.setText("");
@@ -79,17 +81,21 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
+        // When clicking Cancel button, these actions execute
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Request to start the Login Activity
                 Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                 RegistrationActivity.this.startActivity(intent);
+
+                // Finish the Registration Activity
                 finish();
             }
         });
 
-        // TODO: below is temp fix for collapsing the keyboard, need to find another way
-        fname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        // Methods to collapse the keyboard when clicking out of a text box (screen area)
+        firstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -97,7 +103,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
             }
         });
-        lname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        lastName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -137,23 +143,26 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
             }
         });
-        // TODO: above this line is temp fix
     }
 
+    // Returns TRUE if there is an email and it's in the correct format, otherwise FALSE
     private boolean isEmail(EditText text) {
         CharSequence email = text.getText().toString();
         return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
     }
 
+    // Returns TRUE if input text is blank, otherwise FALSE
     private boolean isEmpty(EditText text) {
         CharSequence str = text.getText().toString();
         return TextUtils.isEmpty(str);
     }
 
+    // Returns TRUE if password inputs match, otherwise FALSE
     private boolean isPasswordMatch(EditText password, EditText confirmPassword) {
         return password.getText().toString().equals(confirmPassword.getText().toString());
     }
 
+    // Returns TRUE if the password is valid, otherwise FALSE
     private boolean isValidPassword(EditText password) {
         Matcher matcher;
         //Minimum five characters, at least one letter, one number and one special character
@@ -163,7 +172,10 @@ public class RegistrationActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
+    // Validate the data input by the user
     private boolean validateDataEntered() {
+        Log.e(TAG, "--> Start validateDataEntered");
+
         boolean validFname = false;
         boolean validLname = false;
         boolean validUsername = false;
@@ -174,40 +186,50 @@ public class RegistrationActivity extends AppCompatActivity {
         boolean validConfirmPwd = false;
         boolean validPwdMatch = false;
 
-        Log.e(TAG, "--> Start validateDataEntered");
+        db = new MyDBHandler(this, null, null, 1);
 
-        if (isEmpty(fname)) {
-            fname.setError("First name is required");
+        // Set an error message if first name is blank
+        if (isEmpty(firstName)) {
+            firstName.setError("First name is required");
         } else {
             validFname = true;
         }
 
-        if (isEmpty(lname)) {
-            lname.setError("Last name is required");
+        // Set an error message if last name is blank
+        if (isEmpty(lastName)) {
+            lastName.setError("Last name is required");
         } else {
             validLname = true;
         }
+
+        // Set an error message if username is blank
         if (isEmpty(username)) {
             username.setError("Username is required");
         } else {
             validUsername = true;
-            if (dbHandler().isUser(username.getText().toString())) {
+
+            // Set an error message if username already exists in database
+            if (db.isUser(username.getText().toString())) {
                 username.setError("Username already exists!");
             } else {
                 validUser = true;
             }
         }
 
+        // Set an error message if email is blank
         if (!isEmail(email) || isEmpty(email)) {
             email.setError("Valid email is required");
         } else {
             validEmail = true;
         }
 
+        // Set an error message if password is blank
         if (isEmpty(pwd)) {
             pwd.setError("Password is required");
         } else {
             validPwd = true;
+
+            // Set an error message if password is invalid
             if (!isValidPassword(pwd)) {
                 pwd.setError("Password must have minimum 5 characters, at least 1 letter, 1 number and 1 special character");
             } else {
@@ -215,45 +237,55 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         }
 
+        // Set an error message if password is blank
         if (isEmpty(pwdConfirm)) {
             pwdConfirm.setError("Confirm password is required");
         } else {
             validConfirmPwd = true;
         }
 
+        // Set an error message if password does not match
         if (!isPasswordMatch(pwd, pwdConfirm)) {
             pwdConfirm.setError("Your passwords must match");
         } else {
             validPwdMatch = true;
         }
 
+        // Returns TRUE if all data is valid
         return (validFname && validLname && validUsername && validUser && validEmail && validPwd && validPwdFormat && validConfirmPwd && validPwdMatch);
     }
 
-    private void addUserAndRedirect() {
-        Log.e(TAG, "--> Start addUserAndRedirect");
 
-        String fnameStr = fname.getText().toString();
-        String lnameStr = lname.getText().toString();
+    // Add user to database and redirect to login page
+    private void addUserAndRedirect() {
+        String fnameStr = firstName.getText().toString();
+        String lnameStr = lastName.getText().toString();
         String usernameStr = username.getText().toString();
         String emailStr = email.getText().toString();
         String pwdStr = pwdConfirm.getText().toString();
 
+        // Create new user with all the input data
         User user = new User(emailStr, usernameStr, pwdStr, fnameStr, lnameStr);
-        Log.e(TAG, "-->New user: " + user);
 
-        dbHandler().addUserHandler(user);
+        // Add the new user to the database
+        db = new MyDBHandler(this, null, null, 1);
+        db.addUserHandler(user);
+
+        // Display pop up message after user has been added to database
         Toast.makeText(RegistrationActivity.this, "Registered Successfully!", Toast.LENGTH_LONG).show();
 
-        //Redirect to login page
-        int timeout = 1500; // make the activity visible for 1.5 seconds
+        // Visible for 1.2 seconds
+        int timeout = 1200;
 
+        // This makes the current activity visible for the amount of "timeout" before redirecting
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             @Override
             public void run() {
                 finish();
+
+                // Redirect to login page
                 Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
@@ -262,50 +294,32 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
+    // Hides the keyboard when outside of input control
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    // TODO: REMOVE THIS TESTER - Loads list of registered users
-    public void loadUser(View view) {
-        Log.i(TAG, "--> Start loadUser");
-        resultView.setText(dbHandler().loadUserHandler());
-
-        fname.setText("");
-        lname.setText("");
-        username.setText("");
-        email.setText("");
-        pwd.setText("");
-        pwdConfirm.setText("");
-    }
-
-    // TODO: REMOVE THIS TESTER - Manually remove user
-    public void deleteUser (View view) {
-        Log.i(TAG, "--> delete User");
+    // FOR TESTING PURPOSES - Manually delete a user
+    private void deleteUser (String username) {
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
-
-        String userName = "";
-
-        dbHandler.deleteUserHandler(userName);
-        Toast.makeText(RegistrationActivity.this, "deleted user!", Toast.LENGTH_LONG).show();
+        dbHandler.deleteUserHandler(username);
+        Log.i(TAG, "User deleted");
     }
 
-    // TODO: REMOVE THIS TESTER - updates user manually
-    public void updateUser (View view) {
-        Log.i(TAG, "--> update User");
+    // FOR TESTING PURPOSES - Manually update a user
+    private void updateUser () {
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
         User user = new User();
-
         user.setUsername("test");
-        user.setEmail("tester@gmail.com");
+        user.setEmail("test@gmail.com");
         user.setPassword("tester");
         user.setFirstName("te");
         user.setLastName("st");
 
         dbHandler.updateUserHandler(user);
-        Toast.makeText(RegistrationActivity.this, "update user test!", Toast.LENGTH_LONG).show();
+        Log.i(TAG, "User updated");
     }
 
 }
