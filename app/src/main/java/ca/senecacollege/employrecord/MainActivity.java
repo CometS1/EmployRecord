@@ -3,13 +3,11 @@ package ca.senecacollege.employrecord;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,77 +16,72 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import ca.senecacollege.employrecord.DatabaseHelper.User;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+// MainActivity will display the fragments and includes the Navigation Drawer components
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
 
+    // Returns a new messaging object to request an action from another app component
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, MainActivity.class);
         return intent;
     }
 
+    // Method to handle actions when this activity is first displayed on screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        // Set action bar to layout object
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // Set side navigation drawer to toggle (open/close) when clicked
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        // Set selected navigation listener
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Start the Job Board Fragment after logging in - it will be the main fragment
-        Fragment mainActivityFragment = null;
-        mainActivityFragment = new JobBoardFragment();
+        Fragment mainActivityFragment = new JobBoardFragment();
         if (mainActivityFragment != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, mainActivityFragment).commit();
             navigationView.setCheckedItem(R.id.nav_job_board);
         }
     }
 
+    // Method to handle actions when Back button is pressed
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        // If side navigation is open, close it when back button is pressed
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             FragmentManager mFragmentManager = getSupportFragmentManager();
+
+            // Keeps track of navigating through the screens using the back button
             if (mFragmentManager.getBackStackEntryCount() > 0) {
                 mFragmentManager.popBackStack();
             } else {
+                // Commented out to prevent the back button from exiting the app (user stays on the app)
                 //super.onBackPressed();
-                /* 1. Implementing super.onBackPressed() will exit & logout of the app when pressing the back button on the last stack entry
-                 * --> this works because finish() is added to LoginActivity under startActivityForResult(intent, 0);
-                 * --> If finish() is NOT added to LoginActivity, pressing the back button does NOT exit the app and user is stuck on the showProgress() screen
-                 * 2. Not implementing super.onBackPressed() means pressing the back button will do nothing on the last stack entry (stays on the last screen)
-                 */
             }
 
         }
     }
 
+    // Method to handle actions when Options Menu is created
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -96,6 +89,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    // Method to handle the top right button (opens Settings)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -111,15 +105,25 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void logout() {
+    // Method to log the user out
+    public void logout() {
         Log.e(TAG, "--> Start logout");
+
+        // Clear any data saved to Shared Preferences
+        SharedPreferences sharedpreferences = getSharedPreferences(LoginActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.clear();
+        editor.commit();
+
         User.setUser(null);
 
+        // Redirect to Login screen after logging user out
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
+    // Method to handle actions when Navigation Item is selected
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -146,10 +150,10 @@ public class MainActivity extends AppCompatActivity
         // The specified fragment is placed into the main screen area (content_main.xml page)
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, fragment).addToBackStack(null).commit();
-            //getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, fragment).commit();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // Side Navigation is closed after selected a screen to go to
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

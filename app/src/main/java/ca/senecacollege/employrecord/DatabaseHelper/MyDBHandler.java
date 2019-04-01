@@ -102,40 +102,27 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {}
 
     // begin user crud operation
-    public String loadUserHandler() {
+    public User loadUserHandler(String username) {
         Log.i(TAG, "--> Start loadUserHandler");
-        String result = "";
-        String query = "Select*FROM " + TABLE_USER;
+
+        String query = "Select * FROM " + TABLE_USER + " WHERE " + COL_USERNAME + " = " + "'" + username + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        while (cursor.moveToNext()) {
-            //int result_0 = cursor.getInt(0);
-
-            String result_1 = cursor.getString(0);
-            String result_2 = cursor.getString(1);
-            String result_3 = cursor.getString(2);
-            String result_4 = cursor.getString(3);
-            String result_5 = cursor.getString(4);
-
-            //Log.i(TAG, "--> result_0 == " + result_0);
-            Log.i(TAG, "--> result_1 == " + result_1);
-            Log.i(TAG, "--> result_2 == " + result_2);
-            Log.i(TAG, "--> result_3 == " + result_3);
-            Log.i(TAG, "--> result_4 == " + result_4);
-            Log.i(TAG, "--> result_5 == " + result_5);
-
-            //result += String.valueOf(result_0) + " " + result_1 + System.getProperty("line.separator");
-
-            result += result_1
-                    + " " + result_2 + " " + result_3
-                    + " " + result_4 + " " + result_5
-                    + System.getProperty("line.separator");
-
-            Log.i(TAG, "--> RESULT == " + result);
+        User user= new User();
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            user.setEmail(cursor.getString(cursor.getColumnIndex(COL_EMAIL)));
+            user.setUsername(cursor.getString(cursor.getColumnIndex(COL_USERNAME)));
+            user.setPassword(cursor.getString(cursor.getColumnIndex(COL_PASSWORD)));
+            user.setFirstName(cursor.getString(cursor.getColumnIndex(COL_FIRSTNAME)));
+            user.setLastName(cursor.getString(cursor.getColumnIndex(COL_LASTNAME)));
+            cursor.close();
+        } else {
+            user= null;
         }
         cursor.close();
         db.close();
-        return result;
+        return user;
     }
 
     public long addUserHandler(User user) {
