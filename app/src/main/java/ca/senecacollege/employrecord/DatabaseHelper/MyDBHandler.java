@@ -86,6 +86,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String TABLE_JOB_NOTIFICATION = "job_notification";
     private static final String COL_JOB_NOTIFICATION_ID = "job_notification_id";
 
+    // Table category and column name
+    private static final String TABLE_CATEGORY = "category";
+    private static final String COL_CATEGORY_ID = "category_id";
+    private static final String COL_CATEGORY_NAME = "category_name";
+
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
@@ -95,13 +100,21 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         // creating required tables
         db.execSQL(CREATE_TABLE_USER);
-        db.execSQL(CREATE_TABLE_COLOUR);
+        //db.execSQL(CREATE_TABLE_COLOUR);
         db.execSQL(CREATE_TABLE_STATUS);
         db.execSQL(CREATE_TABLE_JOB);
         db.execSQL(CREATE_TABLE_ADDRESS);
         db.execSQL(CREATE_TABLE_USER_JOB);
         db.execSQL(CREATE_TABLE_NOTIFICATION);
         db.execSQL(CREATE_TABLE_JOB_NOTIFICATION);
+        db.execSQL(CREATE_TABLE_CATEGORY);
+
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Wishlist')");
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Applied')");
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Phone')");
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Offer')");
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Rejected')");
+
     }
 
     @Override
@@ -643,12 +656,14 @@ public class MyDBHandler extends SQLiteOpenHelper {
             int result_0 = cursor.getInt(0);
             int result_1 = cursor.getInt(1);
             int result_2 = cursor.getInt(2);
+            int result_3 = cursor.getInt(3);
             result += result_0 + "@@" + result_1 +  "@@" + result_2 + "@@";
                     //System.getProperty("line.separator");
 
             Log.i(TAG, "--> result_0 == " + result_0);
             Log.i(TAG, "--> result_1 == " + result_1);
             Log.i(TAG, "--> result_2 == " + result_2);
+            Log.i(TAG, "--> result_3 == " + result_3);
 
 
             Log.i(TAG, "--> RESULT == " + result);
@@ -663,6 +678,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         //values.put(COL_USER_JOB_ID, userJob.getUser_job_id());
         values.put(COL_USER_ID, userJob.getUser_id());
         values.put(COL_JOB_ID, userJob.getJob_id());
+        values.put(COL_CATEGORY_ID, userJob.getCategory_id());
+        System.out.println (userJob.getCategory_id());
         SQLiteDatabase db = this.getWritableDatabase();
         long id = db.insert(TABLE_USER_JOB, null, values);
         db.close();
@@ -772,7 +789,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COL_END_TIME, notification.getEnd_time());
         values.put(COL_ALL_DAY, notification.getAll_day());
         values.put(COL_NOTE, notification.getNote());
-        values.put(COL_COLOUR_ID, notification.getColour_id());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_NOTIFICATION, null, values);
@@ -794,7 +810,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             notification.setEndTime(cursor.getString(cursor.getColumnIndex(COL_END_TIME)));
             notification.setAllDay(cursor.getString(cursor.getColumnIndex(COL_ALL_DAY)));
             notification.setNote(cursor.getString(cursor.getColumnIndex(COL_NOTE)));
-            notification.setColourId(Integer.parseInt(cursor.getString(8)));
+
             cursor.close();
         } else {
             notification= null;
@@ -975,7 +991,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_USER_JOB = "CREATE TABLE IF NOT EXISTS " + TABLE_USER_JOB + "("
             + COL_USER_JOB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COL_USER_ID + " INTEGER NOT NULL, "
-            + COL_JOB_ID + " INTEGER NOT NULL, FOREIGN KEY(" + COL_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COL_USER_ID + ") ON UPDATE CASCADE, FOREIGN KEY(" + COL_JOB_ID + ") REFERENCES " + TABLE_JOB + "(" + COL_JOB_ID + ") ON UPDATE CASCADE )";
+            + COL_JOB_ID + " INTEGER NOT NULL, "
+            + COL_CATEGORY_ID + " INTEGER NOT NULL, FOREIGN KEY(" + COL_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COL_USER_ID + ") ON UPDATE CASCADE, FOREIGN KEY(" + COL_JOB_ID + ") REFERENCES " + TABLE_JOB + "(" + COL_JOB_ID + ") ON UPDATE CASCADE , FOREIGN KEY(" + COL_CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORY + "(" + COL_CATEGORY_ID + ") ON UPDATE CASCADE)";
 
     // CREATE TABLE 7 -- NOTIFICATION
     private static final String CREATE_TABLE_NOTIFICATION = "CREATE TABLE IF NOT EXISTS "
@@ -987,8 +1004,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             + COL_START_TIME + " TEXT, "
             + COL_END_TIME + " TEXT, "
             + COL_ALL_DAY + " TEXT, "
-            + COL_NOTE + " TEXT, "
-            + COL_COLOUR_ID + " INTEGER, FOREIGN KEY(" + COL_COLOUR_ID + ") REFERENCES " + TABLE_COLOUR + "(" + COL_COLOUR_ID + ") ON UPDATE CASCADE )";
+            + COL_NOTE + " TEXT )";
 
     // CREATE TABLE 8 -- JOB_NOTIFICATION
     private static final String CREATE_TABLE_JOB_NOTIFICATION = "CREATE TABLE IF NOT EXISTS "
@@ -996,4 +1012,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
             + COL_JOB_NOTIFICATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COL_USER_JOB_ID + " INTEGER NOT NULL, "
             + COL_NOTIFICATION_ID + " INTEGER NOT NULL, FOREIGN KEY(" + COL_USER_JOB_ID + ") REFERENCES " + TABLE_USER_JOB + "(" + COL_USER_JOB_ID + ") ON UPDATE CASCADE, FOREIGN KEY(" + COL_NOTIFICATION_ID + ") REFERENCES " + TABLE_JOB + "(" + COL_NOTIFICATION_ID + ") ON UPDATE CASCADE )";
+
+    private static final String CREATE_TABLE_CATEGORY = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_CATEGORY + "("
+            + COL_CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COL_CATEGORY_NAME + " TEXT NOT NULL)";
 }
