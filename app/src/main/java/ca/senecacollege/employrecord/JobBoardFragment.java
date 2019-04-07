@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class JobBoardFragment extends Fragment {
 
     }
 
+    String spinnerSelected = "Yes";
     //Adaptor created for list of user jobs that add info to list
     class JobBoardAdapter extends ArrayAdapter<String> {
         Activity context;
@@ -123,6 +125,12 @@ public class JobBoardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ArrayAdapter adaptor = ArrayAdapter.createFromResource(getActivity(),
+                R.array.category_array, android.R.layout.simple_spinner_item);
+        Spinner spinner1 = (Spinner) view.findViewById(R.id.categorySpinner);
+        adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner1.setAdapter(adaptor);
+        spinner1.setOnItemSelectedListener(new JobBoardFragment.fillSpinner());
         /*view.findViewById(R.id.buttonTmp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +140,23 @@ public class JobBoardFragment extends Fragment {
         loadJob();
     }
 
+    //Fills fulltime spinner with options
+    class fillSpinner implements AdapterView.OnItemSelectedListener {
+        fillSpinner() {
+        }
+
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            if (i == 0) {
+                JobBoardFragment.this.spinnerSelected = "Yes";
+            }
+            else {
+                JobBoardFragment.this.spinnerSelected = "No";
+            }
+        }
+
+        public void onNothingSelected(AdapterView<?> adapterView) {
+        }
+    }
 
     //Loads job into listview
     public void loadJob() {

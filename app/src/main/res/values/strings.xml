@@ -67,4 +67,13 @@
         <item>Full Time</item>
         <item>Part Time</item>
     </string-array>
+    <string-array name="category_array">
+        <item>Wishlist</item>
+        <item>Applied</item>
+        <item>Phone</item>
+        <item>Offer</item>
+        <item>Rejected</item>
+    </string-array>
+
+
 </resources>

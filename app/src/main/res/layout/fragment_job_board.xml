@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".JobBoardFragment">
@@ -12,6 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="143dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toEndOf="@+id/jobResultsList"
+            app:layout_constraintTop_toTopOf="parent" />
         <!--
         <Button
             android:id="@+id/addUserJob"
@@ -80,8 +90,9 @@
 -->
         <ListView
             android:id="@+id/jobResultsList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_width="249dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/frameLayout" />
 
     </android.support.constraint.ConstraintLayout>
 

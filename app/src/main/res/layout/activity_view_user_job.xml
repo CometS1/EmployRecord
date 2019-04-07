@@ -10,7 +10,9 @@
     <ScrollView
         android:id="@+id/job_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -21,66 +23,66 @@
 
             <TextView
                 android:id="@+id/textViewJobURL"
-                android:visibility="invisible"
                 android:layout_width="0dp"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textViewCompany"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/textViewLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/textViewDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/textViewFullTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/textViewCreationDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/textViewCompanyUrl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/notesView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/notes_text"
-                android:textSize="15sp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/deleteJob"
@@ -94,6 +96,15 @@
                 android:layout_height="wrap_content"
                 android:text="@string/update_job" />
 
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="143dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintStart_toEndOf="@+id/jobResultsList"
+                app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
     </ScrollView>
