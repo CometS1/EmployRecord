@@ -109,11 +109,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_JOB_NOTIFICATION);
         db.execSQL(CREATE_TABLE_CATEGORY);
 
-        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Wishlist')");
-        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Applied')");
-        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Phone')");
-        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Offer')");
-        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (NULL, 'Rejected')");
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (1, 'Wishlist')");
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (2, 'Applied')");
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (3, 'Phone')");
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (4, 'Offer')");
+        db.execSQL("INSERT INTO " + TABLE_CATEGORY+ "(category_id, category_name) VALUES (5, 'Rejected')");
 
     }
 
@@ -247,7 +247,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     // begin colour crud operation
     public String loadColourHandler() {
         String result = "";
-        String query = "Select * FROM " + TABLE_COLOUR;
+        String query = "Select * FROM " + TABLE_CATEGORY;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
@@ -696,6 +696,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             userJob.setUser_job_id(Integer.parseInt(cursor.getString(0)));
             userJob.set_job_id(Integer.parseInt(cursor.getString(1)));
             userJob.setUserId(Integer.parseInt(cursor.getString(2)));
+            userJob.setCategory_id(Integer.parseInt(cursor.getString(3)));
 
             cursor.close();
         } else {
@@ -731,8 +732,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
         args.put(COL_USER_JOB_ID, userJob.getUser_job_id());
         args.put(COL_USER_ID, userJob.getUser_id());
         args.put(COL_JOB_ID, userJob.getUser_job_id());
+        args.put(COL_CATEGORY_ID, userJob.getCategory_id());
 
-        return db.update(TABLE_USER, args, COL_USER_JOB_ID + "=" + userJob.getUser_job_id(), null)  > 0;
+        return db.update(TABLE_USER_JOB, args, COL_USER_JOB_ID + "=" + userJob.getUser_job_id(), null)  > 0;
     }
 
 
@@ -1015,6 +1017,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_CATEGORY = "CREATE TABLE IF NOT EXISTS "
             + TABLE_CATEGORY + "("
-            + COL_CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COL_CATEGORY_ID + " INTEGER PRIMARY KEY, "
             + COL_CATEGORY_NAME + " TEXT NOT NULL)";
 }

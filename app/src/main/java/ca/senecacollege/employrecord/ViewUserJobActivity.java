@@ -5,19 +5,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ca.senecacollege.employrecord.DatabaseHelper.Category;
 import ca.senecacollege.employrecord.DatabaseHelper.Jobs;
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
+import ca.senecacollege.employrecord.DatabaseHelper.User;
+import ca.senecacollege.employrecord.DatabaseHelper.UserJob;
 
 public class ViewUserJobActivity extends AppCompatActivity {
-
+    String spinnerSelected = "Yes";
     //Allows activity to access database
     private MyDBHandler dbHandler() {
         return new MyDBHandler(getApplicationContext(), null, null, 1);
@@ -56,6 +62,13 @@ public class ViewUserJobActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_user_job);
+
+        ArrayAdapter adaptor = ArrayAdapter.createFromResource(ViewUserJobActivity.this,
+                R.array.category_array, android.R.layout.simple_spinner_item);
+        Spinner spinner1 = (Spinner) ViewUserJobActivity.this.findViewById(R.id.categorySpinner);
+        adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner1.setAdapter(adaptor);
+        spinner1.setOnItemSelectedListener(new ViewUserJobActivity.fillSpinner());
 
         // Set action bar title to specified string
         getSupportActionBar().setTitle("Job Description");
@@ -107,6 +120,45 @@ public class ViewUserJobActivity extends AppCompatActivity {
         updateJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Spinner spinner1 = (Spinner) ViewUserJobActivity.this.findViewById(R.id.categorySpinner);
+                String selectedItem = (spinner1.getSelectedItem()).toString();
+
+                User currentUser = User.getInstance();
+
+                // hijcaking colour db load handler for category data checking purpose
+                String category = dbHandler().loadColourHandler();
+                //System.out.println ("cu " + currentUser);
+                //System.out.println (category);
+
+                UserJob currentUserJob;
+                currentUserJob = dbHandler().findUserJobHandler(job.getJobId());
+
+                // need to update both category id on job and user_job table
+                if (selectedItem.equals("Wishlist")){
+
+                    currentUserJob.setUserId(currentUser.getID());
+                    currentUserJob.setCategory_id(1);
+                }
+                else if (selectedItem.equals("Applied")) {
+
+                    currentUserJob.setUserId(currentUser.getID());
+                    currentUserJob.setCategory_id(2);
+                }
+                else if (selectedItem.equals("Phone")) {
+                    currentUserJob.setUserId(currentUser.getID());
+                    currentUserJob.setCategory_id(3);
+                }
+                else if (selectedItem.equals("Offer")) {
+                    currentUserJob.setUserId(currentUser.getID());
+                    currentUserJob.setCategory_id(4);
+                }
+                else if (selectedItem.equals("Rejected")) {
+                    currentUserJob.setUserId(currentUser.getID());
+                    currentUserJob.setCategory_id(5);
+                }
+
+                dbHandler().updateUserJobHandler(currentUserJob);
+                //System.out.println ("cuj " + currentUserJob.getCategory_id());
                 String post_url = notesInfo.getText().toString();
                 job.setPostUrl(post_url);
                 updateJob(job);
@@ -116,4 +168,23 @@ public class ViewUserJobActivity extends AppCompatActivity {
 
 
     }
+
+    //Fills fulltime spinner with options
+    class fillSpinner implements AdapterView.OnItemSelectedListener {
+        fillSpinner() {
+        }
+
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            if (i == 0) {
+                ViewUserJobActivity.this.spinnerSelected = "Yes";
+            }
+            else {
+                ViewUserJobActivity.this.spinnerSelected = "No";
+            }
+        }
+
+        public void onNothingSelected(AdapterView<?> adapterView) {
+        }
+    }
 }
+

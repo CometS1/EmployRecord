@@ -10,7 +10,8 @@ public class UserJob{
         private int user_job_id;
         private int user_id;
         private int job_id;
-        private int category_id;
+
+    private int category_id;
 
         public UserJob(){}
 
@@ -44,13 +45,12 @@ public class UserJob{
             return this.job_id;
         }
 
-        public void set_category_id(int _cateogry_id){
-            this.category_id = _cateogry_id;
-        }
-
         public int getCategory_id() {
-            return this.category_id;
+            return category_id;
         }
 
+        public void setCategory_id(int category_id) {
+            this.category_id = category_id;
+        }
 
 }
