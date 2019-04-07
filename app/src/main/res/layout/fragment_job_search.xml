@@ -64,7 +64,7 @@
         android:id="@+id/searchResultsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp"
+        android:padding="10dp"
         android:layout_below="@id/searchButton"/>
 
 
