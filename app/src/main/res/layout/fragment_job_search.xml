@@ -24,6 +24,7 @@
         app:autoSizeTextType="uniform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="20dp"
         android:maxLines="1"
         android:gravity="center"
         android:inputType="text"
@@ -44,24 +45,26 @@
     <Spinner
         android:id="@+id/fullTimeSpinner"
         app:autoSizeTextType="uniform"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/locationValue"
         android:layout_alignStart="@+id/locationValue"/>
 
     <Button
         android:id="@+id/searchButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_below="@+id/fullTimeSpinner"
-        android:text="@string/search_text"
-        android:gravity="center"/>
+        android:layout_alignStart="@+id/locationValue"
+        android:text="@string/search_text"/>
 
 
     <ListView
         android:id="@+id/searchResultsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:layout_below="@id/searchButton"/>
 
 
