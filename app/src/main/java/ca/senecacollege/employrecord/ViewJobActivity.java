@@ -153,45 +153,84 @@ public class ViewJobActivity extends AppCompatActivity {
         int status_id = 1;
         jobs.setStatusId(status_id);
 
-        //set job to User
-        dbHandler().addJobHandler(jobs);
-
         Jobs currentJob = dbHandler().findJobByTitle(title);
 
-        User currentUser = User.getInstance();
-        UserJob currentUserJob = new UserJob();
+        if (dbHandler().findJobByTitle(title) == null){
+            //puts job in database
+            dbHandler().addJobHandler(jobs);
 
-        /*String userJobResult = dbHandler().loadUserJobHandler();
-        String[] splitedUserJob = userJobResult.split("@@");
+            currentJob = dbHandler().findJobByTitle(title);
 
-        if (splitedUserJob.length > 3){
-            currentUserJob.setUser_job_id(Integer.parseInt(splitedUserJob[splitedUserJob.length - 3]));
-        }*/
+            User currentUser = User.getInstance();
+            UserJob currentUserJob = new UserJob();
 
-        currentUserJob.setUserId(currentUser.getID());
-        currentUserJob.set_job_id(currentJob.getJobId());
+            currentUserJob.setUserId(currentUser.getID());
+            currentUserJob.set_job_id(currentJob.getJobId());
 
 
-        Log.e(TAG, "-->New user: " + jobs);
+            Log.e(TAG, "-->New user: " + jobs);
 
-        dbHandler().addUserJobHandler(currentUserJob);
+            dbHandler().addUserJobHandler(currentUserJob);
 
-        Toast.makeText(getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
-        //Toast.makeText(getApplicationContext(), Integer.toString(currentJob.getJobId()), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), Integer.toString(currentJob.getJobId()), Toast.LENGTH_LONG).show();
 
-        //Redirect to login page
-        int timeout = 1200;
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+            //Redirect to login page
+            int timeout = 1200;
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
 
-            @Override
-            public void run() {
-                finish();
-                Intent intent = new Intent(ViewJobActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                @Override
+                public void run() {
+                    finish();
+                    Intent intent = new Intent(ViewJobActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }, timeout);
+        }
+        else{
+            if(dbHandler().findUserJobHandler(currentJob.getJobId()) == null){
+                //puts job in database
+                dbHandler().addJobHandler(jobs);
+
+                //Possibly determine if it's possible to find job by database id
+
+                User currentUser = User.getInstance();
+                UserJob currentUserJob = new UserJob();
+
+                currentUserJob.setUserId(currentUser.getID());
+                currentUserJob.set_job_id(currentJob.getJobId());
+
+
+                Log.e(TAG, "-->New user: " + jobs);
+
+                dbHandler().addUserJobHandler(currentUserJob);
+
+                Toast.makeText(getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), Integer.toString(currentJob.getJobId()), Toast.LENGTH_LONG).show();
+
+                //Redirect to login page
+                int timeout = 1200;
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+
+                    @Override
+                    public void run() {
+                        finish();
+                        Intent intent = new Intent(ViewJobActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }, timeout);
             }
-        }, timeout);
+            else{
+
+                Toast.makeText(getApplicationContext(), "Job already within user job board", Toast.LENGTH_LONG).show();
+            }
+        }
+
+
 
     }
 

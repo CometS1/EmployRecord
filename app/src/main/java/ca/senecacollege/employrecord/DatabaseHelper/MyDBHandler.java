@@ -670,7 +670,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     public UserJob findUserJobHandler(int ID) {
-        String query = "Select * FROM " + TABLE_USER_JOB + " WHERE " + COL_NAME + " = " + "'" + ID + "'";
+        String query = "Select * FROM " + TABLE_USER_JOB + " WHERE " + COL_JOB_ID + " = '" + ID + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         UserJob userJob = new UserJob();
