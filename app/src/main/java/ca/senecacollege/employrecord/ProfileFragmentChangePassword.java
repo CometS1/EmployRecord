@@ -1,6 +1,7 @@
 package ca.senecacollege.employrecord;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,8 @@ import android.widget.Toast;
 import ca.senecacollege.employrecord.DatabaseHelper.MyDBHandler;
 import ca.senecacollege.employrecord.DatabaseHelper.User;
 
+import static android.content.ContentValues.TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +37,7 @@ public class ProfileFragmentChangePassword extends Fragment {
     private EditText mOriginalPasswordView;
     private EditText mNewPasswordView;
     private EditText mConfirmPasswordView;
-
+    private MyDBHandler db;
 
     private OnFragmentInteractionListener mListener;
 
@@ -152,7 +156,26 @@ public class ProfileFragmentChangePassword extends Fragment {
         }
 
         MyDBHandler dbHandler = new MyDBHandler(this.getActivity(), null, null, 1);
+
+        SharedPreferences sharedpreferences = this.getActivity().getSharedPreferences(LoginActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        String savedUsername = sharedpreferences.getString("usernameKey","");
+
         String originPasswordDb = currentUser.getPassword();
+        if (savedUsername != null && !savedUsername.isEmpty()) {
+            User user = new User();
+
+            db = new MyDBHandler(this.getActivity(), null, null, 1);
+            user = db.loadUserHandler(savedUsername);
+
+            originPasswordDb = user.getPassword();
+
+        } else {
+            Log.e(TAG, "ERROR: There is no username saved in Shared Preferences!");
+        }
+
+        System.out.println(currentUser.getID());
+
+        System.out.println ("orig pass " + originPasswordDb);
 
             if (!((originPasswordDb.equals(originPassword)))){
                 cancel = true;

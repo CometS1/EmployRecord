@@ -131,6 +131,8 @@ public class JobBoardFragment extends Fragment {
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adaptor);
         spinner1.setOnItemSelectedListener(new JobBoardFragment.fillSpinner());
+
+
         /*view.findViewById(R.id.buttonTmp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
