@@ -72,6 +72,10 @@ public class ViewJobActivity extends AppCompatActivity {
                 TextView descriptionInfo = (TextView) findViewById(R.id.textViewDescription);
                 descriptionInfo.setText(Html.fromHtml(descriptionToken));
 
+                //Places HTML without change into view
+                TextView hiddenDesc = (TextView) findViewById(R.id.textViewHiddenDesc);
+                hiddenDesc.setText(descriptionToken);
+
                 String fullTimeToken = tokens.nextToken();
                 TextView fullTimeInfo = (TextView) findViewById(R.id.textViewFullTime);
                 fullTimeInfo.setText(fullTimeToken);
@@ -108,7 +112,7 @@ public class ViewJobActivity extends AppCompatActivity {
         String title = titleView.getText().toString();
         jobs.setTitle(title);
 
-        TextView descView = (findViewById(R.id.textViewDescription));
+        TextView descView = (findViewById(R.id.textViewHiddenDesc));
         String desc = descView.getText().toString();
         jobs.setDescription(desc);
 

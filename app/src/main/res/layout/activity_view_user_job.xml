@@ -76,11 +76,11 @@
 
             <EditText
                 android:id="@+id/notesView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/notes_text"
                 android:textSize="15sp"
-                android:paddingTop="5dp"/>
+                android:paddingVertical="20dp"/>
 
             <Button
                 android:id="@+id/deleteJob"
