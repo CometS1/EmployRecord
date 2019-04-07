@@ -4,6 +4,7 @@ package ca.senecacollege.employrecord;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import static android.support.constraint.Constraints.TAG;
  */
 public class NotificationsFragment extends Fragment {
 
+    private FloatingActionButton fab;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -44,7 +46,14 @@ public class NotificationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        fab = this.getActivity().findViewById(R.id.add_notification);
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_screen_area, new NotificationsDetailFragment()).addToBackStack(null).commit();
+            }
+        });
     }
 
     private void addNotification() {
