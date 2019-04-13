@@ -673,6 +673,34 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
 
     }
+
+    public String loadUserJobHandlerByCategoryId(int categoryId) {
+        String result = "";
+        String query = "Select * FROM " + TABLE_USER_JOB + " WHERE " + COL_CATEGORY_ID + " = '" + categoryId + "'";;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            int result_0 = cursor.getInt(0);
+            int result_1 = cursor.getInt(1);
+            int result_2 = cursor.getInt(2);
+            int result_3 = cursor.getInt(3);
+            result += result_0 + "@@" + result_1 +  "@@" + result_2 + "@@";
+            //System.getProperty("line.separator");
+
+            Log.i(TAG, "--> result_0 == " + result_0);
+            Log.i(TAG, "--> result_1 == " + result_1);
+            Log.i(TAG, "--> result_2 == " + result_2);
+            Log.i(TAG, "--> result_3 == " + result_3);
+
+
+            Log.i(TAG, "--> RESULT == " + result);
+        }
+        cursor.close();
+        db.close();
+        return result;
+
+    }
+
     public long addUserJobHandler(UserJob userJob) {
         ContentValues values = new ContentValues();
         //values.put(COL_USER_JOB_ID, userJob.getUser_job_id());

@@ -148,12 +148,54 @@ public class JobBoardFragment extends Fragment {
         }
 
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            String userJobResult = null;
             if (i == 0) {
-                JobBoardFragment.this.spinnerSelected = "Yes";
+                // do nothing
+                userJobResult = dbHandler().loadUserJobHandler();
+
+            } else if ( i ==1) {
+                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
+                //JobBoardFragment.this.spinnerSelected = "Wishlist";
+            } else if ( i ==2) {
+                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
+            } else if (i ==3) {
+                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
+            } else if ( i ==4) {
+                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
+            } else if ( i == 5) {
+                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
             }
-            else {
-                JobBoardFragment.this.spinnerSelected = "No";
+
+            User currentUser = User.getInstance();
+
+
+
+            String[] splitedUserJob = userJobResult.split("@@");
+            List<String> list = new ArrayList<String>();
+            String jobData = "";
+            int userJobNumber = 0;
+            Jobs job;
+
+            while(userJobNumber < splitedUserJob.length && splitedUserJob.length > 1) {
+                if (currentUser.getID() == Integer.parseInt(splitedUserJob[userJobNumber + 1])) {
+                    job = dbHandler().findJobById(Integer.parseInt(splitedUserJob[userJobNumber + 2]));
+                    if (job == null){
+                        Toast.makeText(getActivity().getApplicationContext(), "Error, Job not found", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        jobData = job.getTitle() + "@@" + job.getOrg_location() + "@@" + job.getOrganization();
+                        list.add(jobData);
+                    }
+                }
+                userJobNumber += 3;
             }
+
+            JobBoardAdapter arrayAdapter = new JobBoardAdapter(getActivity(), list);
+
+            ListView linearLayoutListView = (ListView) getActivity().findViewById(R.id.jobResultsList);
+            linearLayoutListView.setAdapter(arrayAdapter);
+            linearLayoutListView.setOnItemClickListener(new JobBoardFragment.openLink());
+
         }
 
         public void onNothingSelected(AdapterView<?> adapterView) {
@@ -168,8 +210,8 @@ public class JobBoardFragment extends Fragment {
         User currentUser = User.getInstance();
 
         String userJobResult = dbHandler().loadUserJobHandler();
-        String[] splitedUserJob = userJobResult.split("@@");
 
+        String[] splitedUserJob = userJobResult.split("@@");
         List<String> list = new ArrayList<String>();
         String jobData = "";
         int userJobNumber = 0;
