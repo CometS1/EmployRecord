@@ -97,7 +97,7 @@
                 android:text="@string/update_job" />
 
             <Spinner
-                android:id="@+id/categorySpinner"
+                android:id="@+id/category_array_job"
                 android:layout_width="143dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="8dp"

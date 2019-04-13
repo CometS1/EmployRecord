@@ -68,7 +68,15 @@
         <item>Part Time</item>
     </string-array>
     <string-array name="category_array">
-        <item> </item>
+        <item> All Jobs </item>
+        <item>Wishlist</item>
+        <item>Applied</item>
+        <item>Phone</item>
+        <item>Offer</item>
+        <item>Rejected</item>
+    </string-array>
+    <string-array name="category_array_job">
+        <item></item>
         <item>Wishlist</item>
         <item>Applied</item>
         <item>Phone</item>

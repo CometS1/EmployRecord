@@ -150,12 +150,9 @@ public class JobBoardFragment extends Fragment {
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             String userJobResult = null;
             if (i == 0) {
-                // do nothing
                 userJobResult = dbHandler().loadUserJobHandler();
-
             } else if ( i ==1) {
                 userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
-                //JobBoardFragment.this.spinnerSelected = "Wishlist";
             } else if ( i ==2) {
                 userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
             } else if (i ==3) {
@@ -167,8 +164,6 @@ public class JobBoardFragment extends Fragment {
             }
 
             User currentUser = User.getInstance();
-
-
 
             String[] splitedUserJob = userJobResult.split("@@");
             List<String> list = new ArrayList<String>();

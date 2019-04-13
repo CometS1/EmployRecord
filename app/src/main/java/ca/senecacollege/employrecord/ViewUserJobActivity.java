@@ -64,8 +64,8 @@ public class ViewUserJobActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_user_job);
 
         ArrayAdapter adaptor = ArrayAdapter.createFromResource(ViewUserJobActivity.this,
-                R.array.category_array, android.R.layout.simple_spinner_item);
-        Spinner spinner1 = (Spinner) ViewUserJobActivity.this.findViewById(R.id.categorySpinner);
+                R.array.category_array_job, android.R.layout.simple_spinner_item);
+        Spinner spinner1 = (Spinner) ViewUserJobActivity.this.findViewById(R.id.category_array_job);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adaptor);
         spinner1.setOnItemSelectedListener(new ViewUserJobActivity.fillSpinner());
@@ -120,7 +120,7 @@ public class ViewUserJobActivity extends AppCompatActivity {
         updateJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Spinner spinner1 = (Spinner) ViewUserJobActivity.this.findViewById(R.id.categorySpinner);
+                Spinner spinner1 = (Spinner) ViewUserJobActivity.this.findViewById(R.id.category_array_job);
                 String selectedItem = (spinner1.getSelectedItem()).toString();
 
                 User currentUser = User.getInstance();
