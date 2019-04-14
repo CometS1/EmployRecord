@@ -177,9 +177,8 @@ public class ViewJobActivity extends AppCompatActivity {
             dbHandler().addUserJobHandler(currentUserJob);
 
             Toast.makeText(getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
-            //Toast.makeText(getApplicationContext(), Integer.toString(currentJob.getJobId()), Toast.LENGTH_LONG).show();
 
-            //Redirect to login page
+            //Redirect to job board page
             int timeout = 1200;
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {

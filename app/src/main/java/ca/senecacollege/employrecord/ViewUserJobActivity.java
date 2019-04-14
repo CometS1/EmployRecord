@@ -156,13 +156,31 @@ public class ViewUserJobActivity extends AppCompatActivity {
                     currentUserJob.setUserId(currentUser.getID());
                     currentUserJob.setCategory_id(5);
                 }
+                else{
+                    currentUserJob.setUserId(currentUser.getID());
+                    currentUserJob.setCategory_id(0);
+                }
 
                 dbHandler().updateUserJobHandler(currentUserJob);
-                //System.out.println ("cuj " + currentUserJob.getCategory_id());
                 String post_url = notesInfo.getText().toString();
                 job.setPostUrl(post_url);
                 updateJob(job);
                 Toast.makeText(getApplicationContext(), "Job Notes Updated", Toast.LENGTH_LONG).show();
+
+                //Redirect to job board page
+                int timeout = 1200;
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+
+                    @Override
+                    public void run() {
+                        finish();
+                        Intent intent = new Intent(ViewUserJobActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }, timeout);
+
             }
         });
 
