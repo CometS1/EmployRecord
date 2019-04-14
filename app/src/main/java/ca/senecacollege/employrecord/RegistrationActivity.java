@@ -300,26 +300,4 @@ public class RegistrationActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    // FOR TESTING PURPOSES - Manually delete a user
-    private void deleteUser (String username) {
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
-        dbHandler.deleteUserHandler(username);
-        Log.i(TAG, "User deleted");
-    }
-
-    // FOR TESTING PURPOSES - Manually update a user
-    private void updateUser () {
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
-
-        User user = new User();
-        user.setUsername("test");
-        user.setEmail("test@gmail.com");
-        user.setPassword("tester");
-        user.setFirstName("te");
-        user.setLastName("st");
-
-        dbHandler.updateUserHandler(user);
-        Log.i(TAG, "User updated");
-    }
-
 }
