@@ -151,7 +151,7 @@ public class JobBoardFragment extends Fragment {
             String userJobResult = null;
             if (i == 0) {
                 userJobResult = dbHandler().loadUserJobHandler();
-            } else if ( i ==1) {
+            } /*else if ( i ==1) {
                 userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
             } else if ( i ==2) {
                 userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
@@ -160,6 +160,9 @@ public class JobBoardFragment extends Fragment {
             } else if ( i ==4) {
                 userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
             } else if ( i == 5) {
+                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
+            }*/
+            else{
                 userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
             }
 
@@ -233,73 +236,6 @@ public class JobBoardFragment extends Fragment {
         linearLayoutListView.setOnItemClickListener(new JobBoardFragment.openLink());
 
     }
-
-    /*
-    public void updateJob() {
-        Log.i(TAG, "--> update Job");
-
-        Jobs jobs = new Jobs();
-
-        String title ="Systems Architect";
-        jobs.setTitle(title);
-
-        String description = "senior?";
-        jobs.setDescription(description);
-
-        String organization = "Seneca";
-        jobs.setOrganization(organization);
-
-        String org_location = "Microsoft";
-        jobs.setOrgLocation(org_location);
-
-        String org_email = "microsoft@seneca.ca";
-        jobs.setOrgEmail(org_email);
-
-        String post_origin ="Linkedin";
-        jobs.setPostOrigin(post_origin);
-
-        String post_url ="microsoft.com";
-        jobs.setPostUrl(post_url);
-
-        String post_deadline= "2019-01-02";
-        jobs.setPostDeadline(post_deadline);
-
-        String applied_date ="2019-01-01";
-        jobs.setAppliedDate(applied_date);
-
-        String interview_date="2019-01-04";
-        jobs.setInterviewDate(interview_date);
-
-        String offer_deadline="2019-01-10";
-        jobs.setOfferDeadline(offer_deadline);
-
-        String note="pass";
-        jobs.setNote(note);
-
-        // Todo: when we have proper page, when accessing specific job, must fetch out jobid.
-        dbHandler().updateJobHandler(jobs,1);
-        Toast.makeText(getActivity().getApplicationContext(), "update Job test by id 1", Toast.LENGTH_LONG).show();
-
-
-    }
-
-    public void updateUserJob() {
-        Log.i(TAG, "--> update User Job");
-
-        UserJob userJob = new UserJob();
-
-        int job_id = 2;
-        userJob.set_job_id(job_id);
-
-        int user_id = 2;
-        userJob.setUserId(user_id);
-
-        // Todo: when we have proper page, when accessing specific job, must fetch out jobid.
-        dbHandler().updateUserJobHandler(userJob);
-        Toast.makeText(getActivity().getApplicationContext(), "update Job test by id 1", Toast.LENGTH_LONG).show();
-
-
-    }*/
 
     //Allows fragment to access database
     private MyDBHandler dbHandler() {

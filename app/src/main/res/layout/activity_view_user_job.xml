@@ -85,16 +85,16 @@
                 android:paddingVertical="20dp"/>
 
             <Button
-                android:id="@+id/deleteJob"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/delete_job" />
-
-            <Button
                 android:id="@+id/updateJob"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/update_job" />
+
+            <Button
+                android:id="@+id/deleteJob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_job" />
 
             <Spinner
                 android:id="@+id/category_array_job"
