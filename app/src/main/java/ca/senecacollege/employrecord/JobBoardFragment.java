@@ -151,17 +151,7 @@ public class JobBoardFragment extends Fragment {
             String userJobResult = null;
             if (i == 0) {
                 userJobResult = dbHandler().loadUserJobHandler();
-            } /*else if ( i ==1) {
-                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
-            } else if ( i ==2) {
-                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
-            } else if (i ==3) {
-                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
-            } else if ( i ==4) {
-                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
-            } else if ( i == 5) {
-                userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
-            }*/
+            }
             else{
                 userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
             }

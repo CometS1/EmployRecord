@@ -63,17 +63,12 @@ public class ProfileFragmentChangePassword extends Fragment {
         }
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
 
+    /**
+     * When confirm button is pressed, that button that will trigger updatepassword function
+     * and moves the user profile page if there is no error by user
+     *
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -83,8 +78,6 @@ public class ProfileFragmentChangePassword extends Fragment {
             @Override
             public void onClick(View view) {
                 Boolean updatePassword;
-
-
                 updatePassword = updatePassword();
                 if (updatePassword) {
 
@@ -104,6 +97,9 @@ public class ProfileFragmentChangePassword extends Fragment {
             }
         });
 
+        /**
+         * If user clicks cancel button, will take user back to profile screen without updating password.
+         */
         Button changePasswordFragment = (Button)view.findViewById(R.id.CancelChangePass);
         changePasswordFragment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +120,11 @@ public class ProfileFragmentChangePassword extends Fragment {
         });
     }
 
+    /**
+     * Tis function takes the user's old password, user's input on new/ confirm password and compares
+     * if password is valid and updated properly to db, it returns boolean values true to above confirm button function
+     *
+     */
     private Boolean updatePassword () {
         User currentUser = User.getInstance();
 
@@ -138,17 +139,19 @@ public class ProfileFragmentChangePassword extends Fragment {
         String newPassword = mNewPasswordView.getText().toString();
         String confirmPassword = mConfirmPasswordView.getText().toString();
 
-        System.out.println(originPassword);
+        // checks if user typed in original password
         if (TextUtils.isEmpty(originPassword)) {
             mOriginalPasswordView.setError(getString(R.string.error_field_required));
             focusView = mOriginalPasswordView;
             cancel = true;
         }
+        // checks if user typed in new password to replace original password
         if (TextUtils.isEmpty(newPassword)) {
             mNewPasswordView.setError(getString(R.string.error_field_required));
             focusView = mNewPasswordView;
             cancel = true;
         }
+        // checks if user typed in confirm password that is same as new password.
         if (TextUtils.isEmpty(confirmPassword)) {
             mConfirmPasswordView.setError(getString(R.string.error_field_required));
             focusView = mConfirmPasswordView;
@@ -157,9 +160,11 @@ public class ProfileFragmentChangePassword extends Fragment {
 
         MyDBHandler dbHandler = new MyDBHandler(this.getActivity(), null, null, 1);
 
+        // fetches back original password from shared preferences. if shared preferences failed to load then trigger db to fetch back.
         SharedPreferences sharedpreferences = this.getActivity().getSharedPreferences(LoginActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         String savedUsername = sharedpreferences.getString("usernameKey","");
 
+        // call db if shared preferences password fail to bring back password and update shared preferences
         String originPasswordDb = currentUser.getPassword();
         if (savedUsername != null && !savedUsername.isEmpty()) {
             User user = new User();
@@ -172,11 +177,7 @@ public class ProfileFragmentChangePassword extends Fragment {
         } else {
             Log.e(TAG, "ERROR: There is no username saved in Shared Preferences!");
         }
-
-        System.out.println(currentUser.getID());
-
-        System.out.println ("orig pass " + originPasswordDb);
-
+            // checks if original password from db matches typed in original password
             if (!((originPasswordDb.equals(originPassword)))){
                 cancel = true;
                 focusView = mOriginalPasswordView;
@@ -184,6 +185,9 @@ public class ProfileFragmentChangePassword extends Fragment {
                 valid = false;
             }
 
+
+            //checks if new password and confirm password is same then returns true boolean flag if all good.
+            //Returns error message to user if new password does not match confirm password.
             if (!((newPassword).equals(confirmPassword))){
                 cancel = true;
                 focusView = mNewPasswordView;
@@ -193,6 +197,7 @@ public class ProfileFragmentChangePassword extends Fragment {
                 valid = false;
             }
 
+            // if valid, then update password in db for that user.
             if (valid){
                 currentUser.setPassword(newPassword);
                 dbHandler.updateUserHandler(currentUser);
@@ -202,9 +207,7 @@ public class ProfileFragmentChangePassword extends Fragment {
             } else {
                 return false;
             }
-
     }
-
 
     @Override
     public void onDetach() {
@@ -212,18 +215,7 @@ public class ProfileFragmentChangePassword extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

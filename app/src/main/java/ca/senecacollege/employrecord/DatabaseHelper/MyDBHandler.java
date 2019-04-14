@@ -169,7 +169,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return false;
     }
 
-
+    // finds user by unique user name
     public User findUserHandler(String username) {
         String query = "Select * FROM " + TABLE_USER + " WHERE " + COL_USERNAME + " = " + "'" + username+ "'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -764,13 +764,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         return db.update(TABLE_USER_JOB, args, COL_USER_JOB_ID + "=" + userJob.getUser_job_id(), null)  > 0;
     }
-
-
-
+    
     // end userjob crud operation
-
-
-
     // begin notification crud operation
     public String loadNotificationHandler() {
         String result = "";

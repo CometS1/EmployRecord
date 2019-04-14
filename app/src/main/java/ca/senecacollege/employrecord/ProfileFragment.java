@@ -43,6 +43,9 @@ public class ProfileFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
+    /**
+     * when profile page is viewed. it takes user context information and displays user information
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -59,6 +62,7 @@ public class ProfileFragment extends Fragment {
         if (savedUsername != null && !savedUsername.isEmpty()) {
             User user = new User();
 
+            // load user from saved DB
             db = new MyDBHandler(this.getActivity(), null, null, 1);
             user = db.loadUserHandler(savedUsername);
 
