@@ -230,7 +230,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Username and Password is correct
             // Set Shared Preferences
-            //TODO: shared preferences ****************************************************************************
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString(USERNAME, username);
             editor.commit();

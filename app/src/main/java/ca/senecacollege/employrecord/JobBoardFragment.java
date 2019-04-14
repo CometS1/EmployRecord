@@ -43,6 +43,7 @@ public class JobBoardFragment extends Fragment {
     }
 
     String spinnerSelected = "Yes";
+
     //Adaptor created for list of user jobs that add info to list
     class JobBoardAdapter extends ArrayAdapter<String> {
         Activity context;
@@ -82,9 +83,6 @@ public class JobBoardFragment extends Fragment {
         }
 
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            //Add information on click for jobs later
-
-            //Toast.makeText(getActivity().getApplicationContext(), "open job description", Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(getActivity(), ViewUserJobActivity.class);
             String jobTitle = ((TextView) view.findViewById(R.id.textViewTitle)).getText().toString();
@@ -95,32 +93,22 @@ public class JobBoardFragment extends Fragment {
         }
     }
 
-    //Adds clickability to load job button
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Set action bar title to specified string
-        ((MainActivity)getActivity()).setActionBarTitle("Job Board");
+        ((MainActivity) getActivity()).setActionBarTitle("Job Board");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_job_board, container, false);
 
-        /*Button loadJobButton = (Button) view.findViewById(R.id.loadJob);
-        loadJobButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                loadJob();
-            }
-        });
-        */
         return view;
 
 
     }
 
+    //Adds spinner on creation
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -132,17 +120,10 @@ public class JobBoardFragment extends Fragment {
         spinner1.setAdapter(adaptor);
         spinner1.setOnItemSelectedListener(new JobBoardFragment.fillSpinner());
 
-
-        /*view.findViewById(R.id.buttonTmp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "You are inside Job Board Fragment", Toast.LENGTH_SHORT).show();
-            }
-        });*/
         loadJob();
     }
 
-    //Fills fulltime spinner with options
+    //Finds jobs based on job categories
     class fillSpinner implements AdapterView.OnItemSelectedListener {
         fillSpinner() {
         }
@@ -151,8 +132,7 @@ public class JobBoardFragment extends Fragment {
             String userJobResult = null;
             if (i == 0) {
                 userJobResult = dbHandler().loadUserJobHandler();
-            }
-            else{
+            } else {
                 userJobResult = dbHandler().loadUserJobHandlerByCategoryId(i);
             }
 
@@ -164,13 +144,12 @@ public class JobBoardFragment extends Fragment {
             int userJobNumber = 0;
             Jobs job;
 
-            while(userJobNumber < splitedUserJob.length && splitedUserJob.length > 1) {
+            while (userJobNumber < splitedUserJob.length && splitedUserJob.length > 1) {
                 if (currentUser.getID() == Integer.parseInt(splitedUserJob[userJobNumber + 1])) {
                     job = dbHandler().findJobById(Integer.parseInt(splitedUserJob[userJobNumber + 2]));
-                    if (job == null){
+                    if (job == null) {
                         Toast.makeText(getActivity().getApplicationContext(), "Error, Job not found", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         jobData = job.getTitle() + "@@" + job.getOrg_location() + "@@" + job.getOrganization();
                         list.add(jobData);
                     }
@@ -205,16 +184,15 @@ public class JobBoardFragment extends Fragment {
         int userJobNumber = 0;
         Jobs job;
 
-        while(userJobNumber < splitedUserJob.length && splitedUserJob.length > 1) {
+        while (userJobNumber < splitedUserJob.length && splitedUserJob.length > 1) {
             if (currentUser.getID() == Integer.parseInt(splitedUserJob[userJobNumber + 1])) {
-               job = dbHandler().findJobById(Integer.parseInt(splitedUserJob[userJobNumber + 2]));
-               if (job == null){
-                   Toast.makeText(getActivity().getApplicationContext(), "Error, Job not found", Toast.LENGTH_LONG).show();
-               }
-               else {
-                   jobData = job.getTitle() + "@@" + job.getOrg_location() + "@@" + job.getOrganization();
-                   list.add(jobData);
-               }
+                job = dbHandler().findJobById(Integer.parseInt(splitedUserJob[userJobNumber + 2]));
+                if (job == null) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Error, Job not found", Toast.LENGTH_LONG).show();
+                } else {
+                    jobData = job.getTitle() + "@@" + job.getOrg_location() + "@@" + job.getOrganization();
+                    list.add(jobData);
+                }
             }
             userJobNumber += 3;
         }
@@ -231,7 +209,6 @@ public class JobBoardFragment extends Fragment {
     private MyDBHandler dbHandler() {
         return new MyDBHandler(getActivity().getApplicationContext(), null, null, 1);
     }
-
 
 
 }

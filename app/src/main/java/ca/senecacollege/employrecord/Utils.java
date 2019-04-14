@@ -20,6 +20,7 @@ import org.json.JSONObject;
 public final class Utils {
     public static final String LOG_TAG = Utils.class.getSimpleName();
 
+    //Makes request via HTTP using url for string data
     public static List<String> fetchJobData(String requestUrl) {
         String jsonResponse = null;
         try {
@@ -30,6 +31,7 @@ public final class Utils {
         return extractFeatureFromJson(jsonResponse);
     }
 
+    //Makes request via HTTP using url for specific job string data
     public static List<String> fetchSpecificJobData(String requestUrl) {
         String jsonResponse = null;
         try {
@@ -40,6 +42,7 @@ public final class Utils {
         return extractJobFeatureFromJson(jsonResponse);
     }
 
+    //Creates job Url using string
     private static URL createUrl(String stringUrl) {
         try {
             return new URL(stringUrl);
@@ -49,6 +52,7 @@ public final class Utils {
         }
     }
 
+    //Makes request via HTTP using url and creates connection
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
@@ -87,6 +91,7 @@ public final class Utils {
         return jsonResponse;
     }
 
+    //Reads data from input stream
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {

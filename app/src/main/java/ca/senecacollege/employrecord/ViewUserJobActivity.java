@@ -23,7 +23,6 @@ import ca.senecacollege.employrecord.DatabaseHelper.User;
 import ca.senecacollege.employrecord.DatabaseHelper.UserJob;
 
 public class ViewUserJobActivity extends AppCompatActivity {
-    String spinnerSelected = "Yes";
     //Allows activity to access database
     private MyDBHandler dbHandler() {
         return new MyDBHandler(getApplicationContext(), null, null, 1);
@@ -51,6 +50,7 @@ public class ViewUserJobActivity extends AppCompatActivity {
         }, timeout);
     }
 
+    // Updates job data in both Job table
     private void updateJob(Jobs job) {
         dbHandler().updateJobHandler(job, job.getJobId());
 
@@ -68,7 +68,6 @@ public class ViewUserJobActivity extends AppCompatActivity {
         Spinner spinner1 = (Spinner) ViewUserJobActivity.this.findViewById(R.id.category_array_job);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adaptor);
-        spinner1.setOnItemSelectedListener(new ViewUserJobActivity.fillSpinner());
 
         // Set action bar title to specified string
         getSupportActionBar().setTitle("Job Description");
@@ -87,7 +86,6 @@ public class ViewUserJobActivity extends AppCompatActivity {
         locationInfo.setText(locationToken);
 
         String descriptionToken = job.getDescription();
-        //descriptionToken = removeHtml(descriptionToken);
         TextView descriptionInfo = (TextView) findViewById(R.id.textViewDescription);
         descriptionInfo.setText(Html.fromHtml(descriptionToken));
 
@@ -99,7 +97,6 @@ public class ViewUserJobActivity extends AppCompatActivity {
         TextView companyInfo = (TextView) findViewById(R.id.textViewCompany);
         companyInfo.setText(companyToken);
 
-        //Change to company URL later
         String companyURLToken = job.getPost_url();
         TextView companyURLInfo = (TextView) findViewById(R.id.textViewCompanyUrl);
         companyURLInfo.setText(companyURLToken);
@@ -116,6 +113,7 @@ public class ViewUserJobActivity extends AppCompatActivity {
             }
         });
 
+        //Set update button to update job notes and category
         Button updateJobButton = (Button) findViewById(R.id.updateJob);
         updateJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,38 +123,31 @@ public class ViewUserJobActivity extends AppCompatActivity {
 
                 User currentUser = User.getInstance();
 
-                // hijcaking colour db load handler for category data checking purpose
+                // hijacking colour db load handler for category data checking purpose
                 String category = dbHandler().loadColourHandler();
-                //System.out.println ("cu " + currentUser);
-                //System.out.println (category);
 
                 UserJob currentUserJob;
                 currentUserJob = dbHandler().findUserJobHandler(job.getJobId());
 
                 // need to update both category id on job and user_job table
-                if (selectedItem.equals("Wishlist")){
+                if (selectedItem.equals("Wishlist")) {
 
                     currentUserJob.setUserId(currentUser.getID());
                     currentUserJob.setCategory_id(1);
-                }
-                else if (selectedItem.equals("Applied")) {
+                } else if (selectedItem.equals("Applied")) {
 
                     currentUserJob.setUserId(currentUser.getID());
                     currentUserJob.setCategory_id(2);
-                }
-                else if (selectedItem.equals("Phone")) {
+                } else if (selectedItem.equals("Phone")) {
                     currentUserJob.setUserId(currentUser.getID());
                     currentUserJob.setCategory_id(3);
-                }
-                else if (selectedItem.equals("Offer")) {
+                } else if (selectedItem.equals("Offer")) {
                     currentUserJob.setUserId(currentUser.getID());
                     currentUserJob.setCategory_id(4);
-                }
-                else if (selectedItem.equals("Rejected")) {
+                } else if (selectedItem.equals("Rejected")) {
                     currentUserJob.setUserId(currentUser.getID());
                     currentUserJob.setCategory_id(5);
-                }
-                else{
+                } else {
                     currentUserJob.setUserId(currentUser.getID());
                     currentUserJob.setCategory_id(0);
                 }
@@ -165,7 +156,7 @@ public class ViewUserJobActivity extends AppCompatActivity {
                 String post_url = notesInfo.getText().toString();
                 job.setPostUrl(post_url);
                 updateJob(job);
-                Toast.makeText(getApplicationContext(), "Job Notes Updated", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Job Updated", Toast.LENGTH_LONG).show();
 
                 //Redirect to job board page
                 int timeout = 1200;
@@ -185,24 +176,6 @@ public class ViewUserJobActivity extends AppCompatActivity {
         });
 
 
-    }
-
-    //Fills fulltime spinner with options
-    class fillSpinner implements AdapterView.OnItemSelectedListener {
-        fillSpinner() {
-        }
-
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            if (i == 0) {
-                ViewUserJobActivity.this.spinnerSelected = "Yes";
-            }
-            else {
-                ViewUserJobActivity.this.spinnerSelected = "No";
-            }
-        }
-
-        public void onNothingSelected(AdapterView<?> adapterView) {
-        }
     }
 }
 

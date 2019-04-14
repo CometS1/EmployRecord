@@ -50,7 +50,7 @@ public class ProfileFragmentChangePassword extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Set action bar title to specified string
-        ((MainActivity)getActivity()).setActionBarTitle("Update Password");
+        ((MainActivity) getActivity()).setActionBarTitle("Update Password");
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile_fragment_change_password, container, false);
@@ -67,13 +67,12 @@ public class ProfileFragmentChangePassword extends Fragment {
     /**
      * When confirm button is pressed, that button that will trigger updatepassword function
      * and moves the user profile page if there is no error by user
-     *
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button updatePassword = (Button)view.findViewById(R.id.ConfirmChangePass);
+        Button updatePassword = (Button) view.findViewById(R.id.ConfirmChangePass);
         updatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,17 +80,17 @@ public class ProfileFragmentChangePassword extends Fragment {
                 updatePassword = updatePassword();
                 if (updatePassword) {
 
-                // Create new fragment and transaction
-                Fragment newFragment = new ProfileFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    // Create new fragment and transaction
+                    Fragment newFragment = new ProfileFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack
-                transaction.replace(R.id.main_screen_area, newFragment);
-                transaction.addToBackStack(null);
+                    // Replace whatever is in the fragment_container view with this fragment,
+                    // and add the transaction to the back stack
+                    transaction.replace(R.id.main_screen_area, newFragment);
+                    transaction.addToBackStack(null);
 
-                // Commit the transaction
-                transaction.commit();
+                    // Commit the transaction
+                    transaction.commit();
 
                 }
             }
@@ -100,7 +99,7 @@ public class ProfileFragmentChangePassword extends Fragment {
         /**
          * If user clicks cancel button, will take user back to profile screen without updating password.
          */
-        Button changePasswordFragment = (Button)view.findViewById(R.id.CancelChangePass);
+        Button changePasswordFragment = (Button) view.findViewById(R.id.CancelChangePass);
         changePasswordFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,9 +122,8 @@ public class ProfileFragmentChangePassword extends Fragment {
     /**
      * Tis function takes the user's old password, user's input on new/ confirm password and compares
      * if password is valid and updated properly to db, it returns boolean values true to above confirm button function
-     *
      */
-    private Boolean updatePassword () {
+    private Boolean updatePassword() {
         User currentUser = User.getInstance();
 
         mOriginalPasswordView = (EditText) getActivity().findViewById(R.id.enterOldPassword);
@@ -162,7 +160,7 @@ public class ProfileFragmentChangePassword extends Fragment {
 
         // fetches back original password from shared preferences. if shared preferences failed to load then trigger db to fetch back.
         SharedPreferences sharedpreferences = this.getActivity().getSharedPreferences(LoginActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-        String savedUsername = sharedpreferences.getString("usernameKey","");
+        String savedUsername = sharedpreferences.getString("usernameKey", "");
 
         // call db if shared preferences password fail to bring back password and update shared preferences
         String originPasswordDb = currentUser.getPassword();
@@ -177,36 +175,36 @@ public class ProfileFragmentChangePassword extends Fragment {
         } else {
             Log.e(TAG, "ERROR: There is no username saved in Shared Preferences!");
         }
-            // checks if original password from db matches typed in original password
-            if (!((originPasswordDb.equals(originPassword)))){
-                cancel = true;
-                focusView = mOriginalPasswordView;
-                mOriginalPasswordView.setError(getString(R.string.incorrect_orig_password));
-                valid = false;
-            }
+        // checks if original password from db matches typed in original password
+        if (!((originPasswordDb.equals(originPassword)))) {
+            cancel = true;
+            focusView = mOriginalPasswordView;
+            mOriginalPasswordView.setError(getString(R.string.incorrect_orig_password));
+            valid = false;
+        }
 
 
-            //checks if new password and confirm password is same then returns true boolean flag if all good.
-            //Returns error message to user if new password does not match confirm password.
-            if (!((newPassword).equals(confirmPassword))){
-                cancel = true;
-                focusView = mNewPasswordView;
-                mNewPasswordView.setError(getString(R.string.incorrect_new_password));
-                focusView = mConfirmPasswordView;
-                mConfirmPasswordView.setError(getString(R.string.incorrect_confirm_password));
-                valid = false;
-            }
+        //checks if new password and confirm password is same then returns true boolean flag if all good.
+        //Returns error message to user if new password does not match confirm password.
+        if (!((newPassword).equals(confirmPassword))) {
+            cancel = true;
+            focusView = mNewPasswordView;
+            mNewPasswordView.setError(getString(R.string.incorrect_new_password));
+            focusView = mConfirmPasswordView;
+            mConfirmPasswordView.setError(getString(R.string.incorrect_confirm_password));
+            valid = false;
+        }
 
-            // if valid, then update password in db for that user.
-            if (valid){
-                currentUser.setPassword(newPassword);
-                dbHandler.updateUserHandler(currentUser);
+        // if valid, then update password in db for that user.
+        if (valid) {
+            currentUser.setPassword(newPassword);
+            dbHandler.updateUserHandler(currentUser);
 
-                Toast.makeText(getActivity(), "Password update successful", Toast.LENGTH_SHORT).show();
-                return true;
-            } else {
-                return false;
-            }
+            Toast.makeText(getActivity(), "Password update successful", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

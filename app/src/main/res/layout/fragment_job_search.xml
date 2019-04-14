@@ -21,52 +21,51 @@
 
     <EditText
         android:id="@+id/searchValue"
-        app:autoSizeTextType="uniform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:maxLines="1"
         android:gravity="center"
+        android:hint="@string/search_text"
         android:inputType="text"
-        android:hint="@string/search_text" />
+        android:maxLines="1"
+        android:paddingTop="20dp"
+        app:autoSizeTextType="uniform" />
 
     <EditText
         android:id="@+id/locationValue"
-        app:autoSizeTextType="uniform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="1"
-        android:inputType="text"
-        android:hint="@string/location_text"
         android:layout_below="@+id/searchValue"
-        android:layout_alignStart="@+id/searchValue"/>
+        android:layout_alignStart="@+id/searchValue"
+        android:gravity="center"
+        android:hint="@string/location_text"
+        android:inputType="text"
+        android:maxLines="1"
+        app:autoSizeTextType="uniform" />
 
     <Spinner
         android:id="@+id/fullTimeSpinner"
-        app:autoSizeTextType="uniform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/locationValue"
-        android:layout_alignStart="@+id/locationValue"/>
+        android:layout_alignStart="@+id/locationValue"
+        android:gravity="center"
+        app:autoSizeTextType="uniform" />
 
     <Button
         android:id="@+id/searchButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_below="@+id/fullTimeSpinner"
         android:layout_alignStart="@+id/locationValue"
-        android:text="@string/search_text"/>
-
+        android:gravity="center"
+        android:text="@string/search_text" />
 
     <ListView
         android:id="@+id/searchResultsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
-        android:layout_below="@id/searchButton"/>
-
+        android:layout_below="@id/searchButton"
+        android:padding="10dp" />
 
 
 </RelativeLayout>

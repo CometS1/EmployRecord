@@ -38,7 +38,6 @@ public class JobSearchFragment extends Fragment {
     }
 
     String stringURL = "https://jobs.github.com/positions.json?description=";
-    String spinnerSelected = "Yes";
     List<String> returnArray;
     ListView linearLayoutListView;
 
@@ -74,7 +73,7 @@ public class JobSearchFragment extends Fragment {
         public void onPostExecute(List<String> postExecuteResult) {
 
             CustomListAdapter arrayAdapter = new CustomListAdapter(getActivity(), postExecuteResult);
-            if (arrayAdapter.getCount() == 0){
+            if (arrayAdapter.getCount() == 0) {
                 Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
             }
             linearLayoutListView = (ListView) getActivity().findViewById(R.id.searchResultsList);
@@ -84,34 +83,17 @@ public class JobSearchFragment extends Fragment {
         }
     }
 
-    //Fills fulltime spinner with options
-    class fillSpinner implements AdapterView.OnItemSelectedListener {
-        fillSpinner() {
-        }
-
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            if (i == 0) {
-                JobSearchFragment.this.spinnerSelected = "Yes";
-            }
-            else {
-                JobSearchFragment.this.spinnerSelected = "No";
-            }
-        }
-
-        public void onNothingSelected(AdapterView<?> adapterView) {
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Set action bar title to specified string
-        ((MainActivity)getActivity()).setActionBarTitle("Job Search");
+        ((MainActivity) getActivity()).setActionBarTitle("Job Search");
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_job_search, container, false);
     }
 
+    // Fills spinner with values, and retrieves search values for searching.
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -122,7 +104,6 @@ public class JobSearchFragment extends Fragment {
         Spinner spinner1 = (Spinner) view.findViewById(R.id.fullTimeSpinner);
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adaptor);
-        spinner1.setOnItemSelectedListener(new fillSpinner());
 
         //Add search button click functionality to search on click and fill Listview
         view.findViewById(R.id.searchButton).setOnClickListener(new View.OnClickListener() {
@@ -135,24 +116,22 @@ public class JobSearchFragment extends Fragment {
 
                 String titleValue = title.getText().toString();
                 String fullTime = (spinner1.getSelectedItem()).toString();
-                if (fullTime.equals("Full Time")){
+                if (fullTime.equals("Full Time")) {
                     fullTime = "true";
-                }
-                else{
+                } else {
                     fullTime = "false";
                 }
                 String locationValue = location.getText().toString();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.setLength(0);
-                    stringBuilder.append(stringURL);
-                    stringBuilder.append(titleValue);
-                    stringBuilder.append("&full_time=");
-                    stringBuilder.append(fullTime);
-                    stringBuilder.append("&location=");
-                    stringBuilder.append(locationValue);
-                    String URL = stringBuilder.toString();
-                    //Toast.makeText(getActivity(), URL, Toast.LENGTH_SHORT).show();
-                    new JobAsyncTask().execute(new String[]{URL});
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.setLength(0);
+                stringBuilder.append(stringURL);
+                stringBuilder.append(titleValue);
+                stringBuilder.append("&full_time=");
+                stringBuilder.append(fullTime);
+                stringBuilder.append("&location=");
+                stringBuilder.append(locationValue);
+                String URL = stringBuilder.toString();
+                new JobAsyncTask().execute(new String[]{URL});
             }
         });
 

@@ -29,21 +29,11 @@ public class ViewJobActivity extends AppCompatActivity {
 
     List<String> returnArray;
 
-
+    //Loads chosen job into view
     class ChosenJobAsyncTask extends AsyncTask<String, Void, List<String>> {
 
         ChosenJobAsyncTask() {
         }
-
-        //Removes HTML tags from description, Not needed
-        /*private String removeHtml(String html) {
-            html = html.replaceAll("<(.*?)\\>"," ");
-            html = html.replaceAll("<(.*?)\\\n"," ");
-            //html = html.replaceFirst("(.*?)\\>", " ");
-            html = html.replaceAll("&nbsp;"," ");
-            html = html.replaceAll("&amp;"," ");
-            return html;
-        }*/
 
         //Fetches specific job data in background
         protected List<String> doInBackground(String... stringurl) {
@@ -53,11 +43,10 @@ public class ViewJobActivity extends AppCompatActivity {
 
         //Loads job description onto page after receiving json data
         public void onPostExecute(List<String> postExecuteResult) {
-            if(postExecuteResult == null){
+            if (postExecuteResult == null) {
                 Toast.makeText(ViewJobActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                StringTokenizer tokens = new StringTokenizer( postExecuteResult.get(0), "@@");
+            } else {
+                StringTokenizer tokens = new StringTokenizer(postExecuteResult.get(0), "@@");
 
                 String titleToken = tokens.nextToken();
                 TextView textInfo = (TextView) findViewById(R.id.textViewTitle);
@@ -68,7 +57,6 @@ public class ViewJobActivity extends AppCompatActivity {
                 locationInfo.setText(locationToken);
 
                 String descriptionToken = tokens.nextToken();
-                //descriptionToken = removeHtml(descriptionToken);
                 TextView descriptionInfo = (TextView) findViewById(R.id.textViewDescription);
                 descriptionInfo.setText(Html.fromHtml(descriptionToken));
 
@@ -127,7 +115,7 @@ public class ViewJobActivity extends AppCompatActivity {
         String org_email = null;
         jobs.setOrgEmail(org_email);
 
-        String post_origin ="Github Jobs";
+        String post_origin = "Github Jobs";
         jobs.setPostOrigin(post_origin);
 
         TextView postUrlView = (findViewById(R.id.textViewJobURL));
@@ -142,13 +130,13 @@ public class ViewJobActivity extends AppCompatActivity {
         String applied_date = null;
         jobs.setAppliedDate(applied_date);
 
-        String interview_date= null;
+        String interview_date = null;
         jobs.setInterviewDate(interview_date);
 
-        String offer_deadline= null;
+        String offer_deadline = null;
         jobs.setOfferDeadline(offer_deadline);
 
-        String note= null;
+        String note = null;
         jobs.setNote(note);
 
         int org_addr_id = 1;
@@ -159,7 +147,7 @@ public class ViewJobActivity extends AppCompatActivity {
 
         Jobs currentJob = dbHandler().findJobByTitle(title);
 
-        if (dbHandler().findJobByTitle(title) == null){
+        if (dbHandler().findJobByTitle(title) == null) {
             //puts job in database
             dbHandler().addJobHandler(jobs);
 
@@ -191,13 +179,11 @@ public class ViewJobActivity extends AppCompatActivity {
                     finish();
                 }
             }, timeout);
-        }
-        else{
-            if(dbHandler().findUserJobHandler(currentJob.getJobId()) == null){
+        } else {
+            if (dbHandler().findUserJobHandler(currentJob.getJobId()) == null) {
+
                 //puts job in database
                 dbHandler().addJobHandler(jobs);
-
-                //Possibly determine if it's possible to find job by database id
 
                 User currentUser = User.getInstance();
                 UserJob currentUserJob = new UserJob();
@@ -211,7 +197,6 @@ public class ViewJobActivity extends AppCompatActivity {
                 dbHandler().addUserJobHandler(currentUserJob);
 
                 Toast.makeText(getApplicationContext(), "Job Added Successfully!", Toast.LENGTH_LONG).show();
-                //Toast.makeText(getApplicationContext(), Integer.toString(currentJob.getJobId()), Toast.LENGTH_LONG).show();
 
                 //Redirect to login page
                 int timeout = 1200;
@@ -226,13 +211,11 @@ public class ViewJobActivity extends AppCompatActivity {
                         finish();
                     }
                 }, timeout);
-            }
-            else{
+            } else {
 
                 Toast.makeText(getApplicationContext(), "Job already within user job board", Toast.LENGTH_LONG).show();
             }
         }
-
 
 
     }
@@ -264,7 +247,7 @@ public class ViewJobActivity extends AppCompatActivity {
             });
         }
         //If job is not found
-        else{
+        else {
             Toast.makeText(getApplicationContext(), "Error, job not found", Toast.LENGTH_LONG).show();
         }
     }
