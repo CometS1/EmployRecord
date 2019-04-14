@@ -92,6 +92,9 @@
             android:id="@+id/jobResultsList"
             android:layout_width="249dp"
             android:layout_height="wrap_content"
+            android:padding="20px"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/frameLayout" />
 
     </android.support.constraint.ConstraintLayout>
