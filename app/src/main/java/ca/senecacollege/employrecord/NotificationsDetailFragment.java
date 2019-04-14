@@ -76,6 +76,7 @@ public class NotificationsDetailFragment extends Fragment {
         mSaveButton = this.getActivity().findViewById(R.id.notification_save_button);
         mSpinner = this.getActivity().findViewById(R.id.notificationSpinner);
 
+        // Date button will display Date Picker Dialog
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +85,7 @@ public class NotificationsDetailFragment extends Fragment {
                 month = calendar.get(Calendar.MONTH);
                 dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
+                // Set the date to the current date when displaying the date picker dialog
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -99,6 +101,7 @@ public class NotificationsDetailFragment extends Fragment {
             }
         });
 
+        // Time button will display Time Picker Dialog
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +135,7 @@ public class NotificationsDetailFragment extends Fragment {
             }
         });
 
+        // Save button to save notification to database -- incomplete
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
